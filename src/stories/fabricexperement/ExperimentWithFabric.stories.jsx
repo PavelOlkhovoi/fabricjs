@@ -6,8 +6,6 @@ export default {
   title: "Stories/Experiments",
 };
 
-export const FirstSimpleAdHocStory = (args) => <div style={{}}>111</div>;
-
 export const SimpleRedRectangle = () => {
   useEffect(() => {
     const canvas = new fabric.Canvas("canvas");
