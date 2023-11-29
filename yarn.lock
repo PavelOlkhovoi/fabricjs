@@ -1767,6 +1767,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@excalidraw/excalidraw@npm:0.17.0":
+  version: 0.17.0
+  resolution: "@excalidraw/excalidraw@npm:0.17.0"
+  peerDependencies:
+    react: ^17.0.2 || ^18.2.0
+    react-dom: ^17.0.2 || ^18.2.0
+  checksum: 4a3c8542f85d81fac92244a0aed4885718ee1d4121fb4d9013b7031b578a928ad402870218ba7738c73c2db8bd57e2a970186e8a6214a6b0ea58a5950fb58834
+  languageName: node
+  linkType: hard
+
 "@fal-works/esbuild-plugin-global-externals@npm:^2.1.2":
   version: 2.1.2
   resolution: "@fal-works/esbuild-plugin-global-externals@npm:2.1.2"
@@ -11728,6 +11738,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "vite-with-antd-and-storybook-template@workspace:."
   dependencies:
+    "@excalidraw/excalidraw": "npm:0.17.0"
     "@storybook/addon-essentials": "npm:^7.0.18"
     "@storybook/addon-interactions": "npm:^7.0.18"
     "@storybook/addon-links": "npm:^7.0.18"
