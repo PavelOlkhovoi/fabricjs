@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { fabric } from "fabric";
-import customImage from "../../assets/loginLeft.png";
+// import customImage from "../../assets/loginLeft.png";
 
 export default {
   title: "Stories/Experiments",
@@ -358,11 +358,11 @@ export const SingleGroup = () => {
 
 export const SimpleImage = () => {
   useEffect(() => {
-    const canvas = new fabric.Canvas("canvas");
-    fabric.Image.fromURL(customImage, function (oImg) {
-      oImg.scale(0.5).set("flipX", true);
-      canvas.add(oImg);
-    });
+    // const canvas = new fabric.Canvas("canvas");
+    // fabric.Image.fromURL(customImage, function (oImg) {
+    //   oImg.scale(0.5).set("flipX", true);
+    //   canvas.add(oImg);
+    // });
   }, []);
 
   return (
