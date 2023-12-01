@@ -5,7 +5,7 @@ import {
   Footer,
   LiveCollaborationTrigger,
 } from "@excalidraw/excalidraw";
-import { fileWithImage } from "./dataFromExcalidraw";
+import { fileWithImage, storedDataFromConsole } from "./dataFromExcalidraw";
 
 export default {
   title: "Stories/ExcalidrawStart",
@@ -286,6 +286,55 @@ export const LoadFileFromVariabaleIncludingImage = () => {
     appState: fileWithImage.appState,
     files: fileWithImage.files,
     scrollToContent: true,
+  };
+
+  return (
+    <div style={{ height: "500px" }}>
+      <Excalidraw initialData={initialState} />
+    </div>
+  );
+};
+
+export const SaveFileFromVariabale = () => {
+  const [excalidrawAPI, setExcalidrawAPI] = useState(null);
+  return (
+    <div style={{ height: "500px" }}>
+      <button
+        style={{
+          background: "#70b1ec",
+          border: "none",
+          color: "#fff",
+          width: "max-content",
+          fontWeight: "bold",
+        }}
+        onClick={() => {
+          const appState = excalidrawAPI.getAppState();
+          const currentContent = {
+            elements: excalidrawAPI.getSceneElements(),
+            appState: {
+              gridSize: appState.gridSize,
+              changeViewBackgroundColor: appState.viewBackgroundColor,
+            },
+            files: excalidrawAPI.getFiles(),
+            scrollToContent: true,
+          };
+
+          console.log("xxx here", JSON.stringify(currentContent));
+        }}
+      >
+        Get Elements
+      </button>
+      <Excalidraw excalidrawAPI={(api) => setExcalidrawAPI(api)} />
+    </div>
+  );
+};
+
+export const LoadFileFromConsoleString = () => {
+  const initialState = {
+    elements: storedDataFromConsole.elements,
+    appState: storedDataFromConsole.appState,
+    files: storedDataFromConsole.files,
+    scrollToContent: storedDataFromConsole.scrollToContent,
   };
 
   return (
