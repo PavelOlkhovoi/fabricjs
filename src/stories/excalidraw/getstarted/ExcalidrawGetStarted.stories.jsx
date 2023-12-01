@@ -5,6 +5,7 @@ import {
   Footer,
   LiveCollaborationTrigger,
 } from "@excalidraw/excalidraw";
+import { fileWithImage } from "./dataFromExcalidraw";
 
 export default {
   title: "Stories/ExcalidrawStart",
@@ -275,6 +276,21 @@ export const LoadFileFromVariabaleTwo = () => {
           scrollToContent: true,
         }}
       />
+    </div>
+  );
+};
+
+export const LoadFileFromVariabaleIncludingImage = () => {
+  const initialState = {
+    elements: fileWithImage.elements,
+    appState: fileWithImage.appState,
+    files: fileWithImage.files,
+    scrollToContent: true,
+  };
+
+  return (
+    <div style={{ height: "500px" }}>
+      <Excalidraw initialData={initialState} />
     </div>
   );
 };
