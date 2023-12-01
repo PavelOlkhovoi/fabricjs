@@ -6,6 +6,7 @@ import {
   useTLStore,
   createTLStore,
   defaultShapeUtils,
+  stopEventPropagation,
 } from "@tldraw/tldraw";
 import "@tldraw/tldraw/tldraw.css";
 import { useEffect, useState, useCallback, useLayoutEffect } from "react";
@@ -409,19 +410,30 @@ export function LoadAdvanceSnapshot() {
         index: "a1",
         typeName: "page",
       },
-      "shape:qRmhthFF7an79Dyrq5CKY": {
-        x: 125,
-        y: 121,
+      "shape:4EHGBSCallErdFvIFQCLN": {
+        x: 41,
+        y: 215,
         rotation: 0,
         isLocked: false,
         opacity: 1,
         meta: {},
-        id: "shape:qRmhthFF7an79Dyrq5CKY",
-        type: "frame",
+        id: "shape:4EHGBSCallErdFvIFQCLN",
+        type: "geo",
         props: {
-          w: 407,
-          h: 375,
-          name: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.683887929178!2d[longitude]!3d[latitude]!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDXCsDA4JzM2LjQiTiA3NMKwMzUnMzcuMiJF!5e0!3m2!1sen!2sus!4v1623843302251!5m2!1sen!2sus",
+          w: 193,
+          h: 123,
+          geo: "rectangle",
+          color: "light-blue",
+          labelColor: "black",
+          fill: "solid",
+          dash: "dashed",
+          size: "m",
+          font: "draw",
+          text: "",
+          align: "middle",
+          verticalAlign: "middle",
+          growY: 0,
+          url: "",
         },
         parentId: "page:page",
         index: "a1",
@@ -493,6 +505,105 @@ export function LoadAdvanceSnapshot() {
     <div style={{ position: "fixed", inset: 0 }}>
       <Tldraw store={store} />
       {/* <Tldraw /> */}
+    </div>
+  );
+}
+
+// The "OnTheCanvas" component is rendered on top of the canvas, but behind the UI.
+function MyComponent() {
+  const [state, setState] = useState(0);
+
+  return (
+    <>
+      <div
+        style={{
+          position: "absolute",
+          top: 50,
+          left: 50,
+          width: "fit-content",
+          padding: 12,
+          borderRadius: 8,
+          backgroundColor: "goldenrod",
+          zIndex: 0,
+          pointerEvents: "all",
+          userSelect: "unset",
+        }}
+        onPointerDown={stopEventPropagation}
+        onPointerMove={stopEventPropagation}
+      >
+        The count is {state}!{" "}
+        <button onClick={() => setState((s) => s - 1)}>+1</button>
+      </div>
+      <div
+        style={{
+          position: "absolute",
+          top: 150,
+          left: 150,
+          width: 128,
+          padding: 12,
+          borderRadius: 8,
+          backgroundColor: "pink",
+          zIndex: 99999999,
+          pointerEvents: "all",
+          userSelect: "unset",
+        }}
+        onPointerDown={stopEventPropagation}
+        onPointerMove={stopEventPropagation}
+      >
+        The count is {state}!{" "}
+        <button onClick={() => setState((s) => s + 1)}>+1</button>
+      </div>
+    </>
+  );
+}
+
+// The "InFrontOfTheCanvas" component is rendered on top of the canvas, but behind the UI.
+const MyComponentInFront = track(() => {
+  const editor = useEditor();
+  const { selectionRotatedPageBounds } = editor;
+
+  if (!selectionRotatedPageBounds) return null;
+
+  const pageCoordinates = editor.pageToScreen(selectionRotatedPageBounds.point);
+
+  return (
+    <div
+      style={{
+        position: "absolute",
+        top: Math.max(64, pageCoordinates.y - 64),
+        left: Math.max(64, pageCoordinates.x),
+        padding: 12,
+        background: "#efefef",
+      }}
+    >
+      This does not scale with the zoom
+    </div>
+  );
+});
+
+const components = {
+  OnTheCanvas: MyComponent,
+  InFrontOfTheCanvas: MyComponentInFront,
+  SnapLine: null,
+};
+
+export function GetStoreSnapshotWithComponent() {
+  return (
+    <div style={{ position: "fixed", inset: 0 }}>
+      {/* <Tldraw
+        persistenceKey="things-on-the-canvas-example"
+        components={components}
+      >
+        <Canvas />
+        <SelectedShapeIdsCount />
+      </Tldraw> */}
+      <Tldraw
+        persistenceKey="things-on-the-canvas-example"
+        components={components}
+      >
+        <Canvas />
+        <SelectedShapeIdsCount />
+      </Tldraw>
     </div>
   );
 }
