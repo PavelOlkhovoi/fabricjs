@@ -281,15 +281,12 @@ export const LoadFileFromVariabaleTwo = () => {
 };
 
 export const LoadFileFromVariabaleIncludingImage = () => {
-  const excalidrawRef = useRef(null);
-
   const initialState = {
     elements: fileWithImage.elements,
     appState: fileWithImage.appState,
     files: fileWithImage.files,
     scrollToContent: true,
   };
-  console.log("xxx initialState", initialState);
 
   return (
     <div style={{ height: "500px" }}>
