@@ -319,7 +319,8 @@ export const SaveFileFromVariabale = () => {
             scrollToContent: true,
           };
 
-          console.log("xxx here", JSON.stringify(currentContent));
+          // console.log("xxx here", JSON.stringify(currentContent));
+          console.log("xxx here", currentContent);
         }}
       >
         Get Elements
@@ -343,3 +344,44 @@ export const LoadFileFromConsoleString = () => {
     </div>
   );
 };
+const DesignerWrapperComponent = (WrappedComponent, additionalProps) => {
+  return (props) => {
+    return <WrappedComponent {...props} {...additionalProps} />;
+  };
+};
+
+export const WrappedLoadFileFromConsoleString = LoadFileFromConsoleString;
+
+// export const SaveFileFromVariabale = () => {
+//   const [excalidrawAPI, setExcalidrawAPI] = useState(null);
+//   return (
+//     <div style={{ height: "500px" }}>
+//       <button
+//         style={{
+//           background: "#70b1ec",
+//           border: "none",
+//           color: "#fff",
+//           width: "max-content",
+//           fontWeight: "bold",
+//         }}
+//         onClick={() => {
+//           const appState = excalidrawAPI.getAppState();
+//           const currentContent = {
+//             elements: excalidrawAPI.getSceneElements(),
+//             appState: {
+//               gridSize: appState.gridSize,
+//               changeViewBackgroundColor: appState.viewBackgroundColor,
+//             },
+//             files: excalidrawAPI.getFiles(),
+//             scrollToContent: true,
+//           };
+
+//           console.log("xxx here", JSON.stringify(currentContent));
+//         }}
+//       >
+//         Get Elements
+//       </button>
+//       <Excalidraw excalidrawAPI={(api) => setExcalidrawAPI(api)} />
+//     </div>
+//   );
+// };

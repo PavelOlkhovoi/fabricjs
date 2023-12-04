@@ -1,0 +1,97 @@
+const simpleelement = {
+  id: "hnaLJRlCI3WJGC-TwBHd6",
+  type: "image",
+  x: 365,
+  y: 183,
+  width: 250,
+  height: 250,
+  angle: 0,
+  strokeColor: "transparent",
+  backgroundColor: "transparent",
+  fillStyle: "solid",
+  strokeWidth: 2,
+  strokeStyle: "solid",
+  roughness: 1,
+  opacity: 100,
+  groupIds: [],
+  frameId: null,
+  roundness: null,
+  seed: 751363219,
+  version: 4,
+  versionNonce: 1965304179,
+  isDeleted: false,
+  boundElements: null,
+  updated: 1701608275049,
+  link: null,
+  locked: false,
+  status: "pending",
+  fileId: "de216d66685012a88ba2015412900e784bdba4b9",
+  scale: [1, 1],
+};
+
+export const partialImageElement = [
+  {
+    type: "image",
+    isDeleted: false,
+    id: "oDVXy8D6rom3H1-LLH2-f",
+    fillStyle: "hachure",
+    strokeWidth: 1,
+    strokeStyle: "solid",
+    roughness: 1,
+    opacity: 100,
+    angle: 0,
+    x: 100.50390625,
+    y: 93.67578125,
+    strokeColor: "#c92a2a",
+    backgroundColor: "transparent",
+    width: 60,
+    height: 60,
+    groupIds: [],
+    boundElements: null,
+    locked: false,
+    link: null,
+    fileId: "1701608275043", // test id
+  },
+];
+
+export const imageWithTestId = {
+  mimeType: "image/svg+xml",
+  id: "1701608275043",
+  dataURL:
+    "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiBoZWlnaHQ9IjgwMHB4IiB3aWR0aD0iODAwcHgiIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHZpZXdCb3g9IjAgMCA0OTYuMTYyIDQ5Ni4xNjIiIHhtbDpzcGFjZT0icHJlc2VydmUiPgo8cGF0aCBzdHlsZT0iZmlsbDojMzM3MTgwOyIgZD0iTTI0OC4wNzcsMEMxMTEuMDcyLDAsMC4wMDIsMTExLjA2MiwwLjAwMiwyNDguMDgzYzAsMTM3LjAwNSwxMTEuMDcsMjQ4LjA3OSwyNDguMDc1LDI0OC4wNzkgIGMxMzcuMDEzLDAsMjQ4LjA4My0xMTEuMDc0LDI0OC4wODMtMjQ4LjA3OUM0OTYuMTYsMTExLjA2MiwzODUuMDksMCwyNDguMDc3LDB6Ii8+CjxwYXRoIHN0eWxlPSJmaWxsOiNEM0QzRDM7IiBkPSJNMjI5Ljc4NywyNDYuODgxdjI0OC42MDhjNi4wNDEsMC40NCwxMi4xMzksMC42NzMsMTguMjksMC42NzNjNS4zNzEsMCwxMC42OTYtMC4xOSwxNS45ODMtMC41MjcgIFYyNDYuODgxSDIyOS43ODd6Ii8+CjxwYXRoIHN0eWxlPSJmaWxsOiNFQUVBRUE7IiBkPSJNMjI5Ljc4NywyNDYuODgxdjI0OC42MDhjNi4wNDEsMC40NCwxMi4xMzksMC42NzMsMTguMjksMC42NzNWMjQ2Ljg4MUgyMjkuNzg3eiIvPgo8cGF0aCBzdHlsZT0iZmlsbDojRTVFNUU1OyIgZD0iTTI0OC4wODEsMzIuMDgyYy01Mi4wNzksMC05NC4zMDQsMjQuOTUyLTk0LjMwNCw1NS43MzJ2MjUzLjUzM2MwLDMwLjc4LDQyLjIyNSw1NS43MzIsOTQuMzA0LDU1LjczMiAgczk0LjMwNC0yNC45NTIsOTQuMzA0LTU1LjczMlY4Ny44MTRDMzQyLjM4NSw1Ny4wMzQsMzAwLjE2LDMyLjA4MiwyNDguMDgxLDMyLjA4MnoiLz4KPHBhdGggc3R5bGU9ImZpbGw6IzNCM0IzQjsiIGQ9Ik0yNDguMDgxLDQyLjA4MmMtNDUuMDUsMC04MS41NzUsMjMuNTg1LTgxLjU3NSw1Mi42Nzl2MjM5LjY0YzAsMjkuMDk0LDM2LjUyNSw1Mi42NzksODEuNTc1LDUyLjY3OSAgczgxLjU3NS0yMy41ODUsODEuNTc1LTUyLjY3OVY5NC43NjFDMzI5LjY1Niw2NS42NjcsMjkzLjEzMSw0Mi4wODIsMjQ4LjA4MSw0Mi4wODJ6Ii8+CjxjaXJjbGUgc3R5bGU9ImZpbGw6I0VBNDk0OTsiIGN4PSIyNDguMDgxIiBjeT0iMTE2LjU4MSIgcj0iNDMiLz4KPHBhdGggc3R5bGU9ImZpbGw6I0YyNUY1RjsiIGQ9Ik0yNzQuNDg2LDkwLjE3NWMtMTQuNTgzLTE0LjU4My0zOC4yMjgtMTQuNTgzLTUyLjgxMSwwYy0xNC41ODQsMTQuNTgzLTE0LjU4NCwzOC4yMjgsMCw1Mi44MTIgIEMyMzYuMjU5LDE1Ny41NywyODkuMDcsMTA0Ljc1OSwyNzQuNDg2LDkwLjE3NXoiLz4KPGNpcmNsZSBzdHlsZT0iZmlsbDojMkJCRjYwOyIgY3g9IjI0OC4wODEiIGN5PSIzMTcuMDgxIiByPSI0MyIvPgo8Y2lyY2xlIHN0eWxlPSJmaWxsOiNFQUI0MkQ7IiBjeD0iMjQ4LjA4MSIgY3k9IjIxNy4wODEiIHI9IjQzIi8+CjxwYXRoIHN0eWxlPSJmaWxsOiNFRENCM0I7IiBkPSJNMjc0LjQ4NiwxOTEuMTc1Yy0xNC41ODMtMTQuNTgzLTM4LjIyOC0xNC41ODMtNTIuODExLDBjLTE0LjU4NCwxNC41ODMtMTQuNTg0LDM4LjIyOCwwLDUyLjgxMiAgQzIzNi4yNTksMjU4LjU3LDI4OS4wNywyMDUuNzU5LDI3NC40ODYsMTkxLjE3NXoiLz4KPHBhdGggc3R5bGU9ImZpbGw6IzNDQ0U2QzsiIGQ9Ik0yNzQuNDg2LDI5MS4xNzVjLTE0LjU4My0xNC41ODMtMzguMjI4LTE0LjU4My01Mi44MTEsMGMtMTQuNTg0LDE0LjU4My0xNC41ODQsMzguMjI4LDAsNTIuODEyICBDMjM2LjI1OSwzNTguNTcsMjg5LjA3LDMwNS43NTksMjc0LjQ4NiwyOTEuMTc1eiIvPgo8L3N2Zz4=",
+  //   created: 1701608275043,
+};
+
+export const generatedImageByExcaildraw = {
+  mimeType: "image/svg+xml",
+  id: "de216d66685012a88ba2015412900e784bdba4b9",
+  dataURL:
+    "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiBoZWlnaHQ9IjgwMHB4IiB3aWR0aD0iODAwcHgiIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHZpZXdCb3g9IjAgMCA0OTYuMTYyIDQ5Ni4xNjIiIHhtbDpzcGFjZT0icHJlc2VydmUiPgo8cGF0aCBzdHlsZT0iZmlsbDojMzM3MTgwOyIgZD0iTTI0OC4wNzcsMEMxMTEuMDcyLDAsMC4wMDIsMTExLjA2MiwwLjAwMiwyNDguMDgzYzAsMTM3LjAwNSwxMTEuMDcsMjQ4LjA3OSwyNDguMDc1LDI0OC4wNzkgIGMxMzcuMDEzLDAsMjQ4LjA4My0xMTEuMDc0LDI0OC4wODMtMjQ4LjA3OUM0OTYuMTYsMTExLjA2MiwzODUuMDksMCwyNDguMDc3LDB6Ii8+CjxwYXRoIHN0eWxlPSJmaWxsOiNEM0QzRDM7IiBkPSJNMjI5Ljc4NywyNDYuODgxdjI0OC42MDhjNi4wNDEsMC40NCwxMi4xMzksMC42NzMsMTguMjksMC42NzNjNS4zNzEsMCwxMC42OTYtMC4xOSwxNS45ODMtMC41MjcgIFYyNDYuODgxSDIyOS43ODd6Ii8+CjxwYXRoIHN0eWxlPSJmaWxsOiNFQUVBRUE7IiBkPSJNMjI5Ljc4NywyNDYuODgxdjI0OC42MDhjNi4wNDEsMC40NCwxMi4xMzksMC42NzMsMTguMjksMC42NzNWMjQ2Ljg4MUgyMjkuNzg3eiIvPgo8cGF0aCBzdHlsZT0iZmlsbDojRTVFNUU1OyIgZD0iTTI0OC4wODEsMzIuMDgyYy01Mi4wNzksMC05NC4zMDQsMjQuOTUyLTk0LjMwNCw1NS43MzJ2MjUzLjUzM2MwLDMwLjc4LDQyLjIyNSw1NS43MzIsOTQuMzA0LDU1LjczMiAgczk0LjMwNC0yNC45NTIsOTQuMzA0LTU1LjczMlY4Ny44MTRDMzQyLjM4NSw1Ny4wMzQsMzAwLjE2LDMyLjA4MiwyNDguMDgxLDMyLjA4MnoiLz4KPHBhdGggc3R5bGU9ImZpbGw6IzNCM0IzQjsiIGQ9Ik0yNDguMDgxLDQyLjA4MmMtNDUuMDUsMC04MS41NzUsMjMuNTg1LTgxLjU3NSw1Mi42Nzl2MjM5LjY0YzAsMjkuMDk0LDM2LjUyNSw1Mi42NzksODEuNTc1LDUyLjY3OSAgczgxLjU3NS0yMy41ODUsODEuNTc1LTUyLjY3OVY5NC43NjFDMzI5LjY1Niw2NS42NjcsMjkzLjEzMSw0Mi4wODIsMjQ4LjA4MSw0Mi4wODJ6Ii8+CjxjaXJjbGUgc3R5bGU9ImZpbGw6I0VBNDk0OTsiIGN4PSIyNDguMDgxIiBjeT0iMTE2LjU4MSIgcj0iNDMiLz4KPHBhdGggc3R5bGU9ImZpbGw6I0YyNUY1RjsiIGQ9Ik0yNzQuNDg2LDkwLjE3NWMtMTQuNTgzLTE0LjU4My0zOC4yMjgtMTQuNTgzLTUyLjgxMSwwYy0xNC41ODQsMTQuNTgzLTE0LjU4NCwzOC4yMjgsMCw1Mi44MTIgIEMyMzYuMjU5LDE1Ny41NywyODkuMDcsMTA0Ljc1OSwyNzQuNDg2LDkwLjE3NXoiLz4KPGNpcmNsZSBzdHlsZT0iZmlsbDojMkJCRjYwOyIgY3g9IjI0OC4wODEiIGN5PSIzMTcuMDgxIiByPSI0MyIvPgo8Y2lyY2xlIHN0eWxlPSJmaWxsOiNFQUI0MkQ7IiBjeD0iMjQ4LjA4MSIgY3k9IjIxNy4wODEiIHI9IjQzIi8+CjxwYXRoIHN0eWxlPSJmaWxsOiNFRENCM0I7IiBkPSJNMjc0LjQ4NiwxOTEuMTc1Yy0xNC41ODMtMTQuNTgzLTM4LjIyOC0xNC41ODMtNTIuODExLDBjLTE0LjU4NCwxNC41ODMtMTQuNTg0LDM4LjIyOCwwLDUyLjgxMiAgQzIzNi4yNTksMjU4LjU3LDI4OS4wNywyMDUuNzU5LDI3NC40ODYsMTkxLjE3NXoiLz4KPHBhdGggc3R5bGU9ImZpbGw6IzNDQ0U2QzsiIGQ9Ik0yNzQuNDg2LDI5MS4xNzVjLTE0LjU4My0xNC41ODMtMzguMjI4LTE0LjU4My01Mi44MTEsMGMtMTQuNTg0LDE0LjU4My0xNC41ODQsMzguMjI4LDAsNTIuODEyICBDMjM2LjI1OSwzNTguNTcsMjg5LjA3LDMwNS43NTksMjc0LjQ4NiwyOTEuMTc1eiIvPgo8L3N2Zz4=",
+  created: 1701608275043,
+  lastRetrieved: 1701608275043,
+};
+
+export const partialImageElementWithId = [
+  {
+    type: "image",
+    isDeleted: false,
+    id: "oDVXy8D6rom3H1-LLH2-f",
+    fillStyle: "hachure",
+    strokeWidth: 1,
+    strokeStyle: "solid",
+    roughness: 1,
+    opacity: 100,
+    angle: 0,
+    x: 100.50390625,
+    y: 93.67578125,
+    strokeColor: "#c92a2a",
+    backgroundColor: "transparent",
+    width: 60,
+    height: 60,
+    groupIds: [],
+    boundElements: null,
+    locked: false,
+    link: null,
+    fileId: "de216d66685012a88ba2015412900e784bdba4b9",
+  },
+];
