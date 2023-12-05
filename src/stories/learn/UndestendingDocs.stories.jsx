@@ -6,15 +6,19 @@ import {
   Footer,
   useHandleLibrary,
   exportToCanvas,
+  getCommonBounds,
 } from "@excalidraw/excalidraw";
 import { useEffect, useState } from "react";
-import LightsIcons from "./traffic-light-svgrepo-com.svg";
-import WarningIcons from "./warning-svgrepo-com.svg";
+import LightsIcons from "/traffic-light-svgrepo-com.svg";
+import SinnbildFußganger from "/Sinnbild_Fußgänger.svg";
+import WarningIcons from "/warning-svgrepo-com.svg";
+import SinnbildIcons from "/Sinnbild_Kfz.svg";
 import {
   storedDataFromConsole,
   trafficLightIcon,
 } from "../excalidraw/getstarted/dataFromExcalidraw";
 import { partialImageElement, imageWithTestId } from "./elementsgenerator";
+import { nanoid } from "nanoid";
 
 export default {
   title: "Stories/ExcalidrawLearn",
@@ -629,9 +633,9 @@ export const CreateImageElementManually = () => {
   );
 };
 
-export const GenerateImageElementManually = () => {
+export const GenerateIconElement = () => {
   const [excalidrawAPI, setExcalidrawAPI] = useState(null);
-  const fetchIcon = async (pathName) => {
+  const fetchIcon = async (pathName, fileId) => {
     const res = await fetch(`/${pathName}`);
     const imageData = await res.blob();
     const reader = new FileReader();
@@ -640,7 +644,7 @@ export const GenerateImageElementManually = () => {
     reader.onload = function () {
       const imagesArray = [
         {
-          id: "traffic-light-svgrepo-com.svg111",
+          id: fileId,
           dataURL: reader.result,
           mimeType: "image/svg+xml",
         },
@@ -653,10 +657,12 @@ export const GenerateImageElementManually = () => {
   const handleUpdateCanvas = async (event) => {
     const iconPathArr = event.target.getAttribute("src").split("/");
     const pathName = iconPathArr[iconPathArr.length - 1];
+    const newFileId = nanoid();
+    console.log("xxx newFileId", newFileId);
     const newElement = {
       type: "image",
       isDeleted: false,
-      id: "traffic-light-svgrepo-com", // test id,
+      id: nanoid(),
       fillStyle: "hachure",
       strokeWidth: 1,
       strokeStyle: "solid",
@@ -673,7 +679,7 @@ export const GenerateImageElementManually = () => {
       boundElements: null,
       locked: false,
       link: null,
-      fileId: "traffic-light-svgrepo-com.svg111", // test id
+      fileId: newFileId, // test id
     };
 
     excalidrawAPI.updateScene({
@@ -683,9 +689,84 @@ export const GenerateImageElementManually = () => {
       },
     });
 
-    await fetchIcon(pathName);
+    await fetchIcon(pathName, newFileId);
   };
-  // useEffect(() => {
+
+  return (
+    <div style={{ height: "500px" }}>
+      <div style={{ width: "40px", height: "40px" }}>
+        <img
+          src={LightsIcons}
+          style={{ width: "40px", height: "40px" }}
+          onClick={handleUpdateCanvas}
+        />
+      </div>
+      <Excalidraw excalidrawAPI={(api) => setExcalidrawAPI(api)} />
+    </div>
+  );
+};
+export const GenerateImageElementWithInstance = () => {
+  const [excalidrawAPI, setExcalidrawAPI] = useState(null);
+  const [iconElements, setIconElements] = useState([]);
+  const fetchIcon = async (pathName, fileId) => {
+    const res = await fetch(`/${pathName}`);
+    const imageData = await res.blob();
+    const reader = new FileReader();
+    reader.readAsDataURL(imageData);
+
+    reader.onload = function () {
+      const imagesArray = [
+        {
+          id: fileId,
+          dataURL: reader.result,
+          mimeType: "image/svg+xml",
+        },
+      ];
+      console.log("xxx imageData", imagesArray);
+      excalidrawAPI.addFiles(imagesArray);
+    };
+  };
+
+  const handleUpdateCanvas = async (event) => {
+    const iconPathArr = event.target.getAttribute("src").split("/");
+    const pathName = iconPathArr[iconPathArr.length - 1];
+    const newFileId = nanoid();
+    console.log("xxx newFileId", newFileId);
+    const newElement = {
+      type: "image",
+      isDeleted: false,
+      id: nanoid(),
+      fillStyle: "hachure",
+      strokeWidth: 1,
+      strokeStyle: "solid",
+      roughness: 1,
+      opacity: 100,
+      angle: 0,
+      x: 100.50390625,
+      y: 93.67578125,
+      strokeColor: "#c92a2a",
+      backgroundColor: "transparent",
+      width: 60,
+      height: 60,
+      groupIds: [],
+      boundElements: null,
+      locked: false,
+      link: null,
+      fileId: newFileId, // test id
+    };
+
+    setIconElements((prev) => [...prev, newElement]);
+
+    excalidrawAPI.updateScene({
+      elements: [...iconElements, newElement],
+      appState: {
+        viewBackgroundColor: "white",
+      },
+    });
+
+    await fetchIcon(pathName, newFileId);
+  };
+
   //   if (!excalidrawAPI) {
   //     return;
   //   }
@@ -718,8 +799,245 @@ export const GenerateImageElementManually = () => {
           onClick={handleUpdateCanvas}
         />
       </div>
+      <div style={{ width: "40px", height: "40px" }}>
+        <img
+          src={WarningIcons}
+          style={{ width: "40px", height: "40px" }}
+          onClick={handleUpdateCanvas}
+        />
+      </div>
       <Excalidraw excalidrawAPI={(api) => setExcalidrawAPI(api)} />
     </div>
   );
 };
-WarningIcons;
+export const GenerateImageElementWithOneFolder = () => {
+  const [excalidrawAPI, setExcalidrawAPI] = useState(null);
+  const [iconElements, setIconElements] = useState([]);
+  const fetchIcon = async (pathName, fileId) => {
+    const res = await fetch(`/${pathName}`);
+    const imageData = await res.blob();
+    const reader = new FileReader();
+    reader.readAsDataURL(imageData);
+
+    reader.onload = function () {
+      const imagesArray = [
+        {
+          id: fileId,
+          dataURL: reader.result,
+          mimeType: "image/svg+xml",
+        },
+      ];
+      console.log("xxx imageData", imagesArray);
+      excalidrawAPI.addFiles(imagesArray);
+    };
+  };
+
+  const handleUpdateCanvas = async (event) => {
+    const iconPathArr = event.target.getAttribute("src").split("/");
+    const pathName = iconPathArr[iconPathArr.length - 1];
+    const newFileId = nanoid();
+    console.log("xxx newFileId", newFileId);
+    const newElement = {
+      type: "image",
+      isDeleted: false,
+      id: nanoid(),
+      fillStyle: "hachure",
+      strokeWidth: 1,
+      strokeStyle: "solid",
+      roughness: 1,
+      opacity: 100,
+      angle: 0,
+      x: 100.50390625,
+      y: 93.67578125,
+      strokeColor: "#c92a2a",
+      backgroundColor: "transparent",
+      width: 60,
+      height: 60,
+      groupIds: [],
+      boundElements: null,
+      locked: false,
+      link: null,
+      fileId: newFileId, // test id
+    };
+
+    setIconElements((prev) => [...prev, newElement]);
+
+    excalidrawAPI.updateScene({
+      elements: [...iconElements, newElement],
+      appState: {
+        viewBackgroundColor: "white",
+      },
+    });
+
+    await fetchIcon(pathName, newFileId);
+  };
+
+  //   if (!excalidrawAPI) {
+  //     return;
+  //   }
+  //   const fetchIcon = async () => {
+  //     const res = await fetch("/traffic-light-svgrepo-com.svg");
+  //     const imageData = await res.blob();
+  //     const reader = new FileReader();
+  //     reader.readAsDataURL(imageData);
+
+  //     reader.onload = function () {
+  //       const imagesArray = [
+  //         {
+  //           id: "traffic-light-svgrepo-com.svg111",
+  //           dataURL: reader.result,
+  //           mimeType: "image/svg+xml",
+  //         },
+  //       ];
+  //       console.log("xxx imageData", imagesArray);
+  //       excalidrawAPI.addFiles(imagesArray);
+  //     };
+  //   };
+  //   fetchIcon();
+  // }, [excalidrawAPI]);
+  return (
+    <div style={{ height: "500px" }}>
+      <div style={{ width: "40px", height: "40px" }}>
+        <img
+          src={LightsIcons}
+          style={{ width: "40px", height: "40px" }}
+          onClick={handleUpdateCanvas}
+        />
+      </div>
+      <div style={{ width: "40px", height: "40px" }}>
+        <img
+          src={WarningIcons}
+          style={{ width: "40px", height: "40px" }}
+          onClick={handleUpdateCanvas}
+        />
+      </div>
+      <Excalidraw excalidrawAPI={(api) => setExcalidrawAPI(api)} />
+    </div>
+  );
+};
+
+export const IdentifyInsertedElement = () => {
+  const [excalidrawAPI, setExcalidrawAPI] = useState(null);
+  const [currentElememnts, setcurrentElements] = useState([]);
+  const [lastelement, setLastelement] = useState();
+  const handleDragStart = (event) => {
+    console.log("xxx Drag start", event.target);
+  };
+
+  const pastHandle = (data, event) => {
+    console.log("xxx on paste", data);
+  };
+
+  const onChangeHandle = (elements) => {
+    const lastelement = elements[elements.length - 1];
+    console.log("xxx on change last element", lastelement?.fileId);
+    if (elements.length !== currentElememnts.length) {
+      if (lastelement.type === "image") {
+        const elementsArrayWithoutLast = elements.slice(0, -1);
+        const changeElements = { ...lastelement, width: 40, height: 40 };
+        console.log("xxx change lastElements", lastelement);
+        console.log("xxx change changeElements", changeElements);
+        excalidrawAPI.updateScene({
+          // elements: [...elementsArrayWithoutLast, changeElements],
+          elements: [...elementsArrayWithoutLast, lastelement],
+          appState: {
+            viewBackgroundColor: "white",
+          },
+        });
+      }
+    }
+    setcurrentElements(elements);
+  };
+
+  return (
+    <div style={{ height: "500px" }}>
+      <div
+        style={{ width: "40px", height: "40px" }}
+        onDragStart={handleDragStart}
+      >
+        <img
+          src={SinnbildIcons}
+          style={{ width: "40px", height: "40px" }}
+          onDragStart={handleDragStart}
+          draggable
+        />
+      </div>
+      <Excalidraw
+        excalidrawAPI={(api) => setExcalidrawAPI(api)}
+        onPaste={pastHandle}
+        onChange={onChangeHandle}
+      />
+    </div>
+  );
+};
+
+export const IdentifyInsertedElementByGetSceneElements = () => {
+  const [excalidrawAPI, setExcalidrawAPI] = useState(null);
+  const [updatedFileId, setUpdatedFileId] = useState([]);
+
+  const habdleOnChange = () => {
+    const elements = excalidrawAPI.getSceneElements();
+    const lastElements = elements[elements.length - 1];
+    if (lastElements?.fileId) {
+      const iconWidth = lastElements.width;
+      const iconHeight = lastElements.height;
+      // const iconX = lastElements.x;
+      // const iconY = lastElements.y;
+
+      // console.log("xxx getSceneElements", iconY);
+
+      // lastElements.width = 60;
+      // lastElements.height = (iconHeight * 60) / iconWidth;
+
+      lastElements.width = (iconWidth * 60) / iconHeight;
+      lastElements.height = 60;
+    }
+    // if (lastElements?.fileId && !updatedFileId.includes(lastElements?.fileId)) {
+    //   const iconWidth = lastElements.width;
+    //   const iconHeight = lastElements.height;
+    //   const iconX = lastElements.x;
+    //   const iconY = lastElements.y;
+
+    //   console.log("xxx getSceneElements", iconY);
+
+    //   // lastElements.width = 60;
+    //   // lastElements.height = (iconHeight * 60) / iconWidth;
+
+    //   lastElements.width = (iconWidth * 60) / iconHeight;
+    //   lastElements.height = 60;
+    //   setUpdatedFileId((prev) => [...prev, lastElements.fileId]);
+    // }
+  };
+
+  return (
+    <div style={{ height: "500px" }}>
+      <div>
+        <img src={SinnbildIcons} style={{ height: "30px", margin: "8px" }} />
+        <img
+          src={SinnbildFußganger}
+          style={{ height: "30px", margin: "10px" }}
+        />
+      </div>
+      <Excalidraw
+        excalidrawAPI={(api) => setExcalidrawAPI(api)}
+        onChange={habdleOnChange}
+      />
+    </div>
+  );
+};
+// export const IdentifyInsertedElementWithCustomIcon = () => {
+//   const [excalidrawAPI, setExcalidrawAPI] = useState(null);
+
+//   return (
+//     <div style={{ height: "500px" }}>
+//       <div>
+//         <img
+//           src={SinnbildIcons}
+//           style={{ width: "40px", height: "40px" }}
+//           draggable
+//         />
+//       </div>
+//       <Excalidraw excalidrawAPI={(api) => setExcalidrawAPI(api)} />
+//     </div>
+//   );
+// };
