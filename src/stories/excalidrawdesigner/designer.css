@@ -1,3 +1,24 @@
+::-webkit-scrollbar {
+  background-color: #fff;
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #babac0;
+  border-radius: 12px;
+  border: 2px solid #fff;
+}
+
+::-webkit-scrollbar-button {
+  display: none;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #babac0 #fff;
+}
+
 .excalidraw .layer-ui__wrapper__top-right {
   display: none !important;
 }
@@ -9,4 +30,15 @@
 
 .ant-collapse-content-box {
   padding: 4px 0px !important;
+}
+
+.ant-input-affix-wrapper:hover {
+  border-color: #6965db !important;
+}
+.ant-input-affix-wrapper:focus {
+  border-color: #6965db !important;
+}
+
+.ant-input-affix-wrapper:focus-within {
+  border-color: #6965db !important;
 }
