@@ -1,6 +1,5 @@
 import { Excalidraw, MainMenu, Sidebar, Footer } from "@excalidraw/excalidraw";
 import { useEffect, useState } from "react";
-import { nanoid } from "nanoid";
 import "./designer-style.css";
 import { Input, Collapse, Divider } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
@@ -9,12 +8,9 @@ import {
   PushpinOutlined,
   UnorderedListOutlined,
   AppstoreOutlined,
-  CloseCircleOutlined,
-  ClearOutlined,
 } from "@ant-design/icons";
 import { roadSigns } from "./dataSigns";
 import { libraryExtractor } from "./libraryExtractor";
-import { IconItem } from "@storybook/blocks";
 
 export default {
   title: "Library Custom/DesignerInitData",
@@ -60,7 +56,6 @@ const onlyIconItemsStyle = {
 const titleGroupStyle = {
   fontFamily: "Assistant, Helvetica, Roboto, Arial",
   color: "#525252",
-  // fontWeight: "bold",
   lineHeight: "1.4em",
 };
 
@@ -80,18 +75,28 @@ export const DesignerInitData = ({
   }, [dataIn]);
 
   const [onlyIconMode, setOnlyIconMode] = useState(true);
-
   const [itemsOnlyIcon, setItemsOnlyIcon] = useState();
   const [itemsWithTextDescription, setItemsWithTextDescription] = useState();
+  const onlyIconView = (iconData) => (
+    <div key={iconData.iconId} style={iconWrapperSize}>
+      <img src={`/${iconData.fileName}`} style={singleIconStyInternalStyle} />
+    </div>
+  );
+  const iconWithDescriptionView = (iconData) => (
+    <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+      <div style={iconWrapperSize}>
+        <img src={`/${iconData.fileName}`} style={singleIconStyInternalStyle} />
+      </div>
+      <span style={{ fontSize: "13px", lineHeight: "1.3em" }}>
+        {iconData.iconsTitle}
+      </span>
+    </div>
+  );
 
   useEffect(() => {
     const compsOnlyIcons = data.map((g) => {
       const groupItems = g.iconsArr.map((icon) => {
-        return (
-          <div key={icon.iconId} style={iconWrapperSize}>
-            <img src={`/${icon.fileName}`} style={singleIconStyInternalStyle} />
-          </div>
-        );
+        return onlyIconView(icon);
       });
       return {
         key: g.id,
@@ -126,19 +131,7 @@ export const DesignerInitData = ({
     });
     const compsWithTextDescription = data.map((g) => {
       const groupItems = g.iconsArr.map((icon) => {
-        return (
-          <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-            <div style={iconWrapperSize}>
-              <img
-                src={`/${icon.fileName}`}
-                style={singleIconStyInternalStyle}
-              />
-            </div>
-            <span style={{ fontSize: "13px", lineHeight: "1.3em" }}>
-              Kraftwagen und sonstige mehrspurige Kraftfahrzeuge
-            </span>
-          </div>
-        );
+        return iconWithDescriptionView(icon);
       });
       return {
         key: g.id,
@@ -254,11 +247,6 @@ export const DesignerInitData = ({
                   />
                 </div>
               </div>
-              {/* <div>
-                {data.map((d) => {
-                  return <img src={`/${d.fileName}`} />;
-                })} 
-              </div>*/}
               <Collapse
                 items={onlyIconMode ? itemsWithTextDescription : itemsOnlyIcon}
                 ghost

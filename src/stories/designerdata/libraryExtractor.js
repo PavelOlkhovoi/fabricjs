@@ -35,6 +35,8 @@ export const libraryExtractor = (data) => {
       }
     });
 
+    console.log("xxx groupIcons", groupIcons);
+
     return groupIcons;
   }
 };
