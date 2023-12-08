@@ -7,7 +7,7 @@ export const libraryExtractor = (data) => {
     const groupIcons = [];
     const uniqueGroupNames = [];
 
-    JSON.parse(data).forEach((icon) => {
+    data.forEach((icon) => {
       console.log("xxx icon extractor", icon);
       if (uniqueGroupNames.includes(icon.group)) {
         const targetObjIngroupIconsArr = groupIcons.find(

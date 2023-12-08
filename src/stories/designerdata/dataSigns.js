@@ -1,4 +1,4 @@
-const roadSigns = [
+export const roadSigns = [
   {
     group: "Absatz 7",
     iconLink:

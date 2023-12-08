@@ -12,7 +12,7 @@ import {
   CloseCircleOutlined,
   ClearOutlined,
 } from "@ant-design/icons";
-import { roadSignsJSON } from "./dataSigns";
+import { roadSigns } from "./dataSigns";
 import { libraryExtractor } from "./libraryExtractor";
 
 export default {
@@ -384,63 +384,109 @@ const onlyImageInternalStyle = { height: "calc(100% - 10px)" };
 //   // },
 // ];
 
+const onChangeCollapseHandle = (key) => {
+  console.log(key);
+};
 export const DesignerInitData = ({
-  dataIn = roadSignsJSON,
+  dataIn = roadSigns,
   extractor = libraryExtractor,
   activeMode = false,
 }) => {
-  const data = extractor(dataIn);
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    setData(extractor(dataIn));
+  }, [dataIn]);
+
   const [onlyIconMode, setOnlyIconMode] = useState(true);
-  const itemsOnlyIcon = data.map((g) => {
-    const groupItems = g.iconsArr.map((icon) => {
-      return (
-        <div key={icon.iconId} style={iconWrapperSize}>
-          <img src={`/${icon.fileName}`} style={singleIconStyInternalStyle} />
-        </div>
-      );
+
+  const [itemsOnlyIcon, setItemsOnlyIcon] = useState();
+  const [itemsWithTextDescription, setItemsWithTextDescription] = useState();
+
+  useEffect(() => {
+    const compsOnlyIcons = data.map((g) => {
+      const groupItems = g.iconsArr.map((icon) => {
+        return (
+          <div key={icon.iconId} style={iconWrapperSize}>
+            <img src={`/${icon.fileName}`} style={singleIconStyInternalStyle} />
+          </div>
+        );
+      });
+      return {
+        key: g.id,
+        label: (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              width: "100%",
+              color: colorTextBlack,
+            }}
+          >
+            <span style={titleGroupStyle}>{g.groupTitle}</span>
+            <span style={{ fontSize: "12px", color: colorInactiv }}>
+              {groupItems.length}
+            </span>
+          </div>
+        ),
+        children: (
+          <div
+            style={{
+              display: "flex",
+              gap: "10px",
+              flexWrap: "wrap",
+              marginRight: "-18px",
+            }}
+          >
+            {groupItems.map((item) => item)}
+          </div>
+        ),
+      };
     });
 
-    return {
-      key: g.id,
-      label: (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            width: "100%",
-            color: colorTextBlack,
-          }}
-        >
-          <span style={titleGroupStyle}>{g.groupTitle}</span>
-          <span style={{ fontSize: "12px", color: colorInactiv }}>
-            {groupItems.length}
-          </span>
-        </div>
-      ),
-      children: (
-        <div
-          style={{
-            display: "flex",
-            gap: "10px",
-            flexWrap: "wrap",
-            marginRight: "-18px",
-          }}
-        >
-          {groupItems.map((item) => item)}
-        </div>
-      ),
-    };
-  });
+    const compsWithTextDescription = data.map((g) => {
+      const groupItems = g.iconsArr.map((icon) => {
+        return (
+          <div key={icon.iconId} style={iconWrapperSize}>
+            <img src={`/${icon.fileName}`} style={singleIconStyInternalStyle} />
+          </div>
+        );
+      });
+      return {
+        key: g.id,
+        label: (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              width: "100%",
+              color: colorTextBlack,
+            }}
+          >
+            <span style={titleGroupStyle}>{g.groupTitle}</span>
+            <span style={{ fontSize: "12px", color: colorInactiv }}>
+              {groupItems.length}
+            </span>
+          </div>
+        ),
+        children: (
+          <div
+            style={{
+              display: "flex",
+              gap: "10px",
+              flexWrap: "wrap",
+              marginRight: "-18px",
+            }}
+          >
+            {groupItems.map((item) => item)}
+          </div>
+        ),
+      };
+    });
 
-  const onChangeCollapseHandle = (key) => {
-    console.log(key);
-  };
-  const displayOnlyIconMode = () => {
-    setOnlyIconMode(true);
-  };
-  const displayIconModeWithText = () => {
-    setOnlyIconMode(false);
-  };
+    setItemsOnlyIcon(compsOnlyIcons);
+    setItemsWithTextDescription(compsWithTextDescription);
+  }, [data]);
+
   return (
     <>
       <div style={{ height: "700px", display: "flex" }}>
@@ -504,10 +550,14 @@ export const DesignerInitData = ({
                 <div style={{ display: "flex", gap: "12px" }}>
                   <AppstoreOutlined
                     style={{ color: !onlyIconMode && colorInactiv }}
-                    onClick={displayIconModeWithText}
+                    onClick={() => {
+                      setOnlyIconMode(true);
+                    }}
                   />
                   <UnorderedListOutlined
-                    onClick={displayOnlyIconMode}
+                    onClick={() => {
+                      setOnlyIconMode(false);
+                    }}
                     style={{ color: onlyIconMode && colorInactiv }}
                   />
                 </div>
@@ -521,7 +571,7 @@ export const DesignerInitData = ({
                 items={itemsOnlyIcon}
                 ghost
                 defaultActiveKey={["1"]}
-                onChange={onChangeCollapseHandle}
+                _onChange={onChangeCollapseHandle}
                 // style={{ marginRight: "-8px" }}
               />
             </div>
