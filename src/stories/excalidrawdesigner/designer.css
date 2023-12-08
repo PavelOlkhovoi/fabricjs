@@ -19,9 +19,9 @@
   scrollbar-color: #babac0 #fff;
 }
 
-.excalidraw .layer-ui__wrapper__top-right {
+/* .excalidraw .layer-ui__wrapper__top-right {
   display: none !important;
-}
+} */
 
 .ant-collapse-header {
   padding-right: 0px !important;

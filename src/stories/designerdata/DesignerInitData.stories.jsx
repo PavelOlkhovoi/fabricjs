@@ -1,7 +1,7 @@
 import { Excalidraw, MainMenu, Sidebar, Footer } from "@excalidraw/excalidraw";
 import { useEffect, useState } from "react";
 import { nanoid } from "nanoid";
-import "./designer.css";
+import "./designer-style.css";
 import { Input, Collapse, Divider } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import {
@@ -14,9 +14,10 @@ import {
 } from "@ant-design/icons";
 import { roadSigns } from "./dataSigns";
 import { libraryExtractor } from "./libraryExtractor";
+import { IconItem } from "@storybook/blocks";
 
 export default {
-  title: "Stories/DesignerInitData",
+  title: "Library Custom/DesignerInitData",
 };
 
 const colorPrimary = "#6965db";
@@ -64,325 +65,6 @@ const titleGroupStyle = {
 };
 
 const onlyImageInternalStyle = { height: "calc(100% - 10px)" };
-// const items = [
-//   {
-//     key: "1",
-//     label: (
-//       <div
-//         style={{
-//           display: "flex",
-//           justifyContent: "space-between",
-//           width: "100%",
-//           color: colorTextBlack,
-//         }}
-//       >
-//         <span style={titleGroupStyle}>Absatz 7</span>
-//         <span style={{ fontSize: "12px", color: colorInactiv }}>64</span>
-//       </div>
-//     ),
-//     children: (
-//       <div
-//         style={{
-//           display: "flex",
-//           flexDirection: "column",
-//           gap: "10px",
-//           color: colorTextBlack,
-//         }}
-//       >
-//         <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-//           <div style={iconWrapperSize}>
-//             <img src={SinnbildIcons} style={singleIconStyInternalStyle} />
-//           </div>
-//           <span style={{ fontSize: "13px", lineHeight: "1.3em" }}>
-//             Kraftwagen und sonstige mehrspurige Kraftfahrzeuge
-//           </span>
-//         </div>
-
-//         <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-//           <div style={iconWrapperSize}>
-//             <img src={SinnbildLKWvg} style={singleIconStyInternalStyle} />
-//           </div>
-//           <span style={{ fontSize: "13px", lineHeight: "1.3em" }}>
-//             Kraftfahrzeuge mit einer zulässigen Gesamtmasse über 3,5...
-//           </span>
-//         </div>
-
-//         <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-//           <div style={iconWrapperSize}>
-//             <img src={SinnbildFußganger} style={singleIconStyInternalStyle} />
-//           </div>
-//           <span style={{ fontSize: "13px", lineHeight: "1.3em" }}>
-//             Kraftwagen und sonstige mehrspurige Kraftfahrzeuge
-//           </span>
-//         </div>
-//       </div>
-//     ),
-//   },
-//   {
-//     key: "2",
-//     label: (
-//       <div
-//         style={{
-//           display: "flex",
-//           justifyContent: "space-between",
-//           width: "100%",
-//         }}
-//       >
-//         <span style={titleGroupStyle}>Symbole der Richtlinien</span>
-//         <span style={{ fontSize: "12px", color: colorInactiv }}>21</span>
-//       </div>
-//     ),
-//     children: (
-//       <span>
-//         Kraftfahrzeuge mit einer zulässigen Gesamtmasse über 3,5 t,
-//         einschließlich ihrer Anhänger, und Zugmaschinen, ausgenommen
-//         Personenkraft­wa­gen und Kraftomni­bus­se
-//       </span>
-//     ),
-//   },
-//   {
-//     key: "3",
-//     label: (
-//       <div
-//         style={{
-//           display: "flex",
-//           justifyContent: "space-between",
-//           width: "100%",
-//         }}
-//       >
-//         <span style={titleGroupStyle}>Gefahrzeichen nach Anlage 1</span>
-//         <span style={{ fontSize: "12px", color: colorInactiv }}>10</span>
-//       </div>
-//     ),
-//     children: (
-//       <span>
-//         Kraftfahrzeuge mit einer zulässigen Gesamtmasse über 3,5 t,
-//         einschließlich ihrer Anhänger, und Zugmaschinen, ausgenommen
-//         Personenkraft­wa­gen und Kraftomni­bus­se
-//       </span>
-//     ),
-//     children: <span>Fußgänger</span>,
-//   },
-//   {
-//     key: "4",
-//     label: (
-//       <div
-//         style={{
-//           display: "flex",
-//           justifyContent: "space-between",
-//           width: "100%",
-//         }}
-//       >
-//         <span style={titleGroupStyle}>Allgemeine Gefahrzeichen</span>
-//         <span style={{ fontSize: "12px", color: colorInactiv }}>18</span>
-//       </div>
-//     ),
-//     children: (
-//       <span>
-//         Kraftfahrzeuge mit einer zulässigen Gesamtmasse über 3,5 t,
-//         einschließlich ihrer Anhänger, und Zugmaschinen, ausgenommen
-//         Personenkraft­wa­gen und Kraftomni­bus­se
-//       </span>
-//     ),
-//     children: <p>Fußgänger</p>,
-//   },
-//   {
-//     key: "5",
-//     label: (
-//       <div
-//         style={{
-//           display: "flex",
-//           justifyContent: "space-between",
-//           width: "100%",
-//         }}
-//       >
-//         <span style={titleGroupStyle}>
-//           Besondere Gefahrzeichen vor Übergängen von Schienenbahnen mit Vorrang
-//         </span>
-//         <span style={{ fontSize: "12px", color: colorInactiv }}>34</span>
-//       </div>
-//     ),
-//     children: (
-//       <span>
-//         Kraftfahrzeuge mit einer zulässigen Gesamtmasse über 3,5 t,
-//         einschließlich ihrer Anhänger, und Zugmaschinen, ausgenommen
-//         Personenkraft­wa­gen und Kraftomni­bus­se
-//       </span>
-//     ),
-//     children: <p>Fußgänger</p>,
-//   },
-// ];
-
-// const itemsOnlyIcon = [
-//   {
-//     key: "1",
-//     label: (
-//       <div
-//         style={{
-//           display: "flex",
-//           justifyContent: "space-between",
-//           width: "100%",
-//         }}
-//       >
-//         <span style={titleGroupStyle}>Absatz 7</span>
-//         <span style={{ fontSize: "12px", color: colorInactiv }}>64</span>
-//       </div>
-//     ),
-//     children: (
-//       <div
-//         style={{
-//           display: "flex",
-//           gap: "10px",
-//           flexWrap: "wrap",
-//           marginRight: "-18px",
-//         }}
-//       >
-//         <div style={onlyIconItemsStyle}>
-//           <img src={SinnbildIcons} style={onlyImageInternalStyle} />
-//         </div>
-//         <div style={onlyIconItemsStyle}>
-//           <img src={SinnbildLKWvg} style={onlyImageInternalStyle} />
-//         </div>
-//         <div style={onlyIconItemsStyle}>
-//           <img src={SinnbildFußganger} style={onlyImageInternalStyle} />
-//         </div>
-//         <div style={onlyIconItemsStyle}>
-//           <img src={Sinnbild_Radfahrer} style={onlyImageInternalStyle} />
-//         </div>
-//         <div style={onlyIconItemsStyle}>
-//           <img src={Sinnbild_Reiter} style={onlyImageInternalStyle} />
-//         </div>
-//         <div style={onlyIconItemsStyle}>
-//           <img src={Sinnbild_Viehtrieb} style={onlyImageInternalStyle} />
-//         </div>
-//         <div style={onlyIconItemsStyle}>
-//           <img src={Sinnbild_Straßenbahn} style={onlyImageInternalStyle} />
-//         </div>
-//         <div style={onlyIconItemsStyle}>
-//           <img src={Sinnbild_Gespannfuhrwerk} style={onlyImageInternalStyle} />
-//         </div>
-//         <div style={onlyIconItemsStyle}>
-//           <img src={Sinnbild_Traktor} style={onlyImageInternalStyle} />
-//         </div>
-//         <div style={onlyIconItemsStyle}>
-//           <img src={Sinnbild_Kraftrad} style={onlyImageInternalStyle} />
-//         </div>
-//         <div style={onlyIconItemsStyle}>
-//           <img
-//             src={Einsitzige_zweirädrige_Kleinkrafträder}
-//             style={onlyImageInternalStyle}
-//           />
-//         </div>
-//       </div>
-//     ),
-//   },
-//   {
-//     key: "2",
-//     label: (
-//       <div
-//         style={{
-//           display: "flex",
-//           justifyContent: "space-between",
-//           width: "100%",
-//         }}
-//       >
-//         <span style={titleGroupStyle}>Symbole der Richtlinien</span>
-//         <span style={{ fontSize: "12px", color: colorInactiv }}>21</span>
-//       </div>
-//     ),
-//     children: (
-//       <div
-//         style={{
-//           display: "flex",
-//           gap: "9.9px",
-//           flexWrap: "wrap",
-//           marginRight: "-20px",
-//         }}
-//       >
-//         <div style={onlyIconItemsStyle}>
-//           <img src={Sinnbild_Radfahrer} style={onlyImageInternalStyle} />
-//         </div>
-//         <div style={onlyIconItemsStyle}>
-//           <img src={Sinnbild_Reiter} style={onlyImageInternalStyle} />
-//         </div>
-//         <div style={onlyIconItemsStyle}>
-//           <img src={Sinnbild_Viehtrieb} style={onlyImageInternalStyle} />
-//         </div>
-//         <div style={onlyIconItemsStyle}>
-//           <img src={Sinnbild_Straßenbahn} style={onlyImageInternalStyle} />
-//         </div>
-//         <div style={onlyIconItemsStyle}>
-//           <img src={Sinnbild_Gespannfuhrwerk} style={onlyImageInternalStyle} />
-//         </div>
-//         <div style={onlyIconItemsStyle}>
-//           <img src={Sinnbild_Traktor} style={onlyImageInternalStyle} />
-//         </div>
-//         <div style={onlyIconItemsStyle}>
-//           <img src={Sinnbild_Kraftrad} style={onlyImageInternalStyle} />
-//         </div>
-//         <div style={onlyIconItemsStyle}>
-//           <img
-//             src={Einsitzige_zweirädrige_Kleinkrafträder}
-//             style={onlyImageInternalStyle}
-//           />
-//         </div>
-//       </div>
-//     ),
-//   },
-//   {
-//     key: "3",
-//     label: (
-//       <div
-//         style={{
-//           display: "flex",
-//           justifyContent: "space-between",
-//           width: "100%",
-//         }}
-//       >
-//         <span style={titleGroupStyle}>Gefahrzeichen nach Anlage 1</span>
-//         <span style={{ fontSize: "12px", color: colorInactiv }}>10</span>
-//       </div>
-//     ),
-//     children: <span></span>,
-//     children: <span></span>,
-//   },
-//   {
-//     key: "4",
-//     label: (
-//       <div
-//         style={{
-//           display: "flex",
-//           justifyContent: "space-between",
-//           width: "100%",
-//         }}
-//       >
-//         <span>Allgemeine Gefahrzeichen</span>
-//         <span style={{ fontSize: "12px", color: colorInactiv }}>18</span>
-//       </div>
-//     ),
-//     children: <span></span>,
-//     children: <p>Fußgänger</p>,
-//   },
-//   // {
-//   //   key: "4",
-//   //   label: (
-//   //     <div
-//   //       style={{
-//   //         display: "flex",
-//   //         justifyContent: "space-between",
-//   //         width: "100%",
-//   //       }}
-//   //     >
-//   //       <span>
-//   //         Besondere Gefahrzeichen vor Übergängen von Schienenbahnen mit Vorrang
-//   //       </span>
-//   //       <span style={{ fontSize: "12px", color: colorInactiv }}>18</span>
-//   //     </div>
-//   //   ),
-//   //   children: <span></span>,
-//   //   children: <p>Fußgänger</p>,
-//   // },
-// ];
 
 const onChangeCollapseHandle = (key) => {
   console.log(key);
@@ -442,12 +124,19 @@ export const DesignerInitData = ({
         ),
       };
     });
-
     const compsWithTextDescription = data.map((g) => {
       const groupItems = g.iconsArr.map((icon) => {
         return (
-          <div key={icon.iconId} style={iconWrapperSize}>
-            <img src={`/${icon.fileName}`} style={singleIconStyInternalStyle} />
+          <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+            <div style={iconWrapperSize}>
+              <img
+                src={`/${icon.fileName}`}
+                style={singleIconStyInternalStyle}
+              />
+            </div>
+            <span style={{ fontSize: "13px", lineHeight: "1.3em" }}>
+              Kraftwagen und sonstige mehrspurige Kraftfahrzeuge
+            </span>
           </div>
         );
       });
@@ -472,9 +161,9 @@ export const DesignerInitData = ({
           <div
             style={{
               display: "flex",
+              flexDirection: "column",
               gap: "10px",
-              flexWrap: "wrap",
-              marginRight: "-18px",
+              color: colorTextBlack,
             }}
           >
             {groupItems.map((item) => item)}
@@ -489,7 +178,10 @@ export const DesignerInitData = ({
 
   return (
     <>
-      <div style={{ height: "700px", display: "flex" }}>
+      <div
+        className="excalidraw-custom-wrapper"
+        style={{ height: "700px", display: "flex" }}
+      >
         <Excalidraw />
         <div
           style={{
@@ -568,11 +260,10 @@ export const DesignerInitData = ({
                 })} 
               </div>*/}
               <Collapse
-                items={itemsOnlyIcon}
+                items={onlyIconMode ? itemsWithTextDescription : itemsOnlyIcon}
                 ghost
                 defaultActiveKey={["1"]}
                 _onChange={onChangeCollapseHandle}
-                // style={{ marginRight: "-8px" }}
               />
             </div>
           </div>
