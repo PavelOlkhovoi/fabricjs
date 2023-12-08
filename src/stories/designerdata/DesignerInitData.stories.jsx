@@ -64,6 +64,64 @@ const onlyImageInternalStyle = { height: "calc(100% - 10px)" };
 const onChangeCollapseHandle = (key) => {
   console.log(key);
 };
+const onlyIconView = (iconsData) => {
+  return (
+    <div
+      style={{
+        display: "flex",
+        gap: "10px",
+        flexWrap: "wrap",
+        marginRight: "-18px",
+      }}
+    >
+      {iconsData.map((icon) => (
+        <div key={icon.iconId} style={iconWrapperSize}>
+          <img src={`/${icon.fileName}`} style={singleIconStyInternalStyle} />
+        </div>
+      ))}
+    </div>
+  );
+};
+const iconWithDescriptionView = (iconsData) => {
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "10px",
+        color: colorTextBlack,
+      }}
+    >
+      {iconsData.map((icon) => (
+        <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+          <div style={iconWrapperSize}>
+            <img src={`/${icon.fileName}`} style={singleIconStyInternalStyle} />
+          </div>
+          <span style={{ fontSize: "13px", lineHeight: "1.3em" }}>
+            {icon.iconsTitle}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+const labelView = (group) => (
+  <div
+    style={{
+      display: "flex",
+      justifyContent: "space-between",
+      width: "100%",
+      color: colorTextBlack,
+    }}
+  >
+    <span style={titleGroupStyle}>{group.groupTitle}</span>
+    <span style={{ fontSize: "12px", color: colorInactiv }}>
+      {group.iconsArr.length}
+    </span>
+  </div>
+);
+
 export const DesignerInitData = ({
   dataIn = roadSigns,
   extractor = libraryExtractor,
@@ -77,92 +135,27 @@ export const DesignerInitData = ({
   const [onlyIconMode, setOnlyIconMode] = useState(true);
   const [itemsOnlyIcon, setItemsOnlyIcon] = useState();
   const [itemsWithTextDescription, setItemsWithTextDescription] = useState();
-  const onlyIconView = (iconData) => (
-    <div key={iconData.iconId} style={iconWrapperSize}>
-      <img src={`/${iconData.fileName}`} style={singleIconStyInternalStyle} />
-    </div>
-  );
-  const iconWithDescriptionView = (iconData) => (
-    <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-      <div style={iconWrapperSize}>
-        <img src={`/${iconData.fileName}`} style={singleIconStyInternalStyle} />
-      </div>
-      <span style={{ fontSize: "13px", lineHeight: "1.3em" }}>
-        {iconData.iconsTitle}
-      </span>
-    </div>
-  );
 
   useEffect(() => {
-    const compsOnlyIcons = data.map((g) => {
-      const groupItems = g.iconsArr.map((icon) => {
-        return onlyIconView(icon);
-      });
-      return {
-        key: g.id,
-        label: (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              width: "100%",
-              color: colorTextBlack,
-            }}
-          >
-            <span style={titleGroupStyle}>{g.groupTitle}</span>
-            <span style={{ fontSize: "12px", color: colorInactiv }}>
-              {groupItems.length}
-            </span>
-          </div>
-        ),
-        children: (
-          <div
-            style={{
-              display: "flex",
-              gap: "10px",
-              flexWrap: "wrap",
-              marginRight: "-18px",
-            }}
-          >
-            {groupItems.map((item) => item)}
-          </div>
-        ),
+    const compsWithTextDescription = [];
+    const compsOnlyIcons = [];
+
+    data.forEach((g) => {
+      const id = g.id;
+      const label = labelView(g);
+      const onlyIconObj = {
+        id,
+        label,
+        children: onlyIconView(g.iconsArr),
       };
-    });
-    const compsWithTextDescription = data.map((g) => {
-      const groupItems = g.iconsArr.map((icon) => {
-        return iconWithDescriptionView(icon);
-      });
-      return {
-        key: g.id,
-        label: (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              width: "100%",
-              color: colorTextBlack,
-            }}
-          >
-            <span style={titleGroupStyle}>{g.groupTitle}</span>
-            <span style={{ fontSize: "12px", color: colorInactiv }}>
-              {groupItems.length}
-            </span>
-          </div>
-        ),
-        children: (
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "10px",
-              color: colorTextBlack,
-            }}
-          >
-            {groupItems.map((item) => item)}
-          </div>
-        ),
+      compsOnlyIcons.push(onlyIconObj);
+      const iconWithDescriptionObj = {
+        id,
+        label,
+        children: iconWithDescriptionView(g.iconsArr),
       };
+
+      compsWithTextDescription.push(iconWithDescriptionObj);
     });
 
     setItemsOnlyIcon(compsOnlyIcons);
