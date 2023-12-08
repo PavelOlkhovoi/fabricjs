@@ -136,6 +136,13 @@ export const DesignerInitData = ({
   const [itemsOnlyIcon, setItemsOnlyIcon] = useState();
   const [itemsWithTextDescription, setItemsWithTextDescription] = useState();
 
+  const [searchText, setSearchText] = useState("");
+
+  const [filtredDataOnlyIcon, setFiltredDataOnlyIcon] = useState([]);
+  const [filtredDataIconDescription, setFiltredDataIconDescription] = useState(
+    []
+  );
+
   useEffect(() => {
     const compsWithTextDescription = [];
     const compsOnlyIcons = [];
@@ -161,6 +168,39 @@ export const DesignerInitData = ({
     setItemsOnlyIcon(compsOnlyIcons);
     setItemsWithTextDescription(compsWithTextDescription);
   }, [data]);
+
+  useEffect(() => {
+    const compsWithTextDescription = [];
+    const compsOnlyIcons = [];
+
+    data.forEach((g) => {
+      const searchTermIcons = g.iconsArr.filter((icon) =>
+        icon.iconsTitle.toLowerCase().includes(searchText.toLowerCase())
+      );
+
+      if (searchTermIcons.length !== 0) {
+        const id = g.id;
+        const label = labelView(g);
+        const onlyIconObj = {
+          id,
+          label,
+          children: onlyIconView(searchTermIcons),
+        };
+        compsOnlyIcons.push(onlyIconObj);
+        const iconWithDescriptionObj = {
+          id,
+          label,
+          children: iconWithDescriptionView(searchTermIcons),
+        };
+
+        compsWithTextDescription.push(iconWithDescriptionObj);
+      }
+    });
+
+    setFiltredDataOnlyIcon(compsOnlyIcons);
+    setFiltredDataIconDescription(compsWithTextDescription);
+    console.log("xxx search", searchText);
+  }, [searchText]);
 
   return (
     <>
@@ -211,6 +251,9 @@ export const DesignerInitData = ({
             <Input
               size="large"
               prefix={<SearchOutlined />}
+              allowClear
+              onPressEnter={(e) => setSearchText(e.target.value)}
+              onClear={(e) => setSearchText("")}
               style={{
                 height: "40px",
                 marginTop: "8px",
@@ -240,12 +283,27 @@ export const DesignerInitData = ({
                   />
                 </div>
               </div>
-              <Collapse
-                items={onlyIconMode ? itemsWithTextDescription : itemsOnlyIcon}
-                ghost
-                defaultActiveKey={["1"]}
-                _onChange={onChangeCollapseHandle}
-              />
+              {searchText === "" ? (
+                <Collapse
+                  items={
+                    onlyIconMode ? itemsOnlyIcon : itemsWithTextDescription
+                  }
+                  ghost
+                  defaultActiveKey={["1"]}
+                  _onChange={onChangeCollapseHandle}
+                />
+              ) : (
+                <Collapse
+                  items={
+                    onlyIconMode
+                      ? filtredDataOnlyIcon
+                      : filtredDataIconDescription
+                  }
+                  ghost
+                  defaultActiveKey={["1"]}
+                  _onChange={onChangeCollapseHandle}
+                />
+              )}
             </div>
           </div>
         </div>
