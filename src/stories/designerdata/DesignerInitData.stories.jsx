@@ -170,36 +170,39 @@ export const DesignerInitData = ({
   }, [data]);
 
   useEffect(() => {
-    const compsWithTextDescription = [];
-    const compsOnlyIcons = [];
+    console.log("yyy search", searchText);
 
-    data.forEach((g) => {
-      const searchTermIcons = g.iconsArr.filter((icon) =>
-        icon.iconsTitle.toLowerCase().includes(searchText.toLowerCase())
-      );
+    if (searchText !== "") {
+      const compsWithTextDescription = [];
+      const compsOnlyIcons = [];
 
-      if (searchTermIcons.length !== 0) {
-        const id = g.id;
-        const label = labelView(g);
-        const onlyIconObj = {
-          id,
-          label,
-          children: onlyIconView(searchTermIcons),
-        };
-        compsOnlyIcons.push(onlyIconObj);
-        const iconWithDescriptionObj = {
-          id,
-          label,
-          children: iconWithDescriptionView(searchTermIcons),
-        };
+      data.forEach((g) => {
+        const searchTermIcons = g.iconsArr.filter((icon) =>
+          icon.iconsTitle.toLowerCase().includes(searchText.toLowerCase())
+        );
 
-        compsWithTextDescription.push(iconWithDescriptionObj);
-      }
-    });
+        if (searchTermIcons.length !== 0) {
+          const id = g.id;
+          const label = labelView(g);
+          const onlyIconObj = {
+            id,
+            label,
+            children: onlyIconView(searchTermIcons),
+          };
+          compsOnlyIcons.push(onlyIconObj);
+          const iconWithDescriptionObj = {
+            id,
+            label,
+            children: iconWithDescriptionView(searchTermIcons),
+          };
 
-    setFiltredDataOnlyIcon(compsOnlyIcons);
-    setFiltredDataIconDescription(compsWithTextDescription);
-    console.log("xxx search", searchText);
+          compsWithTextDescription.push(iconWithDescriptionObj);
+        }
+      });
+
+      setFiltredDataOnlyIcon(compsOnlyIcons);
+      setFiltredDataIconDescription(compsWithTextDescription);
+    }
   }, [searchText]);
 
   return (
@@ -252,8 +255,12 @@ export const DesignerInitData = ({
               size="large"
               prefix={<SearchOutlined />}
               allowClear
-              onPressEnter={(e) => setSearchText(e.target.value)}
-              onClear={(e) => setSearchText("")}
+              onPressEnter={(e) => {
+                console.log("yyy on Press enter");
+                setSearchText(e.target.value);
+              }}
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
               style={{
                 height: "40px",
                 marginTop: "8px",
