@@ -1,7 +1,14 @@
-import { Excalidraw, MainMenu, Sidebar, Footer } from "@excalidraw/excalidraw";
+import {
+  Excalidraw,
+  MainMenu,
+  Sidebar,
+  Footer,
+  defaultLang,
+  languages,
+} from "@excalidraw/excalidraw";
 import { useEffect, useState } from "react";
 import "./designer-style.css";
-import { Input, Collapse, Divider } from "antd";
+import { Input, Collapse, Divider, Mentions } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import {
   CloseOutlined,
@@ -50,7 +57,6 @@ const onlyIconItemsStyle = {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  border: "1px solid #ECECF4",
 };
 
 const titleGroupStyle = {
@@ -132,6 +138,12 @@ export const DesignerInitData = ({
     setData(extractor(dataIn));
   }, [dataIn]);
 
+  const UIOptions = {
+    canvasActions: {
+      saveAsImage: false,
+    },
+  };
+
   const [onlyIconMode, setOnlyIconMode] = useState(true);
   const [itemsOnlyIcon, setItemsOnlyIcon] = useState();
   const [itemsWithTextDescription, setItemsWithTextDescription] = useState();
@@ -170,7 +182,7 @@ export const DesignerInitData = ({
   }, [data]);
 
   useEffect(() => {
-    console.log("yyy search", searchText);
+    console.log("iii", MainMenu.DefaultItems.ClearCanvas);
 
     if (searchText !== "") {
       const compsWithTextDescription = [];
@@ -209,19 +221,35 @@ export const DesignerInitData = ({
     <>
       <div
         className="excalidraw-custom-wrapper"
-        style={{ height: "700px", display: "flex" }}
+        style={{
+          height: "700px",
+          display: "flex",
+          border: "1px solid red",
+        }}
       >
-        <Excalidraw />
+        <Excalidraw UIOptions={UIOptions} langCode="de-DE">
+          <MainMenu style={{ width: "500px" }}>
+            {/* <MainMenu.DefaultItems.Socials /> */}
+            <MainMenu.DefaultItems.Export />
+            <MainMenu.DefaultItems.Help />
+            <MainMenu.DefaultItems.SaveToActiveFile />
+            {/* <MainMenu.DefaultItems.ToggleTheme /> */}
+            <MainMenu.DefaultItems.LoadScene />
+            <MainMenu.DefaultItems.ClearCanvas />
+            <Divider />
+            <MainMenu.DefaultItems.ChangeCanvasBackground />
+          </MainMenu>
+        </Excalidraw>
         <div
           style={{
-            marginLeft: "20px",
+            margin: "14px 0 12px 20px",
             width: "340px",
             border: "1px solid #F0F0F0",
             padding: "10px 20px",
             boxShadow: "rgba(15, 14, 15, 0.07) 0px 5px 9px 1px",
             borderRadius: "12px",
             overflow: "auto",
-            height: "700px",
+            height: "650px",
             color: "#1b1b1f",
           }}
         >
