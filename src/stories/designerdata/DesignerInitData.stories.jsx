@@ -9,16 +9,18 @@ import {
 import { useEffect, useState } from "react";
 import "./designer-style.css";
 import { Input, Collapse, Divider, Mentions } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import { SearchOutlined, PoweroffOutlined } from "@ant-design/icons";
 import {
   CloseOutlined,
   PushpinOutlined,
   UnorderedListOutlined,
   AppstoreOutlined,
+  BookOutlined,
 } from "@ant-design/icons";
 import { roadSigns } from "./dataSigns";
 import { libraryExtractor } from "./libraryExtractor";
-
+import MapFoto from "../assets/mapexample.png";
+import { Button } from "antd";
 export default {
   title: "Library Custom/DesignerInitData",
 };
@@ -132,6 +134,7 @@ export const DesignerInitData = ({
   dataIn = roadSigns,
   extractor = libraryExtractor,
   activeMode = false,
+  // map = MapFoto,
 }) => {
   const [data, setData] = useState([]);
   useEffect(() => {
@@ -143,10 +146,11 @@ export const DesignerInitData = ({
       saveAsImage: false,
     },
   };
-
+  const [showLibrary, setShowLibrary] = useState(false);
   const [onlyIconMode, setOnlyIconMode] = useState(true);
   const [itemsOnlyIcon, setItemsOnlyIcon] = useState();
   const [itemsWithTextDescription, setItemsWithTextDescription] = useState();
+  const [ifPinnedLibrary, setIfPinnedLibrary] = useState(true);
 
   const [searchText, setSearchText] = useState("");
 
@@ -224,10 +228,34 @@ export const DesignerInitData = ({
         style={{
           height: "700px",
           display: "flex",
-          border: "1px solid red",
         }}
       >
-        <Excalidraw UIOptions={UIOptions} langCode="de-DE">
+        <Excalidraw
+          UIOptions={UIOptions}
+          langCode="de-DE"
+          renderTopRightUI={() => {
+            return (
+              <div
+                style={{
+                  background: "#ECECF4",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  padding: "10.5px",
+                  borderRadius: "9px",
+                  width: "80px",
+                  color: "#5B5B60",
+                  fontSize: "12px",
+                  cursor: "pointer",
+                }}
+                onClick={() => setShowLibrary(!showLibrary)}
+              >
+                <BookOutlined />
+                <span style={{ marginLeft: "10px" }}>Bibliothek</span>
+              </div>
+            );
+          }}
+        >
           <MainMenu style={{ width: "500px" }}>
             {/* <MainMenu.DefaultItems.Socials /> */}
             <MainMenu.DefaultItems.Export />
@@ -240,107 +268,160 @@ export const DesignerInitData = ({
             <MainMenu.DefaultItems.ChangeCanvasBackground />
           </MainMenu>
         </Excalidraw>
-        <div
-          style={{
-            margin: "14px 0 12px 20px",
-            width: "340px",
-            border: "1px solid #F0F0F0",
-            padding: "10px 20px",
-            boxShadow: "rgba(15, 14, 15, 0.07) 0px 5px 9px 1px",
-            borderRadius: "12px",
-            overflow: "auto",
-            height: "650px",
-            color: "#1b1b1f",
-          }}
-        >
-          <div style={{ margin: "26px 0" }}>
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <span style={libraryTitle}>Bibliothek</span>
-              <div style={{ marginLeft: "auto" }}>
-                <PushpinOutlined
-                  style={{
-                    color: "#a5a5a5",
-                    fontSize: "16px",
-                    fontWeight: "bold",
-                    marginRight: "12px",
-                  }}
-                />
-                <CloseOutlined
-                  style={{
-                    // color: colorPrimary,
-                    fontSize: "16px",
-                    fontWeight: "medium",
-                    color: "#1b1b1f",
-                  }}
-                />
-              </div>
-            </div>
-            <Divider style={{ margin: "22px 0px" }} />
-          </div>
-          <div style={{ margin: "30px 0px" }}>
-            <span style={libraryTitle}>Suche</span>
-            <Input
-              size="large"
-              prefix={<SearchOutlined />}
-              allowClear
-              onPressEnter={(e) => {
-                console.log("yyy on Press enter");
-                setSearchText(e.target.value);
-              }}
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
+
+        <div style={{ display: ifPinnedLibrary ? "block" : "none" }}>
+          {showLibrary ? (
+            <div
               style={{
-                height: "40px",
-                marginTop: "8px",
+                margin: "14px 0 12px 20px",
+                width: "338px",
+                border: "1px solid #F0F0F0",
+                padding: "10px 20px",
+                boxShadow: "rgba(15, 14, 15, 0.07) 0px 5px 9px 1px",
+                borderRadius: "12px",
+                overflow: "auto",
+                height: "650px",
+                color: "#1b1b1f",
               }}
-            />
-            <div style={{ margin: "30px 0px 0px 0px" }}>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  marginBottom: "6px",
-                }}
-              >
-                <span style={libraryTitle}>Schilder</span>
-                <div style={{ display: "flex", gap: "12px" }}>
-                  <AppstoreOutlined
-                    style={{ color: !onlyIconMode && colorInactiv }}
-                    onClick={() => {
-                      setOnlyIconMode(true);
+            >
+              <div style={{ margin: "26px 0" }}>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <span style={libraryTitle}>Bibliothek</span>
+                  <div style={{ marginLeft: "auto" }}>
+                    <PushpinOutlined
+                      style={{
+                        color: "#a5a5a5",
+                        fontSize: "16px",
+                        fontWeight: "bold",
+                        marginRight: "12px",
+                      }}
+                      onClick={() => setIfPinnedLibrary(false)}
+                    />
+                    {/* <a href="http://localhost:5173/" target="_blank">
+                      <PushpinOutlined
+                        style={{
+                          color: "#a5a5a5",
+                          fontSize: "16px",
+                          fontWeight: "bold",
+                          marginRight: "12px",
+                        }}
+                      />
+                    </a> */}
+
+                    <CloseOutlined
+                      onClick={() => setShowLibrary(!showLibrary)}
+                      style={{
+                        // color: colorPrimary,
+                        fontSize: "16px",
+                        fontWeight: "medium",
+                        color: "#1b1b1f",
+                      }}
+                    />
+                  </div>
+                </div>
+                <Divider style={{ margin: "22px 0px" }} />
+              </div>
+              <div style={{ margin: "30px 0px" }}>
+                <span style={libraryTitle}>Suche</span>
+                <Input
+                  size="large"
+                  prefix={<SearchOutlined />}
+                  allowClear
+                  onPressEnter={(e) => {
+                    console.log("yyy on Press enter");
+                    setSearchText(e.target.value);
+                  }}
+                  value={searchText}
+                  onChange={(e) => setSearchText(e.target.value)}
+                  style={{
+                    height: "40px",
+                    marginTop: "8px",
+                  }}
+                />
+                <div style={{ margin: "30px 0px 0px 0px" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      marginBottom: "6px",
                     }}
-                  />
-                  <UnorderedListOutlined
-                    onClick={() => {
-                      setOnlyIconMode(false);
-                    }}
-                    style={{ color: onlyIconMode && colorInactiv }}
-                  />
+                  >
+                    <span style={libraryTitle}>Schilder</span>
+                    <div style={{ display: "flex", gap: "12px" }}>
+                      <AppstoreOutlined
+                        style={{ color: !onlyIconMode && colorInactiv }}
+                        onClick={() => {
+                          setOnlyIconMode(true);
+                        }}
+                      />
+                      <UnorderedListOutlined
+                        onClick={() => {
+                          setOnlyIconMode(false);
+                        }}
+                        style={{ color: onlyIconMode && colorInactiv }}
+                      />
+                    </div>
+                  </div>
+                  {searchText === "" ? (
+                    <Collapse
+                      items={
+                        onlyIconMode ? itemsOnlyIcon : itemsWithTextDescription
+                      }
+                      ghost
+                      defaultActiveKey={["1"]}
+                      _onChange={onChangeCollapseHandle}
+                    />
+                  ) : (
+                    <Collapse
+                      items={
+                        onlyIconMode
+                          ? filtredDataOnlyIcon
+                          : filtredDataIconDescription
+                      }
+                      ghost
+                      defaultActiveKey={["1"]}
+                      _onChange={onChangeCollapseHandle}
+                    />
+                  )}
                 </div>
               </div>
-              {searchText === "" ? (
-                <Collapse
-                  items={
-                    onlyIconMode ? itemsOnlyIcon : itemsWithTextDescription
-                  }
-                  ghost
-                  defaultActiveKey={["1"]}
-                  _onChange={onChangeCollapseHandle}
-                />
-              ) : (
-                <Collapse
-                  items={
-                    onlyIconMode
-                      ? filtredDataOnlyIcon
-                      : filtredDataIconDescription
-                  }
-                  ghost
-                  defaultActiveKey={["1"]}
-                  _onChange={onChangeCollapseHandle}
-                />
-              )}
             </div>
-          </div>
+          ) : (
+            <div style={{ margin: "16px 0 0px 0px" }}>
+              {/* <Button
+                icon={<BookOutlined />}
+                size="large"
+                style={{
+                  background: "#ECECF4",
+                  color: "5B5B60",
+                  fontSize: "12px",
+                  // padding: "8px 0",
+                }}
+                onClick={() => setShowLibrary(!showLibrary)}
+              >
+                Bibliothek
+              </Button> */}
+              {/* <div
+                style={{
+                  background: "#ECECF4",
+                  displlay: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  padding: "10.5px",
+                  borderRadius: "9px",
+                  width: "80px",
+                  color: "#5B5B60",
+                  fontSize: "12px",
+                  cursor: "pointer",
+                  fontFamily: "Assistant",
+                }}
+                onClick={() => setShowLibrary(!showLibrary)}
+              >
+                <BookOutlined />
+                <span style={{ marginLeft: "10px" }}>Bibliothek</span>
+              </div> */}
+            </div>
+          )}
         </div>
       </div>
     </>
