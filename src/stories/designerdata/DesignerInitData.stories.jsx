@@ -9,7 +9,8 @@ import {
 import { useEffect, useState } from "react";
 import "./designer-style.css";
 import { Input, Collapse, Divider, Mentions } from "antd";
-import { SearchOutlined, PoweroffOutlined } from "@ant-design/icons";
+import { SearchOutlined, DeleteOutlined } from "@ant-design/icons";
+
 import {
   CloseOutlined,
   PushpinOutlined,
@@ -141,6 +142,8 @@ export const DesignerInitData = ({
     setData(extractor(dataIn));
   }, [dataIn]);
 
+  const [excalidrawAPI, setExcalidrawAPI] = useState(null);
+
   const UIOptions = {
     canvasActions: {
       saveAsImage: false,
@@ -220,7 +223,9 @@ export const DesignerInitData = ({
       setFiltredDataIconDescription(compsWithTextDescription);
     }
   }, [searchText]);
-
+  const resetScene = () => {
+    excalidrawAPI.resetScene();
+  };
   return (
     <>
       <div
@@ -231,6 +236,7 @@ export const DesignerInitData = ({
         }}
       >
         <Excalidraw
+          excalidrawAPI={(api) => setExcalidrawAPI(api)}
           UIOptions={UIOptions}
           langCode="de-DE"
           renderTopRightUI={() => {
@@ -263,7 +269,15 @@ export const DesignerInitData = ({
             <MainMenu.DefaultItems.SaveToActiveFile />
             {/* <MainMenu.DefaultItems.ToggleTheme /> */}
             <MainMenu.DefaultItems.LoadScene />
-            <MainMenu.DefaultItems.ClearCanvas />
+            {/* <MainMenu.DefaultItems.ClearCanvas /> */}
+            <MainMenu.Item
+              onSelect={resetScene}
+              icon={
+                <DeleteOutlined style={{ fontSize: "8px", color: "#5B5B60" }} />
+              }
+            >
+              <span>Zeichenfläche löschen</span>
+            </MainMenu.Item>
             <Divider />
             <MainMenu.DefaultItems.ChangeCanvasBackground />
           </MainMenu>
