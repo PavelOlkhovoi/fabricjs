@@ -226,7 +226,7 @@ export const DesignerDetached = ({
               }}
             >
               <span style={libraryTitle}>Bibliothek</span>
-              <div style={{ marginLeft: "auto" }}>
+              {/* <div style={{ marginLeft: "auto" }}>
                 <PushpinOutlined
                   style={{
                     fontSize: "16px",
@@ -234,7 +234,7 @@ export const DesignerDetached = ({
                   }}
                   onClick={() => setIfPinnedLibrary(false)}
                 />
-              </div>
+              </div> */}
             </div>
             <Divider style={{ margin: "22px 0px" }} />
           </div>

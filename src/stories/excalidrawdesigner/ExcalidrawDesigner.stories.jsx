@@ -1079,106 +1079,252 @@ export const DesignerWrapperGridBorderSearch = ({
   );
 };
 
-export const GridExampleForIcons = () => {
-  return (
-    <div style={{ height: "700px", display: "flex" }}>
-      <Excalidraw />
-      <div
-        style={{
-          marginLeft: "20px",
-          width: "340px",
-          borderLeft: "1px solid #F0F0F0",
-          padding: "4px 28px 4px 28px",
+// export const GridExampleForIcons = () => {
+//   return (
+//     <div style={{ height: "700px", display: "flex" }}>
+//       <Excalidraw />
+//       <div
+//         style={{
+//           marginLeft: "20px",
+//           width: "340px",
+//           borderLeft: "1px solid #F0F0F0",
+//           padding: "4px 28px 4px 28px",
 
-          overflow: "auto",
-          height: "700px",
-          color: "#1b1b1f",
-        }}
-      >
-        <div style={{ margin: "26px 0" }}>
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <span style={libraryTitle}>Bibliothek</span>
-            <div style={{ marginLeft: "auto" }}>
-              <PushpinOutlined
-                style={{
-                  color: "#a5a5a5",
-                  fontSize: "16px",
-                  fontWeight: "bold",
-                  marginRight: "12px",
-                }}
-              />
-              <CloseOutlined
-                style={{
-                  // color: colorPrimary,
-                  fontSize: "16px",
-                  fontWeight: "medium",
-                  color: "#1b1b1f",
-                }}
-              />
-            </div>
-          </div>
-          <Divider style={{ margin: "18px 0px" }} />
-        </div>
-        <div style={{ margin: "30px 0px" }}>
-          <span style={libraryTitle}>Suche</span>
-          <Input
-            size="large"
-            prefix={<SearchOutlined />}
-            style={{
-              height: "34px",
-              marginTop: "8px",
-            }}
-          />
-          <div style={{ margin: "30px 0px 0px 0px" }}>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                marginBottom: "6px",
-              }}
-            >
-              <span style={libraryTitle}>Schilder</span>
-              <div style={{ display: "flex", gap: "12px" }}>
-                <AppstoreOutlined style={{ color: colorInactiv }} />
-                <UnorderedListOutlined style={{ color: colorInactiv }} />
+//           overflow: "auto",
+//           height: "700px",
+//           color: "#1b1b1f",
+//         }}
+//       >
+//         <div style={{ margin: "26px 0" }}>
+//           <div style={{ display: "flex", alignItems: "center" }}>
+//             <span style={libraryTitle}>Bibliothek</span>
+//             <div style={{ marginLeft: "auto" }}>
+//               <PushpinOutlined
+//                 style={{
+//                   color: "#a5a5a5",
+//                   fontSize: "16px",
+//                   fontWeight: "bold",
+//                   marginRight: "12px",
+//                 }}
+//               />
+//               <CloseOutlined
+//                 style={{
+//                   // color: colorPrimary,
+//                   fontSize: "16px",
+//                   fontWeight: "medium",
+//                   color: "#1b1b1f",
+//                 }}
+//               />
+//             </div>
+//           </div>
+//           <Divider style={{ margin: "18px 0px" }} />
+//         </div>
+//         <div style={{ margin: "30px 0px" }}>
+//           <span style={libraryTitle}>Suche</span>
+//           <Input
+//             size="large"
+//             prefix={<SearchOutlined />}
+//             style={{
+//               height: "34px",
+//               marginTop: "8px",
+//             }}
+//           />
+//           <div style={{ margin: "30px 0px 0px 0px" }}>
+//             <div
+//               style={{
+//                 display: "flex",
+//                 justifyContent: "space-between",
+//                 marginBottom: "6px",
+//               }}
+//             >
+//               <span style={libraryTitle}>Schilder</span>
+//               <div style={{ display: "flex", gap: "12px" }}>
+//                 <AppstoreOutlined style={{ color: colorInactiv }} />
+//                 <UnorderedListOutlined style={{ color: colorInactiv }} />
+//               </div>
+//             </div>
+//             <div>
+//               <div class="grid-container">
+//                 <div style={{ width: "60px", height: "60px" }}>
+//                   <img src={SinnbildIcons} style={{ width: "100%" }} />
+//                 </div>
+//                 <div style={{ width: "60px", height: "60px" }}>
+//                   <img src={SinnbildLKWvg} style={{ width: "100%" }} />
+//                 </div>
+//                 <div
+//                   style={{
+//                     width: "60px",
+//                     height: "60px",
+//                     display: "flex",
+//                     // alignItems: "center",
+//                     justifyContent: "center",
+//                   }}
+//                 >
+//                   <img
+//                     src={SinnbildFußganger}
+//                     style={{ flex: "0 0", width: "100%" }}
+//                   />
+//                 </div>
+//                 <div style={{ width: "60px", height: "60px" }}>
+//                   <img src={Sinnbild_Radfahrer} style={{ width: "100%" }} />
+//                 </div>
+//                 <div style={{ width: "60px", height: "60px" }}>
+//                   <img src={Sinnbild_Reiter} style={{ width: "100%" }} />
+//                 </div>
+//                 <div style={{ width: "60px", height: "60px" }}>
+//                   <img src={Sinnbild_Viehtrieb} style={{ width: "100%" }} />
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export const SimpleFlexGrid = () => {
+//   const iconStyle = {
+//     boxSizing: "border-box",
+//     width: "calc(100%/4 - 10px)",
+//     // height: "30px",
+//     background: "blue",
+//     // margin: "10px",
+//     aspectRatio: "1/1",
+//   };
+//   return (
+//     <div
+//       style={{
+//         boxSizing: "border-box",
+//         // marginLeft: "-10px",
+//         // marginRight: "-10px",
+//         // width: "400px",
+//         // height: "300px",
+//         // border: "1px solid red",
+//       }}
+//     >
+//       <div
+//         style={{
+//           boxSizing: "border-box",
+//           display: "flex",
+//           flexWrap: "wrap",
+//           gap: "10px",
+//           width: "400px",
+//           height: "300px",
+//         }}
+//       >
+//         <div style={iconStyle}></div>
+//         <div style={iconStyle}></div>
+//         <div style={iconStyle}></div>
+//         <div style={iconStyle}></div>
+//         <div style={iconStyle}></div>
+//         <div style={iconStyle}></div>
+//         <div style={iconStyle}></div>
+//         <div style={iconStyle}></div>
+//         <div style={iconStyle}></div>
+//         <div style={iconStyle}></div>
+//         <div style={iconStyle}></div>
+//       </div>
+//     </div>
+//   );
+// };
+
+export const DesignerWrapperCategory = ({
+  initialData,
+  activeMode = false,
+}) => {
+  const [onlyIconMode, setOnlyIconMode] = useState(true);
+  const onChangeCollapseHandle = (key) => {
+    console.log(key);
+  };
+  const displayOnlyIconMode = () => {
+    setOnlyIconMode(true);
+  };
+  const displayIconModeWithText = () => {
+    setOnlyIconMode(false);
+  };
+  return (
+    <>
+      <div style={{ height: "700px", display: "flex" }}>
+        <Excalidraw />
+        <div
+          style={{
+            marginLeft: "20px",
+            width: "340px",
+            border: "1px solid #F0F0F0",
+            padding: "10px 20px",
+            boxShadow: "rgba(15, 14, 15, 0.07) 0px 5px 9px 1px",
+            borderRadius: "12px",
+            overflow: "auto",
+            height: "700px",
+            color: "#1b1b1f",
+          }}
+        >
+          <div style={{ margin: "26px 0" }}>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <span style={libraryTitle}>Bibliothek</span>
+              <div style={{ marginLeft: "auto" }}>
+                <PushpinOutlined
+                  style={{
+                    color: "#a5a5a5",
+                    fontSize: "16px",
+                    fontWeight: "bold",
+                    marginRight: "12px",
+                  }}
+                />
+                <CloseOutlined
+                  style={{
+                    // color: colorPrimary,
+                    fontSize: "16px",
+                    fontWeight: "medium",
+                    color: "#1b1b1f",
+                  }}
+                />
               </div>
             </div>
-            <div>
-              <div class="grid-container">
-                <div style={{ width: "60px", height: "60px" }}>
-                  <img src={SinnbildIcons} style={{ width: "100%" }} />
-                </div>
-                <div style={{ width: "60px", height: "60px" }}>
-                  <img src={SinnbildLKWvg} style={{ width: "100%" }} />
-                </div>
-                <div
-                  style={{
-                    width: "60px",
-                    height: "60px",
-                    display: "flex",
-                    // alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <img
-                    src={SinnbildFußganger}
-                    style={{ flex: "0 0", width: "100%" }}
+            <Divider style={{ margin: "22px 0px" }} />
+          </div>
+          <div style={{ margin: "30px 0px" }}>
+            <span style={libraryTitle}>Suche</span>
+            <Input
+              size="large"
+              prefix={<SearchOutlined />}
+              style={{
+                height: "40px",
+                marginTop: "8px",
+              }}
+            />
+            <div style={{ margin: "30px 0px 0px 0px" }}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  marginBottom: "6px",
+                }}
+              >
+                <span style={libraryTitle}>Schilder</span>
+                <div style={{ display: "flex", gap: "12px" }}>
+                  <AppstoreOutlined
+                    style={{ color: !onlyIconMode && colorInactiv }}
+                    onClick={displayIconModeWithText}
+                  />
+                  <UnorderedListOutlined
+                    onClick={displayOnlyIconMode}
+                    style={{ color: onlyIconMode && colorInactiv }}
                   />
                 </div>
-                <div style={{ width: "60px", height: "60px" }}>
-                  <img src={Sinnbild_Radfahrer} style={{ width: "100%" }} />
-                </div>
-                <div style={{ width: "60px", height: "60px" }}>
-                  <img src={Sinnbild_Reiter} style={{ width: "100%" }} />
-                </div>
-                <div style={{ width: "60px", height: "60px" }}>
-                  <img src={Sinnbild_Viehtrieb} style={{ width: "100%" }} />
-                </div>
               </div>
+              <Collapse
+                items={!onlyIconMode ? items : itemsOnlyIcon}
+                ghost
+                defaultActiveKey={["1"]}
+                onChange={onChangeCollapseHandle}
+                // style={{ marginRight: "-8px" }}
+              />
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
