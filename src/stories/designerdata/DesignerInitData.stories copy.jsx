@@ -135,58 +135,26 @@ export const DesignerInitData = ({
   const [itemsOnlyIcon, setItemsOnlyIcon] = useState();
   const [itemsWithTextDescription, setItemsWithTextDescription] = useState();
 
-  // useEffect(() => {
-  //   const compsWithTextDescription = [];
-  //   const compsOnlyIcons = [];
-
-  //   data.forEach((g) => {
-  //     const id = g.id;
-  //     const label = labelView(g);
-  //     const onlyIconObj = {
-  //       id,
-  //       label,
-  //       children: onlyIconView(g.iconsArr),
-  //     };
-  //     compsOnlyIcons.push(onlyIconObj);
-  //     const iconWithDescriptionObj = {
-  //       id,
-  //       label,
-  //       children: iconWithDescriptionView(g.iconsArr),
-  //     };
-
-  //     compsWithTextDescription.push(iconWithDescriptionObj);
-  //   });
-
-  //   setItemsOnlyIcon(compsOnlyIcons);
-  //   setItemsWithTextDescription(compsWithTextDescription);
-  // }, [data]);
-
   useEffect(() => {
-    const compsWithTextDescription = {};
-    const compsOnlyIcons = {};
+    const compsWithTextDescription = [];
+    const compsOnlyIcons = [];
 
-    data.forEach((section) => {
-      compsWithTextDescription[section.sectionTitle] = [];
-      compsOnlyIcons[section.sectionTitle] = [];
-      section.groups.forEach((g) => {
-        const id = g.id;
-        const label = labelView(g);
-        const onlyIconObj = {
-          id,
-          label,
-          children: onlyIconView(g.iconsArr),
-        };
-        compsOnlyIcons[section.sectionTitle].push(onlyIconObj);
-        const iconWithDescriptionObj = {
-          id,
-          label,
-          children: iconWithDescriptionView(g.iconsArr),
-        };
+    data.forEach((g) => {
+      const id = g.id;
+      const label = labelView(g);
+      const onlyIconObj = {
+        id,
+        label,
+        children: onlyIconView(g.iconsArr),
+      };
+      compsOnlyIcons.push(onlyIconObj);
+      const iconWithDescriptionObj = {
+        id,
+        label,
+        children: iconWithDescriptionView(g.iconsArr),
+      };
 
-        compsWithTextDescription[section.sectionTitle].push(
-          iconWithDescriptionObj
-        );
-      });
+      compsWithTextDescription.push(iconWithDescriptionObj);
     });
 
     setItemsOnlyIcon(compsOnlyIcons);
@@ -247,45 +215,37 @@ export const DesignerInitData = ({
                 marginTop: "8px",
               }}
             />
-            <div style={{ display: "flex", gap: "12px" }}>
-              <AppstoreOutlined
-                style={{ color: !onlyIconMode && colorInactiv }}
-                onClick={() => {
-                  setOnlyIconMode(true);
+            <div style={{ margin: "30px 0px 0px 0px" }}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  marginBottom: "6px",
                 }}
-              />
-              <UnorderedListOutlined
-                onClick={() => {
-                  setOnlyIconMode(false);
-                }}
-                style={{ color: onlyIconMode && colorInactiv }}
-              />
-            </div>
-            {data.map((section) => {
-              return (
-                <div style={{ margin: "30px 0px 0px 0px" }}>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      marginBottom: "6px",
+              >
+                <span style={libraryTitle}>Schilder</span>
+                <div style={{ display: "flex", gap: "12px" }}>
+                  <AppstoreOutlined
+                    style={{ color: !onlyIconMode && colorInactiv }}
+                    onClick={() => {
+                      setOnlyIconMode(true);
                     }}
-                  >
-                    <span style={libraryTitle}>{section.sectionTitle}</span>
-                  </div>
-                  <Collapse
-                    items={
-                      onlyIconMode
-                        ? itemsWithTextDescription[section.sectionTitle]
-                        : itemsOnlyIcon[section.sectionTitle]
-                    }
-                    ghost
-                    defaultActiveKey={["1"]}
-                    _onChange={onChangeCollapseHandle}
+                  />
+                  <UnorderedListOutlined
+                    onClick={() => {
+                      setOnlyIconMode(false);
+                    }}
+                    style={{ color: onlyIconMode && colorInactiv }}
                   />
                 </div>
-              );
-            })}
+              </div>
+              <Collapse
+                items={onlyIconMode ? itemsWithTextDescription : itemsOnlyIcon}
+                ghost
+                defaultActiveKey={["1"]}
+                _onChange={onChangeCollapseHandle}
+              />
+            </div>
           </div>
         </div>
       </div>
