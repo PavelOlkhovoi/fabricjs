@@ -1,5 +1,6 @@
 export const roadSigns = [
   {
+    section: "Sinnbilder",
     group: "Absatz 7",
     iconLink:
       "https://upload.wikimedia.org/wikipedia/commons/b/b4/Sinnbild_Kfz.svg",
@@ -7,6 +8,7 @@ export const roadSigns = [
     fileName: "Sinnbild_Kfz.svg",
   },
   {
+    section: "Sinnbilder",
     group: "Absatz 7",
     iconLink:
       "https://upload.wikimedia.org/wikipedia/commons/8/84/Sinnbild_LKW.svg",
@@ -15,6 +17,8 @@ export const roadSigns = [
     fileName: "Sinnbild_LKW.svg",
   },
   {
+    section: "Sinnbilder",
+
     group: "Absatz 7",
     iconLink:
       "https://upload.wikimedia.org/wikipedia/commons/f/f8/Sinnbild_Fu%C3%9Fg%C3%A4nger.svg",
@@ -22,6 +26,7 @@ export const roadSigns = [
     fileName: "Sinnbild_Fußgänger.svg",
   },
   {
+    section: "Sinnbilder",
     group: "Absatz 8",
     iconLink:
       "https://upload.wikimedia.org/wikipedia/commons/0/02/Sinnbild_Schnee-_oder_Eisgl%C3%A4tte.svg",
@@ -29,6 +34,7 @@ export const roadSigns = [
     fileName: "Sinnbild_Schnee-_oder_Eisglätte.svg",
   },
   {
+    section: "Sinnbilder",
     group: "Absatz 8",
     iconLink:
       "https://upload.wikimedia.org/wikipedia/commons/a/a0/Sinnbild_Steinschlag.svg",
@@ -36,6 +42,7 @@ export const roadSigns = [
     fileName: "Sinnbild_Steinschlag.svg",
   },
   {
+    section: "Sinnbilder",
     group: "Absatz 8",
     iconLink:
       "https://upload.wikimedia.org/wikipedia/commons/6/68/Sinnbild_Splitt%2C_Schotter.svg",
@@ -43,6 +50,7 @@ export const roadSigns = [
     fileName: "Sinnbild_Splitt,_Schotter.svg",
   },
   {
+    section: "Gefahrzeichen",
     group: "Allgemeine Gefahrzeichen",
     iconLink:
       "https://upload.wikimedia.org/wikipedia/commons/0/02/Zeichen_101_-_Gefahrstelle%2C_StVO_1970.svg",
@@ -50,6 +58,8 @@ export const roadSigns = [
     fileName: "Zeichen_101_-_Gefahrstelle,_StVO_1970.svg",
   },
   {
+    section: "Gefahrzeichen",
+
     group: "Allgemeine Gefahrzeichen",
     iconLink:
       "https://upload.wikimedia.org/wikipedia/commons/4/42/Zeichen_101-10_-_Flugbetrieb%2C_Aufstellung_rechts%2C_StVO_2017.svg",
@@ -58,6 +68,7 @@ export const roadSigns = [
     fileName: "Zeichen_101-10_-_Flugbetrieb,_Aufstellung_rechts,_StVO_2017.svg",
   },
   {
+    section: "Gefahrzeichen",
     group: "Allgemeine Gefahrzeichen",
     iconLink:
       "https://upload.wikimedia.org/wikipedia/commons/c/cf/Zeichen_101-20_-_Flugbetrieb%2C_Aufstellung_links%2C_StVO_2017.svg",
@@ -66,6 +77,7 @@ export const roadSigns = [
     fileName: "Zeichen_101-20_-_Flugbetrieb,_Aufstellung_links,_StVO_2017.svg",
   },
   {
+    section: "Gefahrzeichen",
     group:
       "Besondere Gefahrzeichen vor Übergängen von Schienenbahnen mit Vorrang",
     iconLink:
@@ -74,5 +86,3 @@ export const roadSigns = [
     fileName: "Zeichen_151_-_Bahnübergang,_StVO_2013.svg",
   },
 ];
-
-export const roadSignsJSON = JSON.stringify(roadSigns);

@@ -1,16 +1,8 @@
-import {
-  Excalidraw,
-  MainMenu,
-  Sidebar,
-  Footer,
-  defaultLang,
-  languages,
-} from "@excalidraw/excalidraw";
+import { Excalidraw, MainMenu } from "@excalidraw/excalidraw";
 import { useEffect, useState } from "react";
 import "./designer-style.css";
-import { Input, Collapse, Divider, Mentions } from "antd";
+import { Input, Collapse, Divider } from "antd";
 import { SearchOutlined, DeleteOutlined } from "@ant-design/icons";
-
 import {
   CloseOutlined,
   PushpinOutlined,
@@ -20,8 +12,7 @@ import {
 } from "@ant-design/icons";
 import { roadSigns } from "./dataSigns";
 import { libraryExtractor } from "./libraryExtractor";
-import MapFoto from "../assets/mapexample.png";
-import { Button } from "antd";
+
 export default {
   title: "Library Custom/DesignerInitData",
 };
@@ -29,7 +20,6 @@ export default {
 const colorPrimary = "#6965db";
 const colorInactiv = "#a5a5a5";
 const colorTextBlack = "#1b1b1f";
-const libraryItemsMargins = { margin: "20px 0" };
 const iconWrapperSize = {
   flex: "0 0 28px",
   width: "28px",
@@ -50,17 +40,6 @@ const libraryTitle = {
   color: colorPrimary,
   fontWeight: "bold",
 };
-const borderColor = "#F4F3FF";
-const onlyIconItemsStyle = {
-  // flex: "0 0 28px",
-  width: "28px",
-  height: "28px",
-  aspectRatio: "1 / 1",
-  padding: "8px",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-};
 
 const titleGroupStyle = {
   fontFamily: "Assistant, Helvetica, Roboto, Arial",
@@ -68,11 +47,43 @@ const titleGroupStyle = {
   lineHeight: "1.4em",
 };
 
-const onlyImageInternalStyle = { height: "calc(100% - 10px)" };
-
 const onChangeCollapseHandle = (key) => {
   console.log(key);
 };
+// const onlyIconView = (iconsData) => {
+//   const sectionsArr = [];
+//   iconsData.forEach((icon) => {
+//     if (!sectionsArr.includes(icon.section)) {
+//       sectionsArr.push(icon.section);
+//     }
+//   });
+//   return (
+//     <div>
+//       {/* <div style={{ width: "100%", marginBottom: "10px", marginTop: "-6px" }}>
+//         {sectionsArr.map((tag, idx) => (
+//           <Tag color="default" key={`tag-only-icon-view-${idx}`}>
+//             {tag}
+//           </Tag>
+//         ))}
+//       </div> */}
+//       <div
+//         style={{
+//           display: "flex",
+//           gap: "10px",
+//           flexWrap: "wrap",
+//           marginRight: "-18px",
+//         }}
+//       >
+//         {iconsData.map((icon) => (
+//           <div key={icon.iconId} style={iconWrapperSize}>
+//             <img src={`/${icon.fileName}`} style={singleIconStyInternalStyle} />
+//           </div>
+//         ))}
+//       </div>
+//     </div>
+//   );
+// };
+
 const onlyIconView = (iconsData) => {
   return (
     <div
@@ -91,6 +102,62 @@ const onlyIconView = (iconsData) => {
     </div>
   );
 };
+
+// const iconWithDescriptionView = (iconsData) => {
+//   return (
+//     <div
+//       style={{
+//         display: "flex",
+//         flexDirection: "column",
+//         gap: "20px",
+//         color: colorTextBlack,
+//       }}
+//     >
+//       {iconsData.map((icon) => {
+//         // const {group, description, link} = icon
+//         // console.log("xxx icon", icon);
+//         return (
+//           <div style={{ display: "flex", gap: "10px" }}>
+//             <div style={iconWrapperSize}>
+//               <img
+//                 src={`/${icon.fileName}`}
+//                 style={singleIconStyInternalStyle}
+//               />
+//             </div>
+//             <div>
+//               <div
+//                 style={{
+//                   fontSize: "14px",
+//                   lineHeight: "1.3em",
+//                   marginTop: "6px",
+//                 }}
+//               >
+//                 {icon.iconsTitle}
+//               </div>
+//             </div>
+//           </div>
+//         );
+//       })}
+//     </div>
+//   );
+// };
+
+// const labelView = (group) => (
+//   <div
+//     style={{
+//       display: "flex",
+//       justifyContent: "space-between",
+//       width: "100%",
+//       color: colorTextBlack,
+//     }}
+//   >
+//     <span style={titleGroupStyle}>{group.groupTitle}</span>
+//     <span style={{ fontSize: "12px", color: colorInactiv }}>
+//       {group.iconsArr.length}
+//     </span>
+//   </div>
+// );
+
 const iconWithDescriptionView = (iconsData) => {
   return (
     <div
@@ -114,7 +181,6 @@ const iconWithDescriptionView = (iconsData) => {
     </div>
   );
 };
-
 const labelView = (group) => (
   <div
     style={{
@@ -157,72 +223,165 @@ export const DesignerInitData = ({
 
   const [searchText, setSearchText] = useState("");
 
-  const [filtredDataOnlyIcon, setFiltredDataOnlyIcon] = useState([]);
+  const [filtredData, setFiltre] = useState();
+  const [filtredDataOnlyIcon, setFiltredDataOnlyIcon] = useState({});
   const [filtredDataIconDescription, setFiltredDataIconDescription] = useState(
-    []
+    {}
   );
 
   useEffect(() => {
-    const compsWithTextDescription = [];
-    const compsOnlyIcons = [];
+    const compsWithTextDescription = {};
+    const compsOnlyIcons = {};
+    data.forEach((section) => {
+      compsWithTextDescription[section.sectionTitle] = [];
+      compsOnlyIcons[section.sectionTitle] = [];
+      section.groups.forEach((g) => {
+        const id = g.id;
+        const label = labelView(g);
+        const onlyIconObj = {
+          id,
+          label,
+          children: onlyIconView(g.iconsArr),
+        };
+        compsOnlyIcons[section.sectionTitle].push(onlyIconObj);
+        const iconWithDescriptionObj = {
+          id,
+          label,
+          children: iconWithDescriptionView(g.iconsArr),
+        };
 
-    data.forEach((g) => {
-      const id = g.id;
-      const label = labelView(g);
-      const onlyIconObj = {
-        id,
-        label,
-        children: onlyIconView(g.iconsArr),
-      };
-      compsOnlyIcons.push(onlyIconObj);
-      const iconWithDescriptionObj = {
-        id,
-        label,
-        children: iconWithDescriptionView(g.iconsArr),
-      };
-
-      compsWithTextDescription.push(iconWithDescriptionObj);
+        compsWithTextDescription[section.sectionTitle].push(
+          iconWithDescriptionObj
+        );
+      });
     });
 
     setItemsOnlyIcon(compsOnlyIcons);
     setItemsWithTextDescription(compsWithTextDescription);
   }, [data]);
 
+  // useEffect(() => {
+  //   const compsWithTextDescription = [];
+  //   const compsOnlyIcons = [];
+
+  //   data.forEach((g) => {
+  //     const id = g.id;
+  //     const label = labelView(g);
+  //     const onlyIconObj = {
+  //       id,
+  //       label,
+  //       children: onlyIconView(g.iconsArr),
+  //     };
+  //     compsOnlyIcons.push(onlyIconObj);
+  //     const iconWithDescriptionObj = {
+  //       id,
+  //       label,
+  //       children: iconWithDescriptionView(g.iconsArr),
+  //     };
+
+  //     compsWithTextDescription.push(iconWithDescriptionObj);
+  //   });
+
+  //   setItemsOnlyIcon(compsOnlyIcons);
+  //   setItemsWithTextDescription(compsWithTextDescription);
+  // }, [data]);
+
   useEffect(() => {
-    console.log("iii", MainMenu.DefaultItems.ClearCanvas);
-
     if (searchText !== "") {
-      const compsWithTextDescription = [];
-      const compsOnlyIcons = [];
+      // const compsWithTextDescription = [];
+      // const compsOnlyIcons = [];
+      const compsWithTextDescription = {};
+      const compsOnlyIcons = {};
 
-      data.forEach((g) => {
-        const searchTermIcons = g.iconsArr.filter((icon) =>
-          icon.iconsTitle.toLowerCase().includes(searchText.toLowerCase())
-        );
+      data.forEach((section) => {
+        compsWithTextDescription[section.sectionTitle] = [];
+        compsOnlyIcons[section.sectionTitle] = [];
 
-        if (searchTermIcons.length !== 0) {
-          const id = g.id;
-          const label = labelView(g);
-          const onlyIconObj = {
-            id,
-            label,
-            children: onlyIconView(searchTermIcons),
-          };
-          compsOnlyIcons.push(onlyIconObj);
-          const iconWithDescriptionObj = {
-            id,
-            label,
-            children: iconWithDescriptionView(searchTermIcons),
-          };
+        // if(section.sectionTitle.includes(searchText.toLowerCase())){
+        //   // add all icon
+        // }
 
-          compsWithTextDescription.push(iconWithDescriptionObj);
-        }
+        section.groups.forEach((group) => {
+          const searchTermIcons = group.iconsArr.filter((icon) =>
+            icon.iconsTitle.toLowerCase().includes(searchText.toLowerCase())
+          );
+
+          if (searchTermIcons.length !== 0) {
+            const id = group.id;
+            const label = labelView(group);
+            const onlyIconObj = {
+              id,
+              label,
+              children: onlyIconView(searchTermIcons),
+            };
+            compsOnlyIcons[section.sectionTitle].push(onlyIconObj);
+
+            const iconWithDescriptionObj = {
+              id,
+              label,
+              children: iconWithDescriptionView(searchTermIcons),
+            };
+
+            compsWithTextDescription[section.sectionTitle].push(
+              iconWithDescriptionObj
+            );
+          }
+        });
       });
-
       setFiltredDataOnlyIcon(compsOnlyIcons);
       setFiltredDataIconDescription(compsWithTextDescription);
     }
   }, [searchText]);
+  // useEffect(() => {
+  //   if (searchText !== "") {
+  //     // const compsWithTextDescription = [];
+  //     // const compsOnlyIcons = [];
+  //     const compsWithTextDescription = {};
+  //     const compsOnlyIcons = {};
+  //     const filtredData = [];
+
+  //     data.forEach((section) => {
+  //       compsWithTextDescription[section.sectionTitle] = [];
+  //       compsOnlyIcons[section.sectionTitle] = [];
+
+  //       // if(section.sectionTitle.includes(searchText.toLowerCase())){
+  //       //   // add all icon
+  //       // }
+
+  //       section.groups.forEach((group) => {
+  //         const searchTermIcons = group.iconsArr.filter((icon) =>
+  //           icon.iconsTitle.toLowerCase().includes(searchText.toLowerCase())
+  //         );
+
+  //         if (searchTermIcons.length !== 0) {
+  //           const id = group.id;
+  //           const label = labelView(group);
+  //           const onlyIconObj = {
+  //             id,
+  //             label,
+  //             children: onlyIconView(searchTermIcons),
+  //           };
+  //           compsOnlyIcons[section.sectionTitle].push(onlyIconObj);
+
+  //           const iconWithDescriptionObj = {
+  //             id,
+  //             label,
+  //             children: iconWithDescriptionView(searchTermIcons),
+  //           };
+
+  //           compsWithTextDescription[section.sectionTitle].push(
+  //             iconWithDescriptionObj
+  //           );
+  //         }
+  //       });
+  //     });
+  //     console.log("xxx filtered data", data);
+  //     console.log("xxx filtered item", compsOnlyIcons["Sinnbilder"]);
+  //     setFiltredDataOnlyIcon(compsOnlyIcons);
+  //     setFiltredDataIconDescription(compsWithTextDescription);
+  //   }
+  // }, [searchText]);
+
   const resetScene = () => {
     excalidrawAPI.resetScene();
   };
@@ -282,7 +441,6 @@ export const DesignerInitData = ({
             <MainMenu.DefaultItems.ChangeCanvasBackground />
           </MainMenu>
         </Excalidraw>
-
         <div style={{ display: ifPinnedLibrary ? "block" : "none" }}>
           {showLibrary ? (
             <div
@@ -376,7 +534,93 @@ export const DesignerInitData = ({
                       />
                     </div>
                   </div>
-                  {searchText === "" ? (
+                  {searchText === ""
+                    ? data.map((section) => {
+                        return (
+                          <div style={{ margin: "30px 0px 0px 0px" }}>
+                            <div
+                              style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                marginBottom: "6px",
+                              }}
+                            >
+                              <span style={libraryTitle}>
+                                {section.sectionTitle}
+                              </span>
+                            </div>
+                            <Collapse
+                              items={
+                                onlyIconMode
+                                  ? itemsOnlyIcon[section.sectionTitle]
+                                  : itemsWithTextDescription[
+                                      section.sectionTitle
+                                    ]
+                              }
+                              ghost
+                              defaultActiveKey={["1"]}
+                              _onChange={onChangeCollapseHandle}
+                            />
+                          </div>
+                        );
+                      })
+                    : data.map((section) => {
+                        return (
+                          <div>
+                            <Collapse
+                              items={
+                                onlyIconMode
+                                  ? filtredDataOnlyIcon[
+                                      section?.sectionTitle
+                                    ] || []
+                                  : filtredDataIconDescription[
+                                      section?.sectionTitle || []
+                                    ]
+                              }
+                              ghost
+                              defaultActiveKey={["1"]}
+                              _onChange={onChangeCollapseHandle}
+                            />
+                          </div>
+                        );
+                      })}
+
+                  {/* {!searchText === "" &&
+                    data.map((section) => {
+                      if (filtredDataOnlyIcon[section.sectionTitle]) {
+                        return (
+                          <div style={{ margin: "30px 0px 0px 0px" }}>
+                            <span>Filter!!!</span>
+                            <div
+                              style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                marginBottom: "6px",
+                              }}
+                            >
+                              <span style={libraryTitle}>
+                                {section.sectionTitle}
+                              </span>
+                            </div>
+                            <Collapse
+                              items={
+                                onlyIconMode
+                                  ? filtredDataOnlyIcon[section.sectionTitle]
+                                  : filtredDataIconDescription[
+                                      section.sectionTitle
+                                    ]
+                              }
+                              ghost
+                              defaultActiveKey={["1"]}
+                              _onChange={onChangeCollapseHandle}
+                            />
+                          </div>
+                        );
+                      } else {
+                        return <div>!!!!!!!!!!!</div>;
+                      }
+                    })} */}
+                  {/* {searchText === "" ? (
                     <Collapse
                       items={
                         onlyIconMode ? itemsOnlyIcon : itemsWithTextDescription
@@ -396,7 +640,7 @@ export const DesignerInitData = ({
                       defaultActiveKey={["1"]}
                       _onChange={onChangeCollapseHandle}
                     />
-                  )}
+                  )} */}
                 </div>
               </div>
             </div>
