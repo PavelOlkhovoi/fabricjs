@@ -223,7 +223,7 @@ export const DesignerInitData = ({
 
   const [searchText, setSearchText] = useState("");
 
-  const [filtredData, setFiltre] = useState();
+  const [filtredData, setFiltredData] = useState([]);
   const [filtredDataOnlyIcon, setFiltredDataOnlyIcon] = useState({});
   const [filtredDataIconDescription, setFiltredDataIconDescription] = useState(
     {}
@@ -262,8 +262,6 @@ export const DesignerInitData = ({
 
   useEffect(() => {
     if (searchText !== "") {
-      // const compsWithTextDescription = [];
-      // const compsOnlyIcons = [];
       const compsWithTextDescription = {};
       const compsOnlyIcons = {};
 
@@ -272,36 +270,65 @@ export const DesignerInitData = ({
         compsOnlyIcons[section.sectionTitle] = [];
 
         // if(section.sectionTitle.includes(searchText.toLowerCase())){
-        //   // add all icon
+        //   console.log("xxx ")
         // }
 
         section.groups.forEach((group) => {
-          const searchTermIcons = group.iconsArr.filter((icon) =>
-            icon.iconsTitle.toLowerCase().includes(searchText.toLowerCase())
-          );
+          if (
+            !group.groupTitle.toLowerCase().includes(searchText.toLowerCase())
+          ) {
+            const searchTermIcons = group.iconsArr.filter((icon) =>
+              icon.iconsTitle.toLowerCase().includes(searchText.toLowerCase())
+            );
 
-          if (searchTermIcons.length !== 0) {
+            if (searchTermIcons.length !== 0) {
+              const id = group.id;
+              const label = labelView(group);
+              const onlyIconObj = {
+                id,
+                label,
+                children: onlyIconView(searchTermIcons),
+              };
+              compsOnlyIcons[section.sectionTitle].push(onlyIconObj);
+
+              const iconWithDescriptionObj = {
+                id,
+                label,
+                children: iconWithDescriptionView(searchTermIcons),
+              };
+
+              compsWithTextDescription[section.sectionTitle].push(
+                iconWithDescriptionObj
+              );
+            }
+          } else {
             const id = group.id;
             const label = labelView(group);
             const onlyIconObj = {
               id,
               label,
-              children: onlyIconView(searchTermIcons),
+              children: onlyIconView(group.iconsArr),
             };
             compsOnlyIcons[section.sectionTitle].push(onlyIconObj);
-
             const iconWithDescriptionObj = {
               id,
               label,
-              children: iconWithDescriptionView(searchTermIcons),
+              children: iconWithDescriptionView(group.iconsArr),
             };
-
             compsWithTextDescription[section.sectionTitle].push(
               iconWithDescriptionObj
             );
+            console.log("xxx group", group.groupTitle);
           }
         });
       });
+
+      const dataFiltered = Object.keys(compsOnlyIcons).filter(
+        (sectionName) => compsOnlyIcons[sectionName].length > 0
+      );
+
+      console.log("xxx dataFiltered", data);
+      setFiltredData(dataFiltered);
       setFiltredDataOnlyIcon(compsOnlyIcons);
       setFiltredDataIconDescription(compsWithTextDescription);
     }
@@ -489,17 +516,24 @@ export const DesignerInitData = ({
                           </div>
                         );
                       })
-                    : data.map((section) => {
+                    : filtredData.map((sectionTitle) => {
                         return (
                           <div>
+                            <div
+                              style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                marginBottom: "6px",
+                              }}
+                            >
+                              <span style={libraryTitle}>{sectionTitle}</span>
+                            </div>
                             <Collapse
                               items={
                                 onlyIconMode
-                                  ? filtredDataOnlyIcon[
-                                      section?.sectionTitle
-                                    ] || []
+                                  ? filtredDataOnlyIcon[sectionTitle] || []
                                   : filtredDataIconDescription[
-                                      section?.sectionTitle || []
+                                      sectionTitle || []
                                     ]
                               }
                               ghost
