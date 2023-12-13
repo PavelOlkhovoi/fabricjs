@@ -269,58 +269,80 @@ export const DesignerInitData = ({
         compsWithTextDescription[section.sectionTitle] = [];
         compsOnlyIcons[section.sectionTitle] = [];
 
-        // if(section.sectionTitle.includes(searchText.toLowerCase())){
-        //   console.log("xxx ")
-        // }
+        if (
+          !section.sectionTitle.toLowerCase().includes(searchText.toLowerCase())
+        ) {
+          section.groups.forEach((group) => {
+            if (
+              !group.groupTitle.toLowerCase().includes(searchText.toLowerCase())
+            ) {
+              const searchTermIcons = group.iconsArr.filter((icon) =>
+                icon.iconsTitle.toLowerCase().includes(searchText.toLowerCase())
+              );
 
-        section.groups.forEach((group) => {
-          if (
-            !group.groupTitle.toLowerCase().includes(searchText.toLowerCase())
-          ) {
-            const searchTermIcons = group.iconsArr.filter((icon) =>
-              icon.iconsTitle.toLowerCase().includes(searchText.toLowerCase())
-            );
+              if (searchTermIcons.length !== 0) {
+                const id = group.id;
+                const label = labelView(group);
+                const onlyIconObj = {
+                  id,
+                  label,
+                  children: onlyIconView(searchTermIcons),
+                };
+                compsOnlyIcons[section.sectionTitle].push(onlyIconObj);
 
-            if (searchTermIcons.length !== 0) {
+                const iconWithDescriptionObj = {
+                  id,
+                  label,
+                  children: iconWithDescriptionView(searchTermIcons),
+                };
+
+                compsWithTextDescription[section.sectionTitle].push(
+                  iconWithDescriptionObj
+                );
+              }
+            } else {
               const id = group.id;
               const label = labelView(group);
               const onlyIconObj = {
                 id,
                 label,
-                children: onlyIconView(searchTermIcons),
+                children: onlyIconView(group.iconsArr),
               };
               compsOnlyIcons[section.sectionTitle].push(onlyIconObj);
-
               const iconWithDescriptionObj = {
                 id,
                 label,
-                children: iconWithDescriptionView(searchTermIcons),
+                children: iconWithDescriptionView(group.iconsArr),
               };
-
               compsWithTextDescription[section.sectionTitle].push(
                 iconWithDescriptionObj
               );
             }
-          } else {
-            const id = group.id;
-            const label = labelView(group);
+          });
+        } else {
+          compsWithTextDescription[section.sectionTitle] = [];
+          compsOnlyIcons[section.sectionTitle] = [];
+          section.groups.forEach((g) => {
+            const id = g.id;
+            const label = labelView(g);
             const onlyIconObj = {
               id,
               label,
-              children: onlyIconView(group.iconsArr),
+              children: onlyIconView(g.iconsArr),
             };
             compsOnlyIcons[section.sectionTitle].push(onlyIconObj);
             const iconWithDescriptionObj = {
               id,
               label,
-              children: iconWithDescriptionView(group.iconsArr),
+              children: iconWithDescriptionView(g.iconsArr),
             };
+
             compsWithTextDescription[section.sectionTitle].push(
               iconWithDescriptionObj
             );
-            console.log("xxx group", group.groupTitle);
-          }
-        });
+          });
+          console.log("xxx section", section);
+        }
       });
 
       const dataFiltered = Object.keys(compsOnlyIcons).filter(
@@ -518,7 +540,7 @@ export const DesignerInitData = ({
                       })
                     : filtredData.map((sectionTitle) => {
                         return (
-                          <div>
+                          <div style={{ margin: "30px 0px 0px 0px" }}>
                             <div
                               style={{
                                 display: "flex",
