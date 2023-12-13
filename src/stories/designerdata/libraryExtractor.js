@@ -84,7 +84,7 @@ export const libraryExtractor = (data) => {
       });
     });
 
-    console.log("xxx sections", JSON.stringify(sections, null, 2));
+    console.log("xxx sections", sections);
 
     return sections;
   }
