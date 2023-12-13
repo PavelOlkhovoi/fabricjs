@@ -260,32 +260,6 @@ export const DesignerInitData = ({
     setItemsWithTextDescription(compsWithTextDescription);
   }, [data]);
 
-  // useEffect(() => {
-  //   const compsWithTextDescription = [];
-  //   const compsOnlyIcons = [];
-
-  //   data.forEach((g) => {
-  //     const id = g.id;
-  //     const label = labelView(g);
-  //     const onlyIconObj = {
-  //       id,
-  //       label,
-  //       children: onlyIconView(g.iconsArr),
-  //     };
-  //     compsOnlyIcons.push(onlyIconObj);
-  //     const iconWithDescriptionObj = {
-  //       id,
-  //       label,
-  //       children: iconWithDescriptionView(g.iconsArr),
-  //     };
-
-  //     compsWithTextDescription.push(iconWithDescriptionObj);
-  //   });
-
-  //   setItemsOnlyIcon(compsOnlyIcons);
-  //   setItemsWithTextDescription(compsWithTextDescription);
-  // }, [data]);
-
   useEffect(() => {
     if (searchText !== "") {
       // const compsWithTextDescription = [];
@@ -332,55 +306,6 @@ export const DesignerInitData = ({
       setFiltredDataIconDescription(compsWithTextDescription);
     }
   }, [searchText]);
-  // useEffect(() => {
-  //   if (searchText !== "") {
-  //     // const compsWithTextDescription = [];
-  //     // const compsOnlyIcons = [];
-  //     const compsWithTextDescription = {};
-  //     const compsOnlyIcons = {};
-  //     const filtredData = [];
-
-  //     data.forEach((section) => {
-  //       compsWithTextDescription[section.sectionTitle] = [];
-  //       compsOnlyIcons[section.sectionTitle] = [];
-
-  //       // if(section.sectionTitle.includes(searchText.toLowerCase())){
-  //       //   // add all icon
-  //       // }
-
-  //       section.groups.forEach((group) => {
-  //         const searchTermIcons = group.iconsArr.filter((icon) =>
-  //           icon.iconsTitle.toLowerCase().includes(searchText.toLowerCase())
-  //         );
-
-  //         if (searchTermIcons.length !== 0) {
-  //           const id = group.id;
-  //           const label = labelView(group);
-  //           const onlyIconObj = {
-  //             id,
-  //             label,
-  //             children: onlyIconView(searchTermIcons),
-  //           };
-  //           compsOnlyIcons[section.sectionTitle].push(onlyIconObj);
-
-  //           const iconWithDescriptionObj = {
-  //             id,
-  //             label,
-  //             children: iconWithDescriptionView(searchTermIcons),
-  //           };
-
-  //           compsWithTextDescription[section.sectionTitle].push(
-  //             iconWithDescriptionObj
-  //           );
-  //         }
-  //       });
-  //     });
-  //     console.log("xxx filtered data", data);
-  //     console.log("xxx filtered item", compsOnlyIcons["Sinnbilder"]);
-  //     setFiltredDataOnlyIcon(compsOnlyIcons);
-  //     setFiltredDataIconDescription(compsWithTextDescription);
-  //   }
-  // }, [searchText]);
 
   const resetScene = () => {
     excalidrawAPI.resetScene();
@@ -445,7 +370,7 @@ export const DesignerInitData = ({
           {showLibrary ? (
             <div
               style={{
-                margin: "14px 0 12px 20px",
+                margin: "8px 0 12px 20px",
                 width: "338px",
                 border: "1px solid #F0F0F0",
                 padding: "10px 20px",
@@ -456,7 +381,7 @@ export const DesignerInitData = ({
                 color: "#1b1b1f",
               }}
             >
-              <div style={{ margin: "26px 0" }}>
+              <div style={{ margin: "16px 0" }}>
                 <div style={{ display: "flex", alignItems: "center" }}>
                   <span style={libraryTitle}>Bibliothek</span>
                   <div style={{ marginLeft: "auto" }}>
@@ -493,7 +418,7 @@ export const DesignerInitData = ({
                 </div>
                 <Divider style={{ margin: "22px 0px" }} />
               </div>
-              <div style={{ margin: "30px 0px" }}>
+              <div style={{ margin: "15px 0px" }}>
                 <span style={libraryTitle}>Suche</span>
                 <Input
                   size="large"
@@ -510,29 +435,29 @@ export const DesignerInitData = ({
                     marginTop: "8px",
                   }}
                 />
-                <div style={{ margin: "30px 0px 0px 0px" }}>
+                <div style={{ margin: "12px 0px 0px 0px" }}>
+                  <div style={{ display: "flex", gap: "12px" }}>
+                    <AppstoreOutlined
+                      style={{ color: !onlyIconMode && colorInactiv }}
+                      onClick={() => {
+                        setOnlyIconMode(true);
+                      }}
+                    />
+                    <UnorderedListOutlined
+                      onClick={() => {
+                        setOnlyIconMode(false);
+                      }}
+                      style={{ color: onlyIconMode && colorInactiv }}
+                    />
+                  </div>
                   <div
                     style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      marginBottom: "6px",
+                      // display: "flex",
+                      // justifyContent: "space-between",
+                      marginTop: "16px",
                     }}
                   >
                     <span style={libraryTitle}>Schilder</span>
-                    <div style={{ display: "flex", gap: "12px" }}>
-                      <AppstoreOutlined
-                        style={{ color: !onlyIconMode && colorInactiv }}
-                        onClick={() => {
-                          setOnlyIconMode(true);
-                        }}
-                      />
-                      <UnorderedListOutlined
-                        onClick={() => {
-                          setOnlyIconMode(false);
-                        }}
-                        style={{ color: onlyIconMode && colorInactiv }}
-                      />
-                    </div>
                   </div>
                   {searchText === ""
                     ? data.map((section) => {
