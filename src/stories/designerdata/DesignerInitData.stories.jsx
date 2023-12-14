@@ -40,7 +40,7 @@ const iconWrapperSize = {
 const singleIconStyInternalStyle = {
   // flex: "0 0",
   maxWidth: "38px",
-  margin: "auto",
+  // margin: "auto",
   // aspectRatio: "1/1",
   position: "absolute",
   maxHeight: "38px",
