@@ -50,39 +50,6 @@ const titleGroupStyle = {
 const onChangeCollapseHandle = (key) => {
   console.log(key);
 };
-// const onlyIconView = (iconsData) => {
-//   const sectionsArr = [];
-//   iconsData.forEach((icon) => {
-//     if (!sectionsArr.includes(icon.section)) {
-//       sectionsArr.push(icon.section);
-//     }
-//   });
-//   return (
-//     <div>
-//       {/* <div style={{ width: "100%", marginBottom: "10px", marginTop: "-6px" }}>
-//         {sectionsArr.map((tag, idx) => (
-//           <Tag color="default" key={`tag-only-icon-view-${idx}`}>
-//             {tag}
-//           </Tag>
-//         ))}
-//       </div> */}
-//       <div
-//         style={{
-//           display: "flex",
-//           gap: "10px",
-//           flexWrap: "wrap",
-//           marginRight: "-18px",
-//         }}
-//       >
-//         {iconsData.map((icon) => (
-//           <div key={icon.iconId} style={iconWrapperSize}>
-//             <img src={`/${icon.fileName}`} style={singleIconStyInternalStyle} />
-//           </div>
-//         ))}
-//       </div>
-//     </div>
-//   );
-// };
 
 const onlyIconView = (iconsData) => {
   return (
@@ -102,61 +69,6 @@ const onlyIconView = (iconsData) => {
     </div>
   );
 };
-
-// const iconWithDescriptionView = (iconsData) => {
-//   return (
-//     <div
-//       style={{
-//         display: "flex",
-//         flexDirection: "column",
-//         gap: "20px",
-//         color: colorTextBlack,
-//       }}
-//     >
-//       {iconsData.map((icon) => {
-//         // const {group, description, link} = icon
-//         // console.log("xxx icon", icon);
-//         return (
-//           <div style={{ display: "flex", gap: "10px" }}>
-//             <div style={iconWrapperSize}>
-//               <img
-//                 src={`/${icon.fileName}`}
-//                 style={singleIconStyInternalStyle}
-//               />
-//             </div>
-//             <div>
-//               <div
-//                 style={{
-//                   fontSize: "14px",
-//                   lineHeight: "1.3em",
-//                   marginTop: "6px",
-//                 }}
-//               >
-//                 {icon.iconsTitle}
-//               </div>
-//             </div>
-//           </div>
-//         );
-//       })}
-//     </div>
-//   );
-// };
-
-// const labelView = (group) => (
-//   <div
-//     style={{
-//       display: "flex",
-//       justifyContent: "space-between",
-//       width: "100%",
-//       color: colorTextBlack,
-//     }}
-//   >
-//     <span style={titleGroupStyle}>{group.groupTitle}</span>
-//     <span style={{ fontSize: "12px", color: colorInactiv }}>
-//       {group.iconsArr.length}
-//     </span>
-//   </div>
-// );
 
 const iconWithDescriptionView = (iconsData) => {
   return (
@@ -215,7 +127,7 @@ export const DesignerInitData = ({
       saveAsImage: false,
     },
   };
-  const [showLibrary, setShowLibrary] = useState(false);
+  const [showLibrary, setShowLibrary] = useState(true);
   const [onlyIconMode, setOnlyIconMode] = useState(true);
   const [itemsOnlyIcon, setItemsOnlyIcon] = useState();
   const [itemsWithTextDescription, setItemsWithTextDescription] = useState();

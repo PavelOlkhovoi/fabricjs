@@ -1,44 +1,44 @@
 import { nanoid } from "nanoid";
-export const oldLibraryExtractor = (data) => {
-  if (!data) {
-    return [];
-  } else {
-    const groupIcons = [];
-    const uniqueGroupNames = [];
-    const uniqueSectionNames = [];
+// export const oldLibraryExtractor = (data) => {
+//   if (!data) {
+//     return [];
+//   } else {
+//     const groupIcons = [];
+//     const uniqueGroupNames = [];
+//     const uniqueSectionNames = [];
 
-    data.forEach((icon) => {
-      if (uniqueGroupNames.includes(icon.group)) {
-        const targetObjIngroupIconsArr = groupIcons.find(
-          (g) => g.groupTitle === icon.group
-        );
-        targetObjIngroupIconsArr.iconsArr.push({
-          iconId: nanoid(),
-          fileName: icon.fileName,
-          iconsTitle: icon.title,
-        });
-      } else {
-        groupIcons.push({
-          id: nanoid(),
-          groupTitle: icon.group,
-          iconsArr: [
-            {
-              iconId: nanoid(),
-              fileName: icon.fileName,
-              iconsTitle: icon.title,
-            },
-          ],
-        });
+//     data.forEach((icon) => {
+//       if (uniqueGroupNames.includes(icon.group)) {
+//         const targetObjIngroupIconsArr = groupIcons.find(
+//           (g) => g.groupTitle === icon.group
+//         );
+//         targetObjIngroupIconsArr.iconsArr.push({
+//           iconId: nanoid(),
+//           fileName: icon.link,
+//           iconsTitle: icon.title,
+//         });
+//       } else {
+//         groupIcons.push({
+//           id: nanoid(),
+//           groupTitle: icon.group,
+//           iconsArr: [
+//             {
+//               iconId: nanoid(),
+//               fileName: icon.fileName,
+//               iconsTitle: icon.title,
+//             },
+//           ],
+//         });
 
-        uniqueGroupNames.push(icon.group);
-      }
-    });
+//         uniqueGroupNames.push(icon.group);
+//       }
+//     });
 
-    console.log("xxx groupIcons", JSON.stringify(groupIcons, null, 2));
+//     console.log("xxx groupIcons", JSON.stringify(groupIcons, null, 2));
 
-    return groupIcons;
-  }
-};
+//     return groupIcons;
+//   }
+// };
 export const libraryExtractor = (data) => {
   if (!data) {
     return [];
@@ -47,8 +47,6 @@ export const libraryExtractor = (data) => {
     const uniqueSectionNames = [];
 
     data.forEach((icon) => {
-      // console.log("xxx icon", icon);
-
       if (!uniqueSectionNames.includes(icon.section)) {
         uniqueSectionNames.push(icon.section);
         sections.push({
@@ -78,8 +76,8 @@ export const libraryExtractor = (data) => {
 
       targetGroup.iconsArr.push({
         iconId: nanoid(),
-        fileName: icon.fileName,
-        iconsTitle: icon.title,
+        fileName: icon.link,
+        iconsTitle: icon.description,
       });
     });
 
