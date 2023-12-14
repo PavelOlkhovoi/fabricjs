@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import "./designer-style.css";
 import { Input, Collapse, Divider } from "antd";
 import { SearchOutlined, DeleteOutlined } from "@ant-design/icons";
+import signLocal from "./signLocal.json";
 import {
   CloseOutlined,
   PushpinOutlined,
@@ -17,22 +18,35 @@ export default {
   title: "Library Custom/DesignerInitData",
 };
 
+console.log("xxx all json", signLocal);
+
 const colorPrimary = "#6965db";
 const colorInactiv = "#a5a5a5";
 const colorTextBlack = "#1b1b1f";
 const iconWrapperSize = {
-  flex: "0 0 28px",
+  // flex: "0 0 28px",
   width: "28px",
-  height: "28px",
+  _height: "28px",
+  aspectRatio: "1/1",
   padding: "8px",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
+  // display: "flex",
+  // alignItems: "center",
+  // justifyContent: "center",
+  // display: "grid",
+  // placeItems: "center",
   border: "1px solid #ECECF4",
+  position: "relative",
 };
 const singleIconStyInternalStyle = {
-  width: "100%",
-  height: "100%",
+  // flex: "0 0",
+  maxWidth: "38px",
+  margin: "auto",
+  // aspectRatio: "1/1",
+  position: "absolute",
+  maxHeight: "38px",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
 };
 const libraryTitle = {
   fontFamily: "Assistant, Helvetica, Roboto, Arial",
@@ -110,7 +124,8 @@ const labelView = (group) => (
 );
 
 export const DesignerInitData = ({
-  dataIn = roadSigns,
+  // dataIn = roadSigns,
+  dataIn = signLocal,
   extractor = libraryExtractor,
   activeMode = false,
   // map = MapFoto,
