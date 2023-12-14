@@ -37,11 +37,29 @@ const iconWrapperSize = {
   border: "1px solid #ECECF4",
   position: "relative",
 };
+
 const singleIconStyInternalStyle = {
   // flex: "0 0",
   maxWidth: "38px",
   // margin: "auto",
   // aspectRatio: "1/1",
+  position: "absolute",
+  maxHeight: "38px",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+};
+const iconWrapperSizeWithDescription = {
+  flex: "0 0 28",
+  minWidth: "28px",
+  height: "28px",
+  // aspectRatio: "1/1",
+  padding: "8px",
+  border: "1px solid #ECECF4",
+  position: "relative",
+};
+const singleIconStyInternalStyleWithDescription = {
+  maxWidth: "38px",
   position: "absolute",
   maxHeight: "38px",
   top: "50%",
@@ -96,8 +114,11 @@ const iconWithDescriptionView = (iconsData) => {
     >
       {iconsData.map((icon) => (
         <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-          <div style={iconWrapperSize}>
-            <img src={`/${icon.fileName}`} style={singleIconStyInternalStyle} />
+          <div style={iconWrapperSizeWithDescription}>
+            <img
+              src={`/${icon.fileName}`}
+              style={singleIconStyInternalStyleWithDescription}
+            />
           </div>
           <span style={{ fontSize: "13px", lineHeight: "1.3em" }}>
             {icon.iconsTitle}
@@ -107,7 +128,7 @@ const iconWithDescriptionView = (iconsData) => {
     </div>
   );
 };
-const labelView = (group) => (
+const labelView = (group, groupItems = null) => (
   <div
     style={{
       display: "flex",
@@ -118,7 +139,7 @@ const labelView = (group) => (
   >
     <span style={titleGroupStyle}>{group.groupTitle}</span>
     <span style={{ fontSize: "12px", color: colorInactiv }}>
-      {group.iconsArr.length}
+      {groupItems ? groupItems : group.iconsArr.length}
     </span>
   </div>
 );
@@ -143,7 +164,7 @@ export const DesignerInitData = ({
     },
   };
   const [showLibrary, setShowLibrary] = useState(true);
-  const [onlyIconMode, setOnlyIconMode] = useState(true);
+  const [onlyIconMode, setOnlyIconMode] = useState(false);
   const [itemsOnlyIcon, setItemsOnlyIcon] = useState();
   const [itemsWithTextDescription, setItemsWithTextDescription] = useState();
   const [ifPinnedLibrary, setIfPinnedLibrary] = useState(true);
@@ -203,13 +224,19 @@ export const DesignerInitData = ({
             if (
               !group.groupTitle.toLowerCase().includes(searchText.toLowerCase())
             ) {
-              const searchTermIcons = group.iconsArr.filter((icon) =>
-                icon.iconsTitle.toLowerCase().includes(searchText.toLowerCase())
-              );
+              const searchTermIcons = group.iconsArr.filter((icon) => {
+                const idString = icon.id ? icon.id : "";
+                return (
+                  icon.iconsTitle
+                    .toLowerCase()
+                    .includes(searchText.toLowerCase()) ||
+                  idString.toLowerCase().includes(searchText.toLowerCase())
+                );
+              });
 
               if (searchTermIcons.length !== 0) {
                 const id = group.id;
-                const label = labelView(group);
+                const label = labelView(group, searchTermIcons.length);
                 const onlyIconObj = {
                   id,
                   label,

@@ -77,7 +77,9 @@ export const libraryExtractor = (data) => {
       targetGroup.iconsArr.push({
         iconId: nanoid(),
         fileName: icon.link,
+        // iconsTitle: `${icon.description} ${icon.id ? icon.id : ""}`,
         iconsTitle: icon.description,
+        id: icon.id,
       });
     });
 
@@ -86,75 +88,3 @@ export const libraryExtractor = (data) => {
     return sections;
   }
 };
-// export const allIconExtractor = (data) => {
-//   if (!data) {
-//     return [];
-//   } else {
-//     const sectionArr = [];
-//     const groupIcons = [];
-//     const uniqueGroupNames = [];
-//     const uniqueSectionNames = [];
-
-//     data.forEach((icon) => {
-//       if (uniqueGroupNames.includes(icon.group)) {
-//         const targetObjIngroupIconsArr = groupIcons.find(
-//           (g) => g.groupTitle === icon.group
-//         );
-//         targetObjIngroupIconsArr.iconsArr.push({
-//           iconId: nanoid(),
-//           icon: icon.id,
-//           description: icon.description,
-//           group: icon.group,
-//           groupFolder: icon.group.toLowerCase().replace(/\s+/g, "-"),
-//           section: icon.section.toLowerCase(),
-//           name: buildIconPathFromLink(icon.link),
-//         });
-//       } else {
-//         groupIcons.push({
-//           id: nanoid(),
-//           groupTitle: icon.group,
-//           groupSection: icon.section,
-//           iconsArr: [
-//             {
-//               iconId: nanoid(),
-//               icon: icon.id,
-//               description: icon.description,
-//               group: icon.group,
-//               groupFolder: icon.group.replace(/\s+/g, "-"),
-//               section: icon.section.toLowerCase(),
-//               name: buildIconPathFromLink(icon.link),
-//             },
-//           ],
-//         });
-
-//         uniqueGroupNames.push(icon.group);
-//       }
-//     });
-
-//     groupIcons.forEach((group) => {
-//       if (uniqueSectionNames.includes(group.groupSection)) {
-//         const targetSection = sectionArr.find(
-//           (section) => group.groupSection === section.title
-//         );
-
-//         targetSection.groupArr = [...targetSection.groupArr, group];
-//       } else {
-//         const newSection = {
-//           title: group.groupSection,
-//           groupArr: [group],
-//         };
-//         sectionArr.push(newSection);
-//         uniqueSectionNames.push(group.groupSection);
-//       }
-//     });
-
-//     console.log("xxx all groupIcons", sectionArr);
-
-//     return groupIcons;
-//   }
-// };
-
-// function buildIconPathFromLink(link) {
-//   const linkArr = link.split("/");
-//   return linkArr[linkArr.length - 1];
-// }
