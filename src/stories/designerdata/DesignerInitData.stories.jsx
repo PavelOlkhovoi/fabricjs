@@ -419,14 +419,14 @@ export const DesignerInitData = ({
           {showLibrary ? (
             <div
               style={{
-                margin: "8px 0 12px 20px",
+                margin: "15px 0 12px 20px",
                 width: "338px",
                 border: "1px solid #F0F0F0",
                 padding: "10px 20px",
                 boxShadow: "rgba(15, 14, 15, 0.07) 0px 5px 9px 1px",
                 borderRadius: "12px",
                 overflow: "auto",
-                height: "650px",
+                height: "644px",
                 color: "#1b1b1f",
               }}
             >
@@ -434,7 +434,7 @@ export const DesignerInitData = ({
                 <div style={{ display: "flex", alignItems: "center" }}>
                   <span style={libraryTitle}>Bibliothek</span>
                   <div style={{ marginLeft: "auto" }}>
-                    <PushpinOutlined
+                    {/* <PushpinOutlined
                       style={{
                         color: "#a5a5a5",
                         fontSize: "16px",
@@ -442,7 +442,7 @@ export const DesignerInitData = ({
                         marginRight: "12px",
                       }}
                       onClick={() => setIfPinnedLibrary(false)}
-                    />
+                    /> */}
                     {/* <a href="http://localhost:5173/" target="_blank">
                       <PushpinOutlined
                         style={{
