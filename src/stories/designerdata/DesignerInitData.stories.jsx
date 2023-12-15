@@ -72,6 +72,12 @@ const libraryTitle = {
   color: colorPrimary,
   fontWeight: "bold",
 };
+const sectionTitleStyle = {
+  fontFamily: "Assistant, Helvetica, Roboto, Arial",
+  fontSize: "15px",
+  color: colorPrimary,
+  fontWeight: "bold",
+};
 
 const titleGroupStyle = {
   fontFamily: "Assistant, Helvetica, Roboto, Arial",
@@ -149,7 +155,6 @@ export const DesignerInitData = ({
   dataIn = signLocal,
   extractor = libraryExtractor,
   activeMode = false,
-  // map = MapFoto,
 }) => {
   const [data, setData] = useState([]);
   useEffect(() => {
@@ -373,11 +378,11 @@ export const DesignerInitData = ({
           {showLibrary ? (
             <div
               style={{
-                margin: "15px 0 12px 20px",
+                margin: "15px 0 12px 4px",
                 width: "338px",
                 border: "1px solid #F0F0F0",
                 padding: "10px 20px",
-                boxShadow: "rgba(15, 14, 15, 0.07) 0px 5px 9px 1px",
+                boxShadow: "rgba(15, 14, 15, 0.07) 4px 1px 9px 1px",
                 borderRadius: "12px",
                 overflow: "auto",
                 height: "644px",
@@ -397,16 +402,25 @@ export const DesignerInitData = ({
                       }}
                       onClick={() => setIfPinnedLibrary(false)}
                     /> */}
-                    {/* <a href="http://localhost:5173/" target="_blank">
-                      <PushpinOutlined
-                        style={{
-                          color: "#a5a5a5",
-                          fontSize: "16px",
-                          fontWeight: "bold",
-                          marginRight: "12px",
-                        }}
-                      />
-                    </a> */}
+                    <AppstoreOutlined
+                      style={{
+                        color: !onlyIconMode && colorInactiv,
+                        marginRight: "10px",
+                      }}
+                      onClick={() => {
+                        setOnlyIconMode(true);
+                      }}
+                    />
+
+                    <UnorderedListOutlined
+                      onClick={() => {
+                        setOnlyIconMode(false);
+                      }}
+                      style={{
+                        color: onlyIconMode && colorInactiv,
+                        marginRight: "10px",
+                      }}
+                    />
 
                     <CloseOutlined
                       onClick={() => setShowLibrary(!showLibrary)}
@@ -419,26 +433,7 @@ export const DesignerInitData = ({
                     />
                   </div>
                 </div>
-                <Divider style={{ margin: "22px 0px" }} />
-              </div>
-              <div style={{ margin: "15px 0px" }}>
-                <span style={libraryTitle}>Suche</span>
-                <Input
-                  size="large"
-                  prefix={<SearchOutlined />}
-                  allowClear
-                  onPressEnter={(e) => {
-                    console.log("yyy on Press enter");
-                    setSearchText(e.target.value);
-                  }}
-                  value={searchText}
-                  onChange={(e) => setSearchText(e.target.value)}
-                  style={{
-                    height: "40px",
-                    marginTop: "8px",
-                  }}
-                />
-                <div style={{ margin: "12px 0px 0px 0px" }}>
+                {/* <div style={{ margin: "12px 0px 0px 0px" }}>
                   <div style={{ display: "flex", gap: "12px" }}>
                     <AppstoreOutlined
                       style={{ color: !onlyIconMode && colorInactiv }}
@@ -453,19 +448,32 @@ export const DesignerInitData = ({
                       style={{ color: onlyIconMode && colorInactiv }}
                     />
                   </div>
-                  <div
-                    style={{
-                      // display: "flex",
-                      // justifyContent: "space-between",
-                      marginTop: "16px",
+                </div> */}
+                <Divider style={{ margin: "22px 0px" }} />
+                <div style={{ margin: "15px 0px" }}>
+                  {/* <span style={libraryTitle}>Suche</span> */}
+                  <Input
+                    size="large"
+                    prefix={<SearchOutlined />}
+                    allowClear
+                    onPressEnter={(e) => {
+                      console.log("yyy on Press enter");
+                      setSearchText(e.target.value);
                     }}
-                  >
-                    <span style={libraryTitle}>Schilder</span>
-                  </div>
+                    placeholder="Hier nach Beschreibung und Nr filtern"
+                    value={searchText}
+                    onChange={(e) => setSearchText(e.target.value)}
+                    style={{
+                      height: "40px",
+                      marginTop: "8px",
+                      marginBottom: "15px",
+                      fontSize: "14px",
+                    }}
+                  />
                   {searchText === ""
                     ? data.map((section) => {
                         return (
-                          <div style={{ margin: "30px 0px 0px 0px" }}>
+                          <div style={{ margin: "12px 0px 0px 0px" }}>
                             <div
                               style={{
                                 display: "flex",
@@ -473,7 +481,7 @@ export const DesignerInitData = ({
                                 marginBottom: "6px",
                               }}
                             >
-                              <span style={libraryTitle}>
+                              <span style={sectionTitleStyle}>
                                 {section.sectionTitle}
                               </span>
                             </div>
@@ -494,7 +502,7 @@ export const DesignerInitData = ({
                       })
                     : filtredData.map((sectionTitle) => {
                         return (
-                          <div style={{ margin: "30px 0px 0px 0px" }}>
+                          <div style={{ margin: "12px 0px 0px 0px" }}>
                             <div
                               style={{
                                 display: "flex",
@@ -502,7 +510,9 @@ export const DesignerInitData = ({
                                 marginBottom: "6px",
                               }}
                             >
-                              <span style={libraryTitle}>{sectionTitle}</span>
+                              <span style={sectionTitleStyle}>
+                                {sectionTitle}
+                              </span>
                             </div>
                             <Collapse
                               items={
