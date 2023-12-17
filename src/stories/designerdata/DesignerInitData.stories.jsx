@@ -1,4 +1,8 @@
-import { Excalidraw, MainMenu } from "@excalidraw/excalidraw";
+import {
+  Excalidraw,
+  MainMenu,
+  viewportCoordsToSceneCoords,
+} from "@excalidraw/excalidraw";
 import { useEffect, useState } from "react";
 import "./designer-style.css";
 import { Input, Collapse, Divider } from "antd";
@@ -13,12 +17,11 @@ import {
 } from "@ant-design/icons";
 import { roadSigns } from "./dataSigns";
 import { libraryExtractor } from "./libraryExtractor";
+import { nanoid } from "nanoid";
 
 export default {
   title: "Library Custom/DesignerInitData",
 };
-
-console.log("xxx all json", signLocal);
 
 const colorPrimary = "#6965db";
 const colorInactiv = "#a5a5a5";
@@ -89,51 +92,6 @@ const onChangeCollapseHandle = (key) => {
   console.log(key);
 };
 
-const onlyIconView = (iconsData) => {
-  return (
-    <div
-      style={{
-        display: "flex",
-        gap: "10px",
-        flexWrap: "wrap",
-        marginRight: "-18px",
-      }}
-    >
-      {iconsData.map((icon) => (
-        <div key={icon.iconId} style={iconWrapperSize}>
-          <img src={`/${icon.fileName}`} style={singleIconStyInternalStyle} />
-        </div>
-      ))}
-    </div>
-  );
-};
-
-const iconWithDescriptionView = (iconsData) => {
-  return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "10px",
-        color: colorTextBlack,
-      }}
-    >
-      {iconsData.map((icon) => (
-        <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-          <div style={iconWrapperSizeWithDescription}>
-            <img
-              src={`/${icon.fileName}`}
-              style={singleIconStyInternalStyleWithDescription}
-            />
-          </div>
-          <span style={{ fontSize: "13px", lineHeight: "1.3em" }}>
-            {icon.iconsTitle}
-          </span>
-        </div>
-      ))}
-    </div>
-  );
-};
 const labelView = (group, groupItems = null) => (
   <div
     style={{
@@ -156,20 +114,40 @@ export const DesignerInitData = ({
   extractor = libraryExtractor,
   activeMode = false,
 }) => {
+  const [excalidrawAPI, setExcalidrawAPI] = useState(null);
   const [data, setData] = useState([]);
   useEffect(() => {
-    setData(extractor(dataIn));
-  }, [dataIn]);
+    if (excalidrawAPI) {
+      setData(extractor(dataIn));
+    }
+  }, [dataIn, excalidrawAPI]);
 
-  const [excalidrawAPI, setExcalidrawAPI] = useState(null);
+  const fetchIcon = async (pathName, fileId) => {
+    const res = await fetch(pathName);
 
+    const imageData = await res.blob();
+    const reader = new FileReader();
+    reader.readAsDataURL(imageData);
+
+    reader.onload = function () {
+      const imagesArray = [
+        {
+          id: fileId,
+          dataURL: reader.result,
+          mimeType: "image/svg+xml",
+        },
+      ];
+      console.log("xxx imageData", imagesArray);
+      excalidrawAPI.addFiles(imagesArray);
+    };
+  };
   const UIOptions = {
     canvasActions: {
       saveAsImage: false,
     },
   };
   const [showLibrary, setShowLibrary] = useState(true);
-  const [onlyIconMode, setOnlyIconMode] = useState(false);
+  const [onlyIconMode, setOnlyIconMode] = useState(true);
   const [itemsOnlyIcon, setItemsOnlyIcon] = useState();
   const [itemsWithTextDescription, setItemsWithTextDescription] = useState();
   const [ifPinnedLibrary, setIfPinnedLibrary] = useState(true);
@@ -182,6 +160,51 @@ export const DesignerInitData = ({
     {}
   );
 
+  const handleUpdateCanvas = async (event) => {
+    const naturalWidth = event.target.naturalWidth;
+    const naturalHeight = event.target.naturalHeight;
+    const iconPath = event.target.getAttribute("src");
+    const pathName = iconPath;
+    const newFileId = nanoid();
+
+    const excalidrawState = excalidrawAPI.getAppState();
+    const canvasWidth = 1297;
+    const canvasHeight = 768;
+
+    const centerX = canvasWidth / 2;
+    const centerY = canvasHeight / 2;
+
+    const newElement = {
+      type: "image",
+      isDeleted: false,
+      id: nanoid(),
+      fillStyle: "hachure",
+      strokeWidth: 1,
+      strokeStyle: "solid",
+      roughness: 1,
+      opacity: 100,
+      angle: 0,
+      x: centerX,
+      y: centerY,
+      strokeColor: "#c92a2a",
+      backgroundColor: "transparent",
+      width: naturalWidth / 6,
+      height: naturalHeight / 6,
+      groupIds: [],
+      boundElements: null,
+      locked: false,
+      link: null,
+      fileId: newFileId,
+    };
+
+    const getSceneElements = excalidrawAPI.getSceneElements();
+
+    excalidrawAPI.updateScene({
+      elements: [...getSceneElements, newElement],
+      appState: excalidrawState,
+    });
+    await fetchIcon(pathName, newFileId);
+  };
   useEffect(() => {
     const compsWithTextDescription = {};
     const compsOnlyIcons = {};
@@ -315,9 +338,65 @@ export const DesignerInitData = ({
     }
   }, [searchText]);
 
+  useEffect(() => {
+    console.log("xxx excalidrawAPI !!!", excalidrawAPI);
+  }, [excalidrawAPI]);
+
   const resetScene = () => {
     excalidrawAPI.resetScene();
   };
+
+  const onlyIconView = (iconsData) => {
+    return (
+      <div
+        style={{
+          display: "flex",
+          gap: "10px",
+          flexWrap: "wrap",
+          marginRight: "-18px",
+        }}
+      >
+        {iconsData.map((icon) => (
+          <div key={icon.iconId} style={iconWrapperSize}>
+            <img
+              src={icon.fileName}
+              style={singleIconStyInternalStyle}
+              onClick={handleUpdateCanvas}
+            />
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+  const iconWithDescriptionView = (iconsData) => {
+    return (
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "10px",
+          color: colorTextBlack,
+        }}
+      >
+        {iconsData.map((icon) => (
+          <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+            <div style={iconWrapperSizeWithDescription}>
+              <img
+                src={`/${icon.fileName}`}
+                style={singleIconStyInternalStyleWithDescription}
+                onClick={handleUpdateCanvas}
+              />
+            </div>
+            <span style={{ fontSize: "13px", lineHeight: "1.3em" }}>
+              {icon.iconsTitle}
+            </span>
+          </div>
+        ))}
+      </div>
+    );
+  };
+
   return (
     <>
       <div
@@ -358,10 +437,10 @@ export const DesignerInitData = ({
             {/* <MainMenu.DefaultItems.Socials /> */}
             <MainMenu.DefaultItems.Export />
             <MainMenu.DefaultItems.Help />
-            <MainMenu.DefaultItems.SaveToActiveFile />
+            {/* <MainMenu.DefaultItems.SaveToActiveFile /> */}
             {/* <MainMenu.DefaultItems.ToggleTheme /> */}
             <MainMenu.DefaultItems.LoadScene />
-            {/* <MainMenu.DefaultItems.ClearCanvas /> */}
+            <MainMenu.DefaultItems.ClearCanvas />
             <MainMenu.Item
               onSelect={resetScene}
               icon={
@@ -529,63 +608,6 @@ export const DesignerInitData = ({
                           </div>
                         );
                       })}
-
-                  {/* {!searchText === "" &&
-                    data.map((section) => {
-                      if (filtredDataOnlyIcon[section.sectionTitle]) {
-                        return (
-                          <div style={{ margin: "30px 0px 0px 0px" }}>
-                            <span>Filter!!!</span>
-                            <div
-                              style={{
-                                display: "flex",
-                                justifyContent: "space-between",
-                                marginBottom: "6px",
-                              }}
-                            >
-                              <span style={libraryTitle}>
-                                {section.sectionTitle}
-                              </span>
-                            </div>
-                            <Collapse
-                              items={
-                                onlyIconMode
-                                  ? filtredDataOnlyIcon[section.sectionTitle]
-                                  : filtredDataIconDescription[
-                                      section.sectionTitle
-                                    ]
-                              }
-                              ghost
-                              defaultActiveKey={["1"]}
-                              _onChange={onChangeCollapseHandle}
-                            />
-                          </div>
-                        );
-                      } else {
-                        return <div>!!!!!!!!!!!</div>;
-                      }
-                    })} */}
-                  {/* {searchText === "" ? (
-                    <Collapse
-                      items={
-                        onlyIconMode ? itemsOnlyIcon : itemsWithTextDescription
-                      }
-                      ghost
-                      defaultActiveKey={["1"]}
-                      _onChange={onChangeCollapseHandle}
-                    />
-                  ) : (
-                    <Collapse
-                      items={
-                        onlyIconMode
-                          ? filtredDataOnlyIcon
-                          : filtredDataIconDescription
-                      }
-                      ghost
-                      defaultActiveKey={["1"]}
-                      _onChange={onChangeCollapseHandle}
-                    />
-                  )} */}
                 </div>
               </div>
             </div>

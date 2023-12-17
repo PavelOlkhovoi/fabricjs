@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 import LightsIcons from "/traffic-light-svgrepo-com.svg";
 import SinnbildFußganger from "/Sinnbild_Fußgänger.svg";
 import WarningIcons from "/warning-svgrepo-com.svg";
-import SinnbildIcons from "/Sinnbild_Kfz.svg";
+// import SinnbildIcons from "/Sinnbild_Kfz.svg";
 import {
   storedDataFromConsole,
   trafficLightIcon,
@@ -831,6 +831,9 @@ export const GenerateImageElementWithOneFolder = () => {
       excalidrawAPI.addFiles(imagesArray);
     };
   };
+  useEffect(() => {
+    console.log("xxx excalidrawAPI", excalidrawAPI);
+  }, [excalidrawAPI]);
 
   const handleUpdateCanvas = async (event) => {
     const iconPathArr = event.target.getAttribute("src").split("/");
@@ -872,32 +875,36 @@ export const GenerateImageElementWithOneFolder = () => {
     await fetchIcon(pathName, newFileId);
   };
 
-  //   if (!excalidrawAPI) {
-  //     return;
-  //   }
-  //   const fetchIcon = async () => {
-  //     const res = await fetch("/traffic-light-svgrepo-com.svg");
-  //     const imageData = await res.blob();
-  //     const reader = new FileReader();
-  //     reader.readAsDataURL(imageData);
-
-  //     reader.onload = function () {
-  //       const imagesArray = [
-  //         {
-  //           id: "traffic-light-svgrepo-com.svg111",
-  //           dataURL: reader.result,
-  //           mimeType: "image/svg+xml",
-  //         },
-  //       ];
-  //       console.log("xxx imageData", imagesArray);
-  //       excalidrawAPI.addFiles(imagesArray);
-  //     };
-  //   };
-  //   fetchIcon();
-  // }, [excalidrawAPI]);
+  const obgArr = [
+    {
+      id: 1,
+      path: LightsIcons,
+    },
+    {
+      id: 2,
+      path: WarningIcons,
+    },
+  ];
+  const createIcon = () => {
+    return (
+      <div>
+        {obgArr.map((icon) => {
+          return (
+            <div style={{ width: "40px", height: "40px" }}>
+              <img
+                src={icon.path}
+                style={{ width: "40px", height: "40px" }}
+                onClick={handleUpdateCanvas}
+              />
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
   return (
     <div style={{ height: "500px" }}>
-      <div style={{ width: "40px", height: "40px" }}>
+      {/* <div style={{ width: "40px", height: "40px" }}>
         <img
           src={LightsIcons}
           style={{ width: "40px", height: "40px" }}
@@ -910,6 +917,20 @@ export const GenerateImageElementWithOneFolder = () => {
           style={{ width: "40px", height: "40px" }}
           onClick={handleUpdateCanvas}
         />
+      </div> */}
+      {createIcon()}
+      <div>
+        {/* {obgArr.map((icon) => {
+          return (
+            <div style={{ width: "40px", height: "40px" }}>
+              <img
+                src={icon.path}
+                style={{ width: "40px", height: "40px" }}
+                onClick={handleUpdateCanvas}
+              />
+            </div>
+          );
+        })} */}
       </div>
       <Excalidraw excalidrawAPI={(api) => setExcalidrawAPI(api)} />
     </div>
@@ -955,12 +976,12 @@ export const IdentifyInsertedElement = () => {
         style={{ width: "40px", height: "40px" }}
         onDragStart={handleDragStart}
       >
-        <img
+        {/* <img
           src={SinnbildIcons}
           style={{ width: "40px", height: "40px" }}
           onDragStart={handleDragStart}
           draggable
-        />
+        /> */}
       </div>
       <Excalidraw
         excalidrawAPI={(api) => setExcalidrawAPI(api)}
@@ -1012,7 +1033,7 @@ export const IdentifyInsertedElementByGetSceneElements = () => {
   return (
     <div style={{ height: "500px" }}>
       <div>
-        <img src={SinnbildIcons} style={{ height: "30px", margin: "8px" }} />
+        {/* <img src={SinnbildIcons} style={{ height: "30px", margin: "8px" }} /> */}
         <img
           src={SinnbildFußganger}
           style={{ height: "30px", margin: "10px" }}
