@@ -413,6 +413,7 @@ const DesignerComponent = ({
                     color: "#5B5B60",
                     fontSize: "12px",
                     cursor: "pointer",
+                    boxSizing: "content-box",
                   }}
                   onClick={() => setShowLibrary(!showLibrary)}
                 >
@@ -445,7 +446,11 @@ const DesignerComponent = ({
             </MainMenu>
           </Excalidraw>
         </div>
-        <div style={{ display: ifPinnedLibrary ? "block" : "none" }}>
+        <div
+          style={{
+            display: ifPinnedLibrary ? "block" : "none",
+          }}
+        >
           {showLibrary ? (
             <div
               style={{
@@ -456,8 +461,9 @@ const DesignerComponent = ({
                 boxShadow: "rgba(15, 14, 15, 0.07) 4px 1px 9px 1px",
                 borderRadius: "12px",
                 overflow: "auto",
-                height: "644px",
+                height: "646px",
                 color: "#1b1b1f",
+                boxSizing: "content-box",
               }}
             >
               <div style={{ margin: "16px 0" }}>
