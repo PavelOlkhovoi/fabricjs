@@ -83,8 +83,6 @@ export const libraryExtractor = (data) => {
       });
     });
 
-    console.log("xxx sections", sections);
-
     return sections;
   }
 };

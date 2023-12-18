@@ -3,7 +3,7 @@ import {
   MainMenu,
   viewportCoordsToSceneCoords,
 } from "@excalidraw/excalidraw";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import "./designer-style.css";
 import { Input, Collapse, Divider } from "antd";
 import { SearchOutlined, DeleteOutlined } from "@ant-design/icons";
@@ -116,9 +116,18 @@ export const DesignerInitData = ({
 }) => {
   const [excalidrawAPI, setExcalidrawAPI] = useState(null);
   const [data, setData] = useState([]);
+  const canvasWrapperRef = useRef(null);
+  const [canvasWrapperSize, setCanvasWrapperSize] = useState({});
+
   useEffect(() => {
     if (excalidrawAPI) {
       setData(extractor(dataIn));
+
+      if (canvasWrapperRef.current) {
+        const width = canvasWrapperRef.current.clientWidth;
+        const height = canvasWrapperRef.current.clientHeight;
+        setCanvasWrapperSize({ width, height });
+      }
     }
   }, [dataIn, excalidrawAPI]);
 
@@ -137,7 +146,6 @@ export const DesignerInitData = ({
           mimeType: "image/svg+xml",
         },
       ];
-      console.log("xxx imageData", imagesArray);
       excalidrawAPI.addFiles(imagesArray);
     };
   };
@@ -168,11 +176,11 @@ export const DesignerInitData = ({
     const newFileId = nanoid();
 
     const excalidrawState = excalidrawAPI.getAppState();
-    const canvasWidth = 1297;
-    const canvasHeight = 768;
+    // const canvasWidth = 1297;
+    // const canvasHeight = 768;
 
-    const centerX = canvasWidth / 2;
-    const centerY = canvasHeight / 2;
+    const centerX = canvasWrapperSize.width / 2;
+    const centerY = canvasWrapperSize.height / 2;
 
     const newElement = {
       type: "image",
@@ -323,7 +331,6 @@ export const DesignerInitData = ({
               iconWithDescriptionObj
             );
           });
-          console.log("xxx section", section);
         }
       });
 
@@ -331,16 +338,11 @@ export const DesignerInitData = ({
         (sectionName) => compsOnlyIcons[sectionName].length > 0
       );
 
-      console.log("xxx dataFiltered", data);
       setFiltredData(dataFiltered);
       setFiltredDataOnlyIcon(compsOnlyIcons);
       setFiltredDataIconDescription(compsWithTextDescription);
     }
   }, [searchText]);
-
-  useEffect(() => {
-    console.log("xxx excalidrawAPI !!!", excalidrawAPI);
-  }, [excalidrawAPI]);
 
   const resetScene = () => {
     excalidrawAPI.resetScene();
@@ -380,7 +382,10 @@ export const DesignerInitData = ({
         }}
       >
         {iconsData.map((icon) => (
-          <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+          <div
+            style={{ display: "flex", gap: "10px", alignItems: "center" }}
+            key={icon.iconId}
+          >
             <div style={iconWrapperSizeWithDescription}>
               <img
                 src={`/${icon.fileName}`}
@@ -406,53 +411,57 @@ export const DesignerInitData = ({
           display: "flex",
         }}
       >
-        <Excalidraw
-          excalidrawAPI={(api) => setExcalidrawAPI(api)}
-          UIOptions={UIOptions}
-          langCode="de-DE"
-          renderTopRightUI={() => {
-            return (
-              <div
-                style={{
-                  background: "#ECECF4",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  padding: "10.5px",
-                  borderRadius: "9px",
-                  width: "80px",
-                  color: "#5B5B60",
-                  fontSize: "12px",
-                  cursor: "pointer",
-                }}
-                onClick={() => setShowLibrary(!showLibrary)}
+        <div style={{ width: "100%" }} ref={canvasWrapperRef}>
+          <Excalidraw
+            excalidrawAPI={(api) => setExcalidrawAPI(api)}
+            UIOptions={UIOptions}
+            langCode="de-DE"
+            renderTopRightUI={() => {
+              return (
+                <div
+                  style={{
+                    background: "#ECECF4",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    padding: "10.5px",
+                    borderRadius: "9px",
+                    width: "80px",
+                    color: "#5B5B60",
+                    fontSize: "12px",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => setShowLibrary(!showLibrary)}
+                >
+                  <BookOutlined />
+                  <span style={{ marginLeft: "10px" }}>Bibliothek</span>
+                </div>
+              );
+            }}
+          >
+            <MainMenu style={{ width: "500px" }}>
+              {/* <MainMenu.DefaultItems.Socials /> */}
+              <MainMenu.DefaultItems.Export />
+              <MainMenu.DefaultItems.Help />
+              {/* <MainMenu.DefaultItems.SaveToActiveFile /> */}
+              {/* <MainMenu.DefaultItems.ToggleTheme /> */}
+              <MainMenu.DefaultItems.LoadScene />
+              <MainMenu.DefaultItems.ClearCanvas />
+              <MainMenu.Item
+                onSelect={resetScene}
+                icon={
+                  <DeleteOutlined
+                    style={{ fontSize: "8px", color: "#5B5B60" }}
+                  />
+                }
               >
-                <BookOutlined />
-                <span style={{ marginLeft: "10px" }}>Bibliothek</span>
-              </div>
-            );
-          }}
-        >
-          <MainMenu style={{ width: "500px" }}>
-            {/* <MainMenu.DefaultItems.Socials /> */}
-            <MainMenu.DefaultItems.Export />
-            <MainMenu.DefaultItems.Help />
-            {/* <MainMenu.DefaultItems.SaveToActiveFile /> */}
-            {/* <MainMenu.DefaultItems.ToggleTheme /> */}
-            <MainMenu.DefaultItems.LoadScene />
-            <MainMenu.DefaultItems.ClearCanvas />
-            <MainMenu.Item
-              onSelect={resetScene}
-              icon={
-                <DeleteOutlined style={{ fontSize: "8px", color: "#5B5B60" }} />
-              }
-            >
-              <span>Zeichenfläche löschen</span>
-            </MainMenu.Item>
-            <Divider />
-            <MainMenu.DefaultItems.ChangeCanvasBackground />
-          </MainMenu>
-        </Excalidraw>
+                <span>Zeichenfläche löschen</span>
+              </MainMenu.Item>
+              <Divider />
+              <MainMenu.DefaultItems.ChangeCanvasBackground />
+            </MainMenu>
+          </Excalidraw>
+        </div>
         <div style={{ display: ifPinnedLibrary ? "block" : "none" }}>
           {showLibrary ? (
             <div
@@ -552,7 +561,10 @@ export const DesignerInitData = ({
                   {searchText === ""
                     ? data.map((section) => {
                         return (
-                          <div style={{ margin: "12px 0px 0px 0px" }}>
+                          <div
+                            style={{ margin: "12px 0px 0px 0px" }}
+                            key={section.sectionTitle}
+                          >
                             <div
                               style={{
                                 display: "flex",
@@ -581,7 +593,10 @@ export const DesignerInitData = ({
                       })
                     : filtredData.map((sectionTitle) => {
                         return (
-                          <div style={{ margin: "12px 0px 0px 0px" }}>
+                          <div
+                            style={{ margin: "12px 0px 0px 0px" }}
+                            key={sectionTitle}
+                          >
                             <div
                               style={{
                                 display: "flex",
