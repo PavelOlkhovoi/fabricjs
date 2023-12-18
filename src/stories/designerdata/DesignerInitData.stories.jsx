@@ -117,17 +117,12 @@ export const DesignerInitData = ({
   const [excalidrawAPI, setExcalidrawAPI] = useState(null);
   const [data, setData] = useState([]);
   const canvasWrapperRef = useRef(null);
-  const [canvasWrapperSize, setCanvasWrapperSize] = useState({});
+  // const [canvasWrapperWidth, setCanvasWrapperWidth] = useState();
+  // const [canvasWrapperHight, setCanvasWrapperHight] = useState();
 
   useEffect(() => {
     if (excalidrawAPI) {
       setData(extractor(dataIn));
-
-      if (canvasWrapperRef.current) {
-        const width = canvasWrapperRef.current.clientWidth;
-        const height = canvasWrapperRef.current.clientHeight;
-        setCanvasWrapperSize({ width, height });
-      }
     }
   }, [dataIn, excalidrawAPI]);
 
@@ -179,8 +174,8 @@ export const DesignerInitData = ({
     // const canvasWidth = 1297;
     // const canvasHeight = 768;
 
-    const centerX = canvasWrapperSize.width / 2;
-    const centerY = canvasWrapperSize.height / 2;
+    const centerX = canvasWrapperRef.current.clientWidth / 2;
+    const centerY = canvasWrapperRef.current.clientHeight / 2;
 
     const newElement = {
       type: "image",
