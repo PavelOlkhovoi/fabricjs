@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MDEditor from "@uiw/react-md-editor";
 
 export default {
@@ -15,6 +15,9 @@ export const UiwReact = () => {
 
 export const UiwReactFirst = () => {
   const [value, setValue] = useState("**Hello world!!!**");
+  useEffect(() => {
+    console.log("xxx value", value);
+  }, [value]);
   return (
     <div>
       <div className="container">
