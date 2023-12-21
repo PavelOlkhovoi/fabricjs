@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 // import Editor from "react-markdown-editor-lite";
 import MdEditor, { Plugins } from "react-markdown-editor-lite";
 import ReactMarkdown from "react-markdown";
 import MarkdownIt from "markdown-it";
 import "react-markdown-editor-lite/lib/index.css";
+import { FormOutlined } from "@ant-design/icons";
 
 export default {
   title: "MKDLite/MkdEditorEditor",
@@ -47,10 +48,12 @@ function handleEditorChange({ html, text }) {
   console.log("handleEditorChange", html, text);
 }
 function onImageUpload(file) {
+  const imagePath =
+    "https://github.com/PavelOlkhovoi/fabricjs/assets/55281206/4953c6d8-3e8d-4a0a-a320-2bb2c36c6ae5";
   return new Promise((resolve) => {
     const reader = new FileReader();
     reader.onload = (data) => {
-      resolve(data.target.result);
+      resolve(imagePath);
     };
     reader.readAsDataURL(file);
   });
@@ -93,6 +96,13 @@ const plugins = [
   "tab-insert",
 ];
 
+MdEditor.addLocale("de-DE", {
+  btnHeader: "Überschrift",
+  btnClear: "Löschen",
+  btnBold: "Fett",
+});
+MdEditor.useLocale("de-DE");
+
 export const MkdEditorWithMarkDownIt = () => {
   const [value, setValue] = React.useState("Text from use state");
   return (
@@ -105,6 +115,120 @@ export const MkdEditorWithMarkDownIt = () => {
         renderHTML={(text) => mdParser.render(text)}
         onChange={handleEditorChange}
         onImageUpload={onImageUpload}
+      />
+    </div>
+  );
+};
+
+const Counter = (props) => {
+  const [num, setNum] = useState(props.config.start);
+
+  const handleClick = () => {
+    // Call API, insert number to editor
+    props.editor.insertText(num);
+    // Update itself's state
+    setNum(num + 1);
+  };
+
+  return (
+    <span
+      className="button button-type-counter"
+      title="Zähler"
+      onClick={handleClick}
+    >
+      {num}
+    </span>
+  );
+};
+// Define default config if required
+Counter.defaultConfig = {
+  start: 0,
+};
+Counter.align = "left";
+Counter.pluginName = "counter";
+
+// Usage:
+MdEditor.use(Counter, {
+  start: 10,
+});
+
+export const MkdEditorFirstPlagin = () => {
+  const [value, setValue] = React.useState("Text from use state");
+  return (
+    <div>
+      <MdEditor
+        style={{ height: "500px" }}
+        // value={value}
+        // plugins={plugins}
+        renderHTML={(text) => mdParser.render(text)}
+        onChange={handleEditorChange}
+        onImageUpload={onImageUpload}
+      />
+    </div>
+  );
+};
+
+const TodoList = (props) => {
+  const [num, setNum] = useState(props.config.start);
+
+  const handleClick = () => {
+    // Call API, insert number to editor
+    props.editor.insertText(`- [ ] ddddddddddddd`);
+  };
+
+  return (
+    <span
+      className="button button-type-counter"
+      title="ToDo-Liste"
+      onClick={handleClick}
+    >
+      <FormOutlined style={{ fontSize: "16px", marginTop: "6px" }} />
+    </span>
+  );
+};
+// Define default config if required
+TodoList.defaultConfig = {
+  start: 0,
+};
+TodoList.align = "left";
+TodoList.pluginName = "todo";
+
+// Usage:
+MdEditor.use(TodoList, {
+  start: 10,
+});
+
+const pluginsList = [
+  "header",
+  "font-bold",
+  "font-italic",
+  "block-quote",
+  "link",
+  "block-code-block",
+  "divider",
+  "list-ordered",
+  "list-unordered",
+  "todo",
+  "divider",
+  "image",
+  // "logger",
+  "mode-toggle",
+  // "full-screen",
+  // "tab-insert",
+  ,
+];
+
+export const MkdEditorTodoListPlagin = () => {
+  return (
+    <div>
+      <MdEditor
+        style={{ height: "500px" }}
+        plugins={pluginsList}
+        renderHTML={(text) => mdParser.render(text)}
+        onChange={handleEditorChange}
+        onImageUpload={onImageUpload}
+        shortcuts={true}
+        view={{ menu: true, md: true, html: false }}
       />
     </div>
   );

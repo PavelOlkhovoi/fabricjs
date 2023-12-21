@@ -1,7 +1,12 @@
 import DesignerComponent from "./components/designer/DesignerComponent";
-import LiteMd from "./components/md/LiteMd";
+import MdxEditor from "./components/mdxeditor/MdxEditor";
+import "./App.css";
 function App() {
-  return <LiteMd />;
+  return (
+    <div className="App">
+      <MdxEditor />
+    </div>
+  );
 }
 
 export default App;

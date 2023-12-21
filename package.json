@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@excalidraw/excalidraw": "0.17.0",
+    "@mdxeditor/editor": "^1.14.2",
     "@tldraw/tldraw": "2.0.0-alpha.18",
     "@uiw/react-md-editor": "^4.0.1",
     "antd": "^5.5.2",
