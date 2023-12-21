@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import MdEditor, { Plugins } from "react-markdown-editor-lite";
 import ReactMarkdown from "react-markdown";
 import MarkdownIt from "markdown-it";
+import MarkdownTasklists from "markdown-it-task-lists";
 import "react-markdown-editor-lite/lib/index.css";
 import { FormOutlined, SolutionOutlined } from "@ant-design/icons";
 import { Button, Popover, Mentions } from "antd";
@@ -43,7 +44,14 @@ export const MkdEditorWithMarkDown = () => {
   );
 };
 
-const mdParser = new MarkdownIt(/* Markdown-it options */);
+// const mdParser = new MarkdownIt(/* Markdown-it options */);
+const mdParser = new MarkdownIt({
+  html: true,
+  linkify: true,
+  typographer: true,
+});
+
+mdParser.use(MarkdownTasklists, { label: false, labelAfter: false });
 
 function handleEditorChange({ html, text }) {
   console.log("handleEditorChange", html, text);
@@ -174,7 +182,7 @@ const TodoList = (props) => {
 
   const handleClick = () => {
     // Call API, insert number to editor
-    props.editor.insertText(`- [ ] ddddddddddddd`);
+    props.editor.insertText(`- [ ] New task`);
   };
 
   return (
