@@ -4,7 +4,8 @@ import MdEditor, { Plugins } from "react-markdown-editor-lite";
 import ReactMarkdown from "react-markdown";
 import MarkdownIt from "markdown-it";
 import "react-markdown-editor-lite/lib/index.css";
-import { FormOutlined } from "@ant-design/icons";
+import { FormOutlined, SolutionOutlined } from "@ant-design/icons";
+import { Button, Popover, Mentions } from "antd";
 
 export default {
   title: "MKDLite/MkdEditorEditor",
@@ -62,7 +63,7 @@ function onImageUpload(file) {
 // MdEditor.use(Plugins.AutoResize, {
 //   min: 100, // min height
 //   max: 200, // max height
-// });
+// }); SolutionOutlined
 
 // const plugins = [
 //   "header",
@@ -186,16 +187,75 @@ const TodoList = (props) => {
     </span>
   );
 };
-// Define default config if required
 TodoList.defaultConfig = {
   start: 0,
 };
 TodoList.align = "left";
 TodoList.pluginName = "todo";
 
-// Usage:
 MdEditor.use(TodoList, {
-  start: 10,
+  // start: 10,
+});
+
+const DocumentNumber = (props) => {
+  const [num, setNum] = useState(props.config.start);
+  const onChange = (value) => {
+    console.log("Change:", value);
+  };
+  const onSelect = (option) => {
+    console.log("select", option);
+    props.editor.insertText(`[Document ${option.value}](${option.value})`);
+  };
+  const content = (
+    <div>
+      <Mentions
+        style={{
+          width: "100%",
+        }}
+        onChange={onChange}
+        onSelect={onSelect}
+        defaultValue="@afc163"
+        options={[
+          {
+            value: "afc163",
+            label: "afc163",
+          },
+          {
+            value: "bfc1631233",
+            label: "bfc1631233",
+          },
+          {
+            value: "cmdbfc1631233",
+            label: "cmdbfc1631233",
+          },
+        ]}
+      />
+    </div>
+  );
+  const handleClick = (e) => {
+    e.preventDefault();
+  };
+
+  return (
+    <span
+      className="button button-type-counter"
+      title="documents"
+      onClick={(e) => handleClick(e)}
+    >
+      <Popover content={content} title="Title" trigger="hover">
+        <SolutionOutlined style={{ fontSize: "16px", marginTop: "7px" }} />
+      </Popover>
+    </span>
+  );
+};
+DocumentNumber.defaultConfig = {
+  start: 0,
+};
+DocumentNumber.align = "left";
+DocumentNumber.pluginName = "documents";
+
+MdEditor.use(DocumentNumber, {
+  // start: 10,
 });
 
 const pluginsList = [
@@ -211,11 +271,8 @@ const pluginsList = [
   "todo",
   "divider",
   "image",
-  // "logger",
+  "documents",
   "mode-toggle",
-  // "full-screen",
-  // "tab-insert",
-  ,
 ];
 
 export const MkdEditorTodoListPlagin = () => {
