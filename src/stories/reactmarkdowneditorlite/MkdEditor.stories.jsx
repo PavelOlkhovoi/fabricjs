@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // import Editor from "react-markdown-editor-lite";
 import MdEditor, { Plugins } from "react-markdown-editor-lite";
 import ReactMarkdown from "react-markdown";
@@ -7,6 +7,8 @@ import MarkdownTasklists from "markdown-it-task-lists";
 import "react-markdown-editor-lite/lib/index.css";
 import { FormOutlined, SolutionOutlined } from "@ant-design/icons";
 import { Button, Popover, Mentions } from "antd";
+import MarkdownItReplaceLink from "markdown-it-replace-link";
+import { nanoid } from "nanoid";
 
 export default {
   title: "MKDLite/MkdEditorEditor",
@@ -54,7 +56,7 @@ const mdParser = new MarkdownIt({
 mdParser.use(MarkdownTasklists, { label: false, labelAfter: false });
 
 function handleEditorChange({ html, text }) {
-  console.log("handleEditorChange", html, text);
+  // console.log("handleEditorChange", html, text);
 }
 function onImageUpload(file) {
   const imagePath =
@@ -67,6 +69,7 @@ function onImageUpload(file) {
     reader.readAsDataURL(file);
   });
 }
+
 // MdEditor.unuse(Plugins.Header);
 // MdEditor.use(Plugins.AutoResize, {
 //   min: 100, // min height
@@ -283,7 +286,34 @@ const pluginsList = [
   "mode-toggle",
 ];
 
+const tttttttttt = (file) => {
+  mdParser.use(MarkdownItReplaceLink, {
+    replaceLink: function (link, env, token, htmlToken) {
+      return file;
+    },
+  });
+};
+
 export const MkdEditorTodoListPlagin = () => {
+  const [fileContent, setFileContent] = useState([]);
+
+  function onImageUpload(file) {
+    const imagePath =
+      "https://github.com/PavelOlkhovoi/fabricjs/assets/55281206/4953c6d8-3e8d-4a0a-a320-2bb2c36c6ae5";
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (data) => {
+        tttttttttt(data.target.result);
+        setFileContent((preve) => [...preve, data.target.result]);
+        resolve("11111111111");
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+  useEffect(() => {
+    // tttttttttt(fileContent[fileContent.length - 1]);
+  }, [fileContent]);
+
   return (
     <div>
       <MdEditor
