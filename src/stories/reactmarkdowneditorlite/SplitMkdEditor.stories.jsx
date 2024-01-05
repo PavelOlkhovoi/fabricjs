@@ -66,7 +66,7 @@ const ViewMode = (props) => {
 };
 
 ViewMode.defaultConfig = {};
-ViewMode.align = "left";
+ViewMode.align = "right";
 ViewMode.pluginName = "viewmode";
 
 MdEditor.use(ViewMode, {});
@@ -86,7 +86,7 @@ const pluginsList = [
   "block-quote",
   "image",
   "link",
-  "full-screen",
+  // "full-screen",
 ];
 function handleEditorChange({ html, text }) {
   console.log("handleEditorChange", html, text);
@@ -105,7 +105,7 @@ export const MkdSplitedEditor = () => {
   return (
     <div>
       <MdEditor
-        style={{ height: "500px" }}
+        style={{ width: "1000px", height: "700px" }}
         plugins={pluginsList}
         renderHTML={(text) => mdParser.render(text)}
         value={demoValue}

@@ -18,11 +18,18 @@
   -webkit-box-direction: normal;
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
-  flex-direction: row;
+  flex-direction: row-reverse;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;
   justify-content: space-between;
+}
+
+.rc-md-editor .rc-md-divider {
+  display: block;
+  width: 1px;
+  background-color: #e0e0e0;
+  margin: 0 5px;
 }
 
 .mode-btn-toogle {
