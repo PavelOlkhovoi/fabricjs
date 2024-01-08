@@ -102,6 +102,12 @@ const CustomUploadImages = (props) => {
     }
   };
 
+  const handleSaveDocument = () => {
+    const mdDoc = props.editor.getMdValue();
+    const images = uploadedImages;
+    console.log("xxx mdDoc", { images, mdDoc });
+  };
+
   useEffect(() => {
     console.log("xxx imageStore", uploadedImages);
   }, [uploadedImages]);
@@ -110,6 +116,9 @@ const CustomUploadImages = (props) => {
     <div>
       <span className="button" title="Upload">
         <input type="file" accept="image/*" onChange={handleImageChange} />
+      </span>
+      <span className="button" title="Save" onClick={handleSaveDocument}>
+        <button className="button">Save</button>
       </span>
     </div>
   );
