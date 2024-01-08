@@ -117,3 +117,55 @@ export const MkdSplitedEditor = () => {
     </div>
   );
 };
+
+export const MkdSplitedEditorWithImg = () => {
+  const demoValue = `
+  * text
+  * text
+  * text
+  * 
+  1. text
+  2. text
+  3. text
+
+`;
+  // function onImageUpload(file) {
+  //   return new Promise((resolve) => {
+  //     const reader = new FileReader();
+  //     reader.onload = (data) => {
+  //       const res = data.target.result;
+  //       console.log("xxx res", res);
+  //       resolve(data.target.result);
+  //     };
+  //     reader.readAsDataURL(file);
+  //   });
+  // }
+  function onImageUpload(file) {
+    const blobUrl = URL.createObjectURL(file);
+    console.log("xxx blobUrl", blobUrl);
+    new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (data) => {
+        const res = data.target.result;
+        console.log("xxx base 64", res);
+        resolve(data.target.result);
+      };
+      reader.readAsDataURL(file);
+    });
+    return blobUrl;
+  }
+  return (
+    <div>
+      <MdEditor
+        style={{ width: "1000px", height: "700px" }}
+        plugins={pluginsList}
+        renderHTML={(text) => mdParser.render(text)}
+        // value={demoValue}
+        onChange={handleEditorChange}
+        onImageUpload={onImageUpload}
+        shortcuts={true}
+        view={{ menu: true, md: true, html: false }}
+      />
+    </div>
+  );
+};
