@@ -255,32 +255,21 @@ export const MkdSplitedEditorWithMockedBase64Image = () => {
 };
 
 export const MkdSplitedEditorWithImageUploadPlugin = () => {
-  const demoValue = `![image](${base64toBlobUrl(image64)})`;
-  function base64toBlobUrl(base64) {
-    const binaryString = window.atob(base64.split(",")[1]);
-    const length = binaryString.length;
-    const bytes = new Uint8Array(length);
+  const demoValue = `
+  * text
+  * text
+  * text
+  * 
+  1. text
+  2. text
+  3. text
+  `;
 
-    for (let i = 0; i < length; i++) {
-      bytes[i] = binaryString.charCodeAt(i);
-    }
+  const [value, setValue] = useState(demoValue);
 
-    const blob = new Blob([bytes], { type: "image/png" });
-    return URL.createObjectURL(blob);
-  }
-  function onImageUpload(file) {
-    const blobUrl = URL.createObjectURL(file);
-    console.log("xxx blobUrl", blobUrl);
-    new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.onload = (data) => {
-        const res = data.target.result;
-        console.log("xxx base 64", res);
-        resolve(data.target.result);
-      };
-      reader.readAsDataURL(file);
-    });
-    return blobUrl;
+  function handleEditorChange({ html, text }) {
+    console.log("handleEditorChange", text);
+    setValue(text);
   }
 
   return (
@@ -289,8 +278,8 @@ export const MkdSplitedEditorWithImageUploadPlugin = () => {
         style={{ width: "1000px", height: "700px" }}
         plugins={pluginsListSplited}
         renderHTML={(text) => mdParser.render(text)}
-        // value={demoValue}
-        // onChange={handleEditorChange}
+        value={value}
+        onChange={handleEditorChange}
         // onImageUpload={onImageUpload}
         shortcuts={true}
         view={{ menu: true, md: true, html: false }}
