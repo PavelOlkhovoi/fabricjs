@@ -4,6 +4,7 @@ import MarkdownIt from "markdown-it";
 import "react-markdown-editor-lite/lib/index.css";
 import "./splitstyle.css";
 import { image64, seconBase64, mdDoc } from "./base64img";
+import { nanoid } from "nanoid";
 export default {
   title: "MKEditorSlpit/MkdEditorEditor",
 };
@@ -73,7 +74,6 @@ MdEditor.use(ViewMode, {});
 
 const CustomUploadImages = (props) => {
   const [uploadedImages, setUploadedImages] = useState([]);
-
   const convertImageToBase64 = (file) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -94,7 +94,7 @@ const CustomUploadImages = (props) => {
         props.editor.insertText(`![image](${fileUrl})`);
         setUploadedImages((prev) => [
           ...prev,
-          { shortLink: fileUrl, base64Link: base64 },
+          { id: nanoid(), shortLink: fileUrl, base64Link: base64 },
         ]);
       }
     } catch (error) {
@@ -109,8 +109,10 @@ const CustomUploadImages = (props) => {
   };
 
   useEffect(() => {
-    console.log("xxx imageStore", uploadedImages);
-  }, [uploadedImages]);
+    if (props.config.imagesDefault) {
+      setUploadedImages(props.config.imagesDefault);
+    }
+  }, []);
 
   return (
     <div>
@@ -328,6 +330,71 @@ export const MkdSplitedEditorLoadSavedDocumentWithBase64 = () => {
         plugins={pluginsListSplited}
         renderHTML={(text) => mdParser.render(text)}
         value={value}
+        onChange={handleEditorChange}
+        // onImageUpload={onImageUpload}
+        shortcuts={true}
+        view={{ menu: true, md: true, html: false }}
+      />
+    </div>
+  );
+};
+export const MkdSplitedEditorLoadSavedDocumentWithNewBloab = () => {
+  const [mdText, setMdText] = useState("");
+  CustomUploadImages.defaultConfig = { imagesDefault: mdDoc.images };
+
+  function handleEditorChange({ html, text }) {
+    console.log("handleEditorChange", text);
+    setMdText(text);
+  }
+
+  function base64toBlobUrl(base64) {
+    const binaryString = window.atob(base64);
+    const length = binaryString.length;
+    const bytes = new Uint8Array(length);
+
+    for (let i = 0; i < length; i++) {
+      bytes[i] = binaryString.charCodeAt(i);
+    }
+
+    const blob = new Blob([bytes], { type: "image/png" });
+    return URL.createObjectURL(blob);
+  }
+
+  useEffect(() => {
+    let mrkdownText = mdDoc.mdDoc;
+    let images = mdDoc.images;
+    const imagesWithNewLink = [];
+
+    images.forEach((image) => {
+      const imageWithNewShortLink = base64toBlobUrl(image.base64Link);
+      imagesWithNewLink.push({
+        imageWithNewShortLink,
+        shortLink: image.shortLink,
+        base64Link: image.base64Link,
+      });
+    });
+
+    imagesWithNewLink.forEach(
+      ({ shortLink, base64Link, imageWithNewShortLink }) => {
+        const regex = new RegExp(shortLink, "g");
+        mrkdownText = mrkdownText.replace(regex, imageWithNewShortLink);
+      }
+    );
+
+    setMdText(mrkdownText);
+
+    // console.log("xxx imagesWithNewLink", imagesWithNewLink);
+
+    // setValue(mrkdownText);
+  }, []);
+
+  return (
+    <div>
+      <MdEditor
+        style={{ width: "1000px", height: "700px" }}
+        plugins={pluginsListSplited}
+        renderHTML={(text) => mdParser.render(text)}
+        value={mdText}
         onChange={handleEditorChange}
         // onImageUpload={onImageUpload}
         shortcuts={true}
