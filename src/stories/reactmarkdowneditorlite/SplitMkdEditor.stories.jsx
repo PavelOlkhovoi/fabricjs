@@ -3,7 +3,7 @@ import MdEditor, { Plugins } from "react-markdown-editor-lite";
 import MarkdownIt from "markdown-it";
 import "react-markdown-editor-lite/lib/index.css";
 import "./splitstyle.css";
-import { image64, seconBase64 } from "./base64img";
+import { image64, seconBase64, mdDoc } from "./base64img";
 export default {
   title: "MKEditorSlpit/MkdEditorEditor",
 };
@@ -280,6 +280,46 @@ export const MkdSplitedEditorWithImageUploadPlugin = () => {
     console.log("handleEditorChange", text);
     setValue(text);
   }
+
+  return (
+    <div>
+      <MdEditor
+        style={{ width: "1000px", height: "700px" }}
+        plugins={pluginsListSplited}
+        renderHTML={(text) => mdParser.render(text)}
+        value={value}
+        onChange={handleEditorChange}
+        // onImageUpload={onImageUpload}
+        shortcuts={true}
+        view={{ menu: true, md: true, html: false }}
+      />
+    </div>
+  );
+};
+
+export const MkdSplitedEditorLoadSavedDocumentWithBase64 = () => {
+  const [value, setValue] = useState("");
+
+  function handleEditorChange({ html, text }) {
+    console.log("handleEditorChange", text);
+    setValue(text);
+  }
+
+  useEffect(() => {
+    let mrkdownText = mdDoc.mdDoc;
+    let images = mdDoc.images;
+
+    images.forEach(({ shortLink, base64Link }) => {
+      const regex = new RegExp(shortLink, "g");
+      mrkdownText = mrkdownText.replace(
+        regex,
+        `data:image/png;base64,${base64Link}`
+      );
+      console.log("xxx 1111111111111", mrkdownText);
+    });
+
+    setValue(mrkdownText);
+  }, []);
 
   return (
     <div>
