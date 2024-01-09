@@ -511,3 +511,31 @@ export const MkdSplitedEditorWithLoadedContent = ({
     </div>
   );
 };
+export const MkdSplitedEditorWithChangedHTMLRender = ({
+  fallback = () => console.log("fallback function"),
+}) => {
+  const [mdText, setMdText] = useState("");
+  const [mdForEditor, setMdEditor] = useState("");
+
+  useEffect(() => {
+    let mrkdownText = "xxxxxxxxxxxx";
+    let mrkdownTextForEditor = "yyyyyyyyyyy";
+    setMdEditor(mrkdownTextForEditor);
+    setMdText(mrkdownText);
+  }, []);
+
+  return (
+    <div>
+      <MdEditor
+        style={{ width: "1000px", height: "900px" }}
+        plugins={pluginsListSplited}
+        renderHTML={(text) => mdParser.render(mdForEditor)}
+        value={mdText}
+        onChange={handleEditorChange}
+        // onImageUpload={onImageUpload}
+        shortcuts={true}
+        view={{ menu: true, md: true, html: false }}
+      />
+    </div>
+  );
+};
