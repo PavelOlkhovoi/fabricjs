@@ -120,11 +120,11 @@ const CustomUploadImages = (props) => {
       setUploadedImages(props.config.imagesDefault);
     }
 
-    return () => {
-      uploadedImages.forEach(({ shortLink }) => {
-        URL.revokeObjectURL(shortLink);
-      });
-    };
+    // return () => {
+    //   uploadedImages.forEach(({ shortLink }) => {
+    //     URL.revokeObjectURL(shortLink);
+    //   });
+    // };
   }, []);
 
   return (
@@ -370,7 +370,10 @@ export const MkdSplitedEditorLoadSavedDocumentWithNewBloab = ({
   fallback = () => console.log("fallback function"),
 }) => {
   const [mdText, setMdText] = useState("");
-  CustomUploadImages.defaultConfig = { imagesDefault: mdDoc.images, fallback };
+  CustomUploadImages.defaultConfig = {
+    imagesDefault: mdDoc.images,
+    fallback,
+  };
 
   function handleEditorChange({ html, text }) {
     console.log("handleEditorChange", text);
@@ -413,11 +416,84 @@ export const MkdSplitedEditorLoadSavedDocumentWithNewBloab = ({
 
     setMdText(mrkdownText);
 
-    return () => {
-      imagesWithNewLink.forEach(({ imageWithNewShortLink }) => {
-        URL.revokeObjectURL(imageWithNewShortLink);
+    // return () => {
+    //   imagesWithNewLink.forEach(({ imageWithNewShortLink }) => {
+    //     URL.revokeObjectURL(imageWithNewShortLink);
+    //   });
+    // };
+  }, []);
+
+  return (
+    <div>
+      <MdEditor
+        style={{ width: "1000px", height: "900px" }}
+        plugins={pluginsListSplited}
+        renderHTML={(text) => mdParser.render(text)}
+        value={mdText}
+        onChange={handleEditorChange}
+        // onImageUpload={onImageUpload}
+        shortcuts={true}
+        view={{ menu: true, md: true, html: false }}
+      />
+    </div>
+  );
+};
+export const MkdSplitedEditorWithLoadedContent = ({
+  fallback = () => console.log("fallback function"),
+}) => {
+  const [mdText, setMdText] = useState("");
+  CustomUploadImages.defaultConfig = {
+    imagesDefault: mockedMDData.images,
+    fallback,
+  };
+
+  function handleEditorChange({ html, text }) {
+    console.log("handleEditorChange", text);
+    setMdText(text);
+  }
+
+  function base64toBlobUrl(base64) {
+    console.log("xxx base64toBlobUrl", base64);
+    const binaryString = window.atob(base64);
+    const length = binaryString.length;
+    const bytes = new Uint8Array(length);
+
+    for (let i = 0; i < length; i++) {
+      bytes[i] = binaryString.charCodeAt(i);
+    }
+
+    const blob = new Blob([bytes], { type: "image/png" });
+    return URL.createObjectURL(blob);
+  }
+
+  useEffect(() => {
+    let mrkdownText = mockedMDData.mdDoc;
+    let images = mockedMDData.images;
+    const imagesWithNewLink = [];
+
+    images.forEach((image) => {
+      const imageWithNewShortLink = base64toBlobUrl(image.base64Link);
+      imagesWithNewLink.push({
+        imageWithNewShortLink,
+        shortLink: image.shortLink,
+        base64Link: image.base64Link,
       });
-    };
+    });
+
+    imagesWithNewLink.forEach(
+      ({ shortLink, base64Link, imageWithNewShortLink }) => {
+        const regex = new RegExp(shortLink, "g");
+        mrkdownText = mrkdownText.replace(regex, imageWithNewShortLink);
+      }
+    );
+
+    setMdText(mrkdownText);
+
+    // return () => {
+    //   imagesWithNewLink.forEach(({ imageWithNewShortLink }) => {
+    //     URL.revokeObjectURL(imageWithNewShortLink);
+    //   });
+    // };
   }, []);
 
   return (
