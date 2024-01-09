@@ -3,8 +3,14 @@ import MdEditor, { Plugins } from "react-markdown-editor-lite";
 import MarkdownIt from "markdown-it";
 import "react-markdown-editor-lite/lib/index.css";
 import "./splitstyle.css";
-import { image64, seconBase64, mdDoc } from "./base64img";
+import { image64, seconBase64, mdDoc, mockedMDData } from "./base64img";
 import { nanoid } from "nanoid";
+import {
+  PictureFilled,
+  SaveFilled,
+  DeliveredProcedureOutlined,
+} from "@ant-design/icons";
+
 export default {
   title: "MKEditorSlpit/MkdEditorEditor",
 };
@@ -106,28 +112,50 @@ const CustomUploadImages = (props) => {
     const mdDoc = props.editor.getMdValue();
     const images = uploadedImages;
     console.log("xxx mdDoc", { images, mdDoc });
+    props.config.fallback();
   };
 
   useEffect(() => {
     if (props.config.imagesDefault) {
       setUploadedImages(props.config.imagesDefault);
     }
+
+    return () => {
+      uploadedImages.forEach(({ shortLink }) => {
+        URL.revokeObjectURL(shortLink);
+      });
+    };
   }, []);
 
   return (
     <div>
       <span className="button" title="Upload">
-        <input type="file" accept="image/*" onChange={handleImageChange} />
+        <div className="custom-file-input">
+          <input
+            type="file"
+            accept="image/*"
+            id="fileInput"
+            onChange={handleImageChange}
+          />
+          <label htmlFor="fileInput">
+            <PictureFilled />
+          </label>
+        </div>
       </span>
-      <span className="button" title="Save" onClick={handleSaveDocument}>
-        <button className="button">Save</button>
+      <span
+        className="button"
+        title="Save"
+        onClick={handleSaveDocument}
+        style={{ cursor: "pointer" }}
+      >
+        <DeliveredProcedureOutlined />
       </span>
     </div>
   );
 };
 
 CustomUploadImages.defaultConfig = {};
-CustomUploadImages.align = "right";
+CustomUploadImages.align = "left";
 CustomUploadImages.pluginName = "imguploader";
 
 MdEditor.use(CustomUploadImages, {});
@@ -145,8 +173,8 @@ const pluginsListSplited = [
   "list-unordered",
   "list-ordered",
   "block-quote",
-  "image",
   "link",
+  "divider",
   "imguploader",
 ];
 function handleEditorChange({ html, text }) {
@@ -338,9 +366,11 @@ export const MkdSplitedEditorLoadSavedDocumentWithBase64 = () => {
     </div>
   );
 };
-export const MkdSplitedEditorLoadSavedDocumentWithNewBloab = () => {
+export const MkdSplitedEditorLoadSavedDocumentWithNewBloab = ({
+  fallback = () => console.log("fallback function"),
+}) => {
   const [mdText, setMdText] = useState("");
-  CustomUploadImages.defaultConfig = { imagesDefault: mdDoc.images };
+  CustomUploadImages.defaultConfig = { imagesDefault: mdDoc.images, fallback };
 
   function handleEditorChange({ html, text }) {
     console.log("handleEditorChange", text);
@@ -383,15 +413,17 @@ export const MkdSplitedEditorLoadSavedDocumentWithNewBloab = () => {
 
     setMdText(mrkdownText);
 
-    // console.log("xxx imagesWithNewLink", imagesWithNewLink);
-
-    // setValue(mrkdownText);
+    return () => {
+      imagesWithNewLink.forEach(({ imageWithNewShortLink }) => {
+        URL.revokeObjectURL(imageWithNewShortLink);
+      });
+    };
   }, []);
 
   return (
     <div>
       <MdEditor
-        style={{ width: "1000px", height: "700px" }}
+        style={{ width: "1000px", height: "900px" }}
         plugins={pluginsListSplited}
         renderHTML={(text) => mdParser.render(text)}
         value={mdText}

@@ -62,3 +62,28 @@
   border: none;
   border-radius: 6px 6px 0 0;
 }
+
+.custom-file-input {
+  position: relative;
+  display: inline-block;
+}
+
+.custom-file-input input {
+  display: none;
+}
+
+.custom-file-input label {
+  /* background-color: #3498db;
+  color: #fff; */
+  /* padding: 10px 15px; */
+  /* border-radius: 5px; */
+  cursor: pointer;
+  display: inline-block;
+}
+
+.custom-file-input img {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
