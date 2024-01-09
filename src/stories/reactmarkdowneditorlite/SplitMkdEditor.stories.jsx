@@ -10,6 +10,7 @@ import {
   SaveFilled,
   DeliveredProcedureOutlined,
 } from "@ant-design/icons";
+import md5 from "md5";
 
 export default {
   title: "MKEditorSlpit/MkdEditorEditor",
@@ -176,6 +177,7 @@ const pluginsListSplited = [
   "link",
   "divider",
   "imguploader",
+  "image",
 ];
 function handleEditorChange({ html, text }) {
   console.log("handleEditorChange", html, text);
@@ -515,14 +517,64 @@ export const MkdSplitedEditorWithChangedHTMLRender = ({
   fallback = () => console.log("fallback function"),
 }) => {
   const [mdText, setMdText] = useState("");
+  const [mdImage, setMdImage] = useState([]);
   const [mdForEditor, setMdEditor] = useState("");
+  function onImageUpload(file) {
+    console.log("xxx value", file);
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (data) => {
+        const md5String = `data:image/png;base64,md5&=${md5(`${file.name}`)}`;
+        // setMdText(`![!!!!!!!!!!!image](${md5String})`);
+        setMdImage((prev) => [
+          ...prev,
+          {
+            md5String,
+            base64: data.target.result,
+          },
+        ]);
+        resolve(md5String);
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+  function handleEditorChange({ html, text }) {
+    setMdText(text);
+  }
 
   useEffect(() => {
-    let mrkdownText = "xxxxxxxxxxxx";
-    let mrkdownTextForEditor = "yyyyyyyyyyy";
-    setMdEditor(mrkdownTextForEditor);
-    setMdText(mrkdownText);
-  }, []);
+    if (mdImage.length !== 0) {
+      let copyText = mdText;
+      const lastImage = mdImage[mdImage.length - 1];
+      // const regex = new RegExp(lastImage?.md5String, "g");
+      // const replacedText = copyText.replace(regex, lastImage?.base64);
+      const replacedText = mdText.replace(
+        lastImage?.md5String,
+        lastImage?.base64
+      );
+      console.log("xxx mdImage", replacedText);
+      setMdEditor(replacedText);
+      // mdImage.forEach(({ md5String, base64 }) => {
+      //   const regex = new RegExp(md5String, "g");
+      //   replacedText = mdText.replace(regex, base64);
+      // });
+      // setMdEditor(replacedText);
+    }
+  }, [mdImage]);
+
+  useEffect(() => {
+    console.log("xxx mdText", mdText);
+  }, [mdText]);
+
+  // const handleHtMLRender = (text) => {
+  //   console.log("xxx handleHtMLRender", text);
+  //   // mdImage.forEach(({ md5String, base64 }) => {
+  //   //   const regex = new RegExp(md5String, "g");
+  //   //   replacedText = mdText.replace(regex, base64);
+  //   // });
+  //   // setMdEditor(replacedText);
+  //   return text;
+  // };
 
   return (
     <div>
@@ -532,8 +584,7 @@ export const MkdSplitedEditorWithChangedHTMLRender = ({
         renderHTML={(text) => mdParser.render(mdForEditor)}
         value={mdText}
         onChange={handleEditorChange}
-        // onImageUpload={onImageUpload}
-        shortcuts={true}
+        onImageUpload={(e) => onImageUpload(e)}
         view={{ menu: true, md: true, html: false }}
       />
     </div>
