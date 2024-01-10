@@ -1,3 +1,8 @@
+img {
+  max-width: 300px !important;
+  max-width: 150px;
+}
+
 .rc-md-editor .rc-md-navigation {
   min-height: 33px;
   padding: 0 8px 0 0;
