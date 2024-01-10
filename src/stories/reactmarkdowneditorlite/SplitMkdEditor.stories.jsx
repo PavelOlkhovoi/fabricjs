@@ -1,9 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import MdEditor, { Plugins } from "react-markdown-editor-lite";
 import MarkdownIt from "markdown-it";
 import "react-markdown-editor-lite/lib/index.css";
 import "./splitstyle.css";
-import { image64, seconBase64, mdDoc, mockedMDData } from "./base64img";
+import {
+  image64,
+  seconBase64,
+  mdDoc,
+  mockedMDData,
+  newContent,
+} from "./base64img";
 import { nanoid } from "nanoid";
 import {
   PictureFilled,
@@ -513,27 +519,32 @@ export const MkdSplitedEditorWithLoadedContent = ({
     </div>
   );
 };
-export const MkdSplitedEditorWithChangedHTMLRender = ({
+const __MkdSplitedEditorWithChangedHTMLRender = ({
   fallback = () => console.log("fallback function"),
 }) => {
   const [mdText, setMdText] = useState("");
-  const [mdImage, setMdImage] = useState([]);
-  const [mdForEditor, setMdEditor] = useState("");
+  const [mdImages, setMdImages] = useState({});
+  const mdImagesRef = useRef(mdImages);
+  useEffect(() => {
+    mdImagesRef.current = mdImages;
+  }, [mdImages]);
+
+  const [mdForRendering, setMdForRendering] = useState("");
   function onImageUpload(file) {
-    console.log("xxx value", file);
     return new Promise((resolve) => {
       const reader = new FileReader();
       reader.onload = (data) => {
-        const md5String = `data:image/png;base64,md5&=${md5(`${file.name}`)}`;
+        const dataUrl = `data:image/png;base64,md5:${md5(
+          `${data.target.result}`
+        )}`;
         // setMdText(`![!!!!!!!!!!!image](${md5String})`);
-        setMdImage((prev) => [
-          ...prev,
-          {
-            md5String,
-            base64: data.target.result,
-          },
-        ]);
-        resolve(md5String);
+
+        const newImages = { ...mdImagesRef.current };
+        newImages[dataUrl] = data.target.result;
+        console.log("xxx newImages", newImages);
+
+        setMdImages(newImages);
+        resolve(dataUrl);
       };
       reader.readAsDataURL(file);
     });
@@ -542,51 +553,180 @@ export const MkdSplitedEditorWithChangedHTMLRender = ({
     setMdText(text);
   }
 
-  useEffect(() => {
-    if (mdImage.length !== 0) {
-      let copyText = mdText;
-      const lastImage = mdImage[mdImage.length - 1];
-      // const regex = new RegExp(lastImage?.md5String, "g");
-      // const replacedText = copyText.replace(regex, lastImage?.base64);
-      const replacedText = mdText.replace(
-        lastImage?.md5String,
-        lastImage?.base64
-      );
-      console.log("xxx mdImage", replacedText);
-      setMdEditor(replacedText);
-      // mdImage.forEach(({ md5String, base64 }) => {
-      //   const regex = new RegExp(md5String, "g");
-      //   replacedText = mdText.replace(regex, base64);
-      // });
-      // setMdEditor(replacedText);
-    }
-  }, [mdImage]);
-
-  useEffect(() => {
-    console.log("xxx mdText", mdText);
-  }, [mdText]);
-
-  // const handleHtMLRender = (text) => {
-  //   console.log("xxx handleHtMLRender", text);
-  //   // mdImage.forEach(({ md5String, base64 }) => {
-  //   //   const regex = new RegExp(md5String, "g");
-  //   //   replacedText = mdText.replace(regex, base64);
-  //   // });
-  //   // setMdEditor(replacedText);
-  //   return text;
-  // };
-
   return (
     <div>
       <MdEditor
         style={{ width: "1000px", height: "900px" }}
         plugins={pluginsListSplited}
-        renderHTML={(text) => mdParser.render(mdForEditor)}
+        renderHTML={(text) => {
+          let mdWithImages = text;
+          console.log(
+            "xxx Object.keys(mdImagesRef.current)",
+            Object.keys(mdImagesRef.current)
+          );
+
+          for (const dataUrl of Object.keys(mdImagesRef.current)) {
+            console.log("xxx replace ", dataUrl);
+
+            mdWithImages = mdWithImages.replace(
+              dataUrl,
+              mdImagesRef.current[dataUrl]
+            );
+          }
+          return mdParser.render(mdWithImages);
+        }}
         value={mdText}
         onChange={handleEditorChange}
         onImageUpload={(e) => onImageUpload(e)}
         view={{ menu: true, md: true, html: false }}
       />
+    </div>
+  );
+};
+
+export const MkdSplitedEditorWithChangedHTMLRender = ({
+  fallback = () => console.log("fallback function"),
+}) => {
+  const [mdText, setMdText] = useState("");
+  const [mdImages, setMdImages] = useState({});
+  const [mdForRendering, setMdForRendering] = useState("");
+
+  function onImageUpload(file) {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (data) => {
+        const dataUrl = `data:image/png;base64,md5:${md5(
+          `${data.target.result}`
+        )}`;
+        // const dataUrl = "xxx";
+
+        const newImages = {};
+        newImages[dataUrl] = data.target.result;
+        console.log("xxx newImages", newImages);
+
+        console.log("xxx newImages", JSON.stringify(newImages));
+
+        setMdImages((prev) => ({ ...prev, ...newImages }));
+        resolve(dataUrl);
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function handleEditorChange({ html, text }) {
+    setMdText(text);
+  }
+
+  useEffect(() => {
+    console.log("xxx images", mdText, mdImages);
+    let mdWithImages = mdText;
+    console.log("xxx renderHTML", Object.keys(mdImages));
+
+    for (const dataUrl of Object.keys(mdImages)) {
+      console.log("xxx replace ", dataUrl);
+      mdWithImages = mdWithImages.replaceAll(dataUrl, mdImages[dataUrl]);
+    }
+    console.log("xxx mdWithImages", mdWithImages);
+    setMdForRendering(mdWithImages);
+  }, [mdImages, mdText]);
+  // console.log("yyy mdImages", JSON.stringify(mdImages));
+
+  return (
+    <div>
+      <MdEditor
+        key={"mdEditor"}
+        style={{ width: "1000px", height: "900px" }}
+        plugins={pluginsListSplited}
+        renderHTML={(text) => {
+          // let mdWithImages = text;
+          console.log("xxx renderHTML", Object.keys(mdImages));
+
+          // for (const dataUrl of Object.keys(mdImages)) {
+          //   console.log("xxx replace ", dataUrl);
+          //   mdWithImages = mdWithImages.replace(dataUrl, mdImages[dataUrl]);
+          // }
+          return mdParser.render("");
+        }}
+        value={mdText}
+        onChange={handleEditorChange}
+        onImageUpload={(e) => onImageUpload(e)}
+        view={{ menu: true, md: true, html: false }}
+      />
+      <div
+        dangerouslySetInnerHTML={{ __html: mdParser.render(mdForRendering) }}
+      ></div>
+    </div>
+  );
+};
+
+export const MkdSplitedEditorWithChangedHTMLRenderPrepopulated = ({
+  fallback = () => console.log("fallback function"),
+}) => {
+  const [mdText, setMdText] = useState(newContent.mdDoc);
+  const [mdImages, setMdImages] = useState(newContent.images);
+  const [mdForRendering, setMdForRendering] = useState("");
+
+  function onImageUpload(file) {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (data) => {
+        const dataUrl = `data:image/png;base64,md5:${md5(
+          `${data.target.result}`
+        )}`;
+        // const dataUrl = "xxx";
+
+        const newImages = {};
+        newImages[dataUrl] = data.target.result;
+        console.log("xxx newImages", newImages);
+
+        setMdImages((prev) => ({ ...prev, ...newImages }));
+        resolve(dataUrl);
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function handleEditorChange({ html, text }) {
+    setMdText(text);
+  }
+
+  useEffect(() => {
+    console.log("xxx images", mdText, mdImages);
+    let mdWithImages = mdText;
+    console.log("xxx renderHTML", Object.keys(mdImages));
+
+    for (const dataUrl of Object.keys(mdImages)) {
+      console.log("xxx replace ", dataUrl);
+      mdWithImages = mdWithImages.replaceAll(dataUrl, mdImages[dataUrl]);
+    }
+    console.log("xxx mdWithImages", mdWithImages);
+    setMdForRendering(mdWithImages);
+  }, [mdImages, mdText]);
+
+  return (
+    <div>
+      <MdEditor
+        key={"mdEditor"}
+        style={{ width: "1000px", height: "900px" }}
+        plugins={pluginsListSplited}
+        renderHTML={(text) => {
+          // let mdWithImages = text;
+          console.log("xxx renderHTML", Object.keys(mdImages));
+
+          // for (const dataUrl of Object.keys(mdImages)) {
+          //   console.log("xxx replace ", dataUrl);
+          //   mdWithImages = mdWithImages.replace(dataUrl, mdImages[dataUrl]);
+          // }
+          return mdParser.render("");
+        }}
+        value={mdText}
+        onChange={handleEditorChange}
+        onImageUpload={(e) => onImageUpload(e)}
+        view={{ menu: true, md: true, html: false }}
+      />
+      <div
+        dangerouslySetInnerHTML={{ __html: mdParser.render(mdForRendering) }}
+      ></div>
     </div>
   );
 };
