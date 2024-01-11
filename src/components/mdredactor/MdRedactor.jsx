@@ -1,26 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import MdEditor, { Plugins } from "react-markdown-editor-lite";
 import MarkdownIt from "markdown-it";
 import "react-markdown-editor-lite/lib/index.css";
 import "./splitstyle.css";
-import {
-  image64,
-  seconBase64,
-  mdDoc,
-  mockedMDData,
-  newContent,
-  simpleMdDemoText,
-} from "./base64img";
-import { nanoid } from "nanoid";
-import {
-  PictureFilled,
-  SaveFilled,
-  DeliveredProcedureOutlined,
-} from "@ant-design/icons";
-
-export default {
-  title: "MdCompmonent/Md Editor Component Preparation",
-};
+import { simpleMdDemoText } from "./base64img";
+import { DeliveredProcedureOutlined } from "@ant-design/icons";
 
 const mdParser = new MarkdownIt({
   html: true,
@@ -32,6 +16,13 @@ MdEditor.addLocale("de-DE", {
   btnHeader: "Überschrift",
   btnClear: "Löschen",
   btnBold: "Fett",
+  btnItalic: "Kursiv",
+  btnUnderline: "Unterstreichen",
+  btnStrikethrough: "Durchgestrichen",
+  btnUnordered: "Ungeordnete Liste",
+  btnOrdered: "Ordered List",
+  btnQuote: "Zitat",
+  btnLink: "Link",
 });
 MdEditor.useLocale("de-DE");
 
@@ -59,14 +50,14 @@ const ViewMode = (props) => {
 
   return (
     <div>
-      <button
+      <div
         className={isWriteActive ? "mode-btn-toogle-active" : "mode-btn-toogle"}
         onClick={handleClickWrite}
         title="Schreibmodus"
       >
         Write
-      </button>
-      <button
+      </div>
+      <div
         className={
           isPreviewActive ? "mode-btn-toogle-active" : "mode-btn-toogle"
         }
@@ -74,7 +65,7 @@ const ViewMode = (props) => {
         title="Vorschaumodus"
       >
         Preview
-      </button>
+      </div>
     </div>
   );
 };
@@ -98,9 +89,10 @@ const SaveDocumentBtn = (props) => {
       // className="button"
       >
         <DeliveredProcedureOutlined
-          title="Save"
+          className="save-button"
+          title="Dokument speichern"
           onClick={handleSaveDocument}
-          style={{ marginTop: "6px", marginRight: "6px", cursor: "pointer" }}
+          style={{ marginTop: "6px", marginLeft: "5px", cursor: "pointer" }}
         />
       </span>
     </div>
@@ -129,16 +121,15 @@ const pluginsListSplited = [
   "link",
   "divider",
   "savedoc",
-  "image",
+  //   "image",
 ];
 
-export const MdEditorComponentPreparation = ({
+const MdRedactor = ({
   mdDoc = simpleMdDemoText.mdDoc,
   getDocFn = () => console.log("getDocFn function"),
   width = "100%",
   height = "700px",
 }) => {
-  const mdEditorRef = React.useRef(null);
   const [mdText, setMdText] = useState(mdDoc);
 
   SaveDocumentBtn.defaultConfig = {
@@ -150,33 +141,21 @@ export const MdEditorComponentPreparation = ({
   };
 
   useEffect(() => {}, []);
-  const handleGetMdDocument = () => {
-    if (mdEditorRef.current) {
-      console.log("", mdEditorRef.current.getMdValue());
-    }
-  };
-  function onImageUpload(file) {
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.onload = (data) => {
-        resolve(data.target.result);
-      };
-      reader.readAsDataURL(file);
-    });
-  }
+
   return (
     <div>
       <MdEditor
-        ref={mdEditorRef}
         style={{ width, height }}
         plugins={pluginsListSplited}
         renderHTML={(text) => mdParser.render(text)}
         value={mdText}
         onChange={handleEditorChange}
-        onImageUpload={onImageUpload}
+        // onImageUpload={onImageUpload}
         shortcuts={true}
         view={{ menu: true, md: true, html: false }}
       />
     </div>
   );
 };
+
+export default MdRedactor;
