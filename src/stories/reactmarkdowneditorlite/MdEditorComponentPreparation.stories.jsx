@@ -17,15 +17,22 @@ import {
   SaveFilled,
   DeliveredProcedureOutlined,
 } from "@ant-design/icons";
+// import insert from "markdown-it-ins";
 
 export default {
   title: "MdCompmonent/Md Editor Component Preparation",
+  parameters: {
+    options: {
+      storybook: { font: { family: "Assistant, Helvetica, Roboto, Arial" } },
+    },
+  },
 };
 
 const mdParser = new MarkdownIt({
   html: true,
   linkify: true,
   typographer: true,
+  highlight(str, lang) {},
 });
 
 MdEditor.addLocale("de-DE", {
@@ -155,7 +162,7 @@ export const MdEditorComponentPreparation = ({
       console.log("", mdEditorRef.current.getMdValue());
     }
   };
-  function onImageUpload(file) {
+  const onImageUpload = (file) => {
     return new Promise((resolve) => {
       const reader = new FileReader();
       reader.onload = (data) => {
@@ -163,14 +170,22 @@ export const MdEditorComponentPreparation = ({
       };
       reader.readAsDataURL(file);
     });
-  }
+  };
+
+  const replaceWithUnderline = (text) => {
+    const regex = /\+\+(.*?)\+\+/g;
+    const replacedText = text.replace(regex, "<u>$1</u>");
+
+    return replacedText;
+  };
+
   return (
     <div>
       <MdEditor
         ref={mdEditorRef}
         style={{ width, height }}
         plugins={pluginsListSplited}
-        renderHTML={(text) => mdParser.render(text)}
+        renderHTML={(text) => mdParser.render(replaceWithUnderline(text))}
         value={mdText}
         onChange={handleEditorChange}
         onImageUpload={onImageUpload}

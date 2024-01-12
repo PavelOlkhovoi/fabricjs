@@ -10369,6 +10369,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"markdown-it-ins@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "markdown-it-ins@npm:4.0.0"
+  checksum: c6f975c2162a3547a90e4451c5a022e83fed96ee54116e252fa2125a48746deb7dfd3c3ced263e2dca54aaf3b5299c2ffd34e8c88ed01eef7a91018d888031da
+  languageName: node
+  linkType: hard
+
 "markdown-it-replace-link@npm:^1.2.0":
   version: 1.2.0
   resolution: "markdown-it-replace-link@npm:1.2.0"
@@ -15815,6 +15822,7 @@ __metadata:
     antd: "npm:^5.5.2"
     eslint-plugin-storybook: "npm:^0.6.15"
     fabric: "npm:^5.3.0"
+    markdown-it-ins: "npm:^4.0.0"
     markdown-it-replace-link: "npm:^1.2.0"
     markdown-it-task-lists: "npm:^2.1.1"
     md5: "npm:^2.3.0"
